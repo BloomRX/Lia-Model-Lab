@@ -1,8 +1,39 @@
 ---
 name: capability-mapping
-description: Decompose Lia capabilities across learned weights, specialist models, runtime, tools, memory, avatar and product.
+description: Separar pesos, especialistas, runtime, integrações e critérios operacionais.
 ---
 
-# capability mapping
+# capability-mapping
 
-Read the capability matrix, target architecture and relevant AIRI catalog item. Define scenario, inputs/outputs, success criteria and failure modes. Classify responsibility as weights, adapter, auxiliary model, cognitive runtime, integration/tool, external persistent memory, avatar asset or UI/product. Define who requests, validates, authorizes, executes and returns each action. Identify privacy, prompt injection, external action and vendor risks. Specify component and end-to-end tests. Never put mutable personal memory, credentials, permissions or tool execution in weights. A generated tool call is not proof of safe execution.
+## Quando usar e entradas
+
+Cenário, entrada/saída, ambiente e referência de código ou requisito. Se faltarem metadados, registrar BLOCKED/UNKNOWN, sem completar com suposições.
+
+## Leituras
+
+- [02-LIA-CAPABILITY-MATRIX.md](../../../docs/02-LIA-CAPABILITY-MATRIX.md)
+- [03-WEIGHTS-VS-RUNTIME.md](../../../docs/03-WEIGHTS-VS-RUNTIME.md)
+- [04-MODEL-FAMILY-ARCHITECTURE.md](../../../docs/04-MODEL-FAMILY-ARCHITECTURE.md)
+
+## Procedimento
+
+1. Classificar A/B/C/D e atribuir owner por estado/ação; memória persistente e autorização nunca pertencem aos pesos.
+2. Definir quem solicita, valida, autoriza, executa e devolve o resultado.
+3. Mapear dados e benchmark E2E; considerar erro, cancelamento, estado obsoleto e injection.
+4. Distinguir capacidade AIRI de requisito e execução real na Lia.
+
+## Saída e ownership
+
+Linha completa de matriz + contrato e casos de falha sugeridos. Em subagente: somente leitura e retorno ao principal; não editar arquivos compartilhados. No fallback sequencial, o principal assume esta skill explicitamente, sem alegar revisão independente.
+
+## Critério de conclusão
+
+Há dataset/runtime/teste para cada resultado prometido; falar sobre uma ação não conta como execução. Separar decisão aprovada, proposta, hipótese, plano, execução e resultado testado. Citar fonte/data/versão e comando realmente executado; caso contrário NOT-TESTED.
+
+## Exemplo de tarefa
+
+> Mapeie navegação Minecraft: observação, policy, executor, sucesso no world state.
+
+## Limites
+
+Sem GPU/API paga, download grande, treino longo, dados pessoais, aceite de termos, upload ou publicação. Não apagar/modificar artefatos do usuário. Ferramentas executam só no escopo autorizado; esta skill não concede permissões.

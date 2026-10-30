@@ -4,6 +4,26 @@ project: "Lia Model Lab"
 status: "shortlist-only"
 selection_policy: "No base model is approved until Gate 0 and comparative evaluation pass."
 candidates:
+  - id: "qwen3.5-4b"
+    model_id: "Qwen/Qwen3.5-4B"
+    revision: null
+    status: "recommended-pilot-candidate-not-approved"
+    license_declared: "Apache-2.0"
+    role: "first economical useful Core pilot after Gate 0"
+    source: "https://huggingface.co/Qwen/Qwen3.5-4B/raw/main/README.md"
+    consulted_at: "2026-10-30"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
+  - id: "qwen3.5-0.8b"
+    model_id: "Qwen/Qwen3.5-0.8B"
+    revision: null
+    status: "conformance-probe-not-approved"
+    license_declared: "Apache-2.0"
+    role: "small pipeline probe, not final quality target"
+    source: "https://huggingface.co/Qwen/Qwen3.5-0.8B/raw/main/README.md"
+    consulted_at: "2026-10-30"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
   - id: "qwen3.8-27b"
     model_id: "Qwen/Qwen3.8-27B"
     family: "Qwen3.8"
@@ -17,7 +37,7 @@ candidates:
       audio_input: "not declared as native capability in reviewed card"
       audio_output: false
     status: "candidate-added-2026-10-30"
-    role: "first model for comparative evaluation"
+    role: "remote quality comparator; not economical first training default"
     risks:
       - "must validate PEFT/LoRA/QLoRA support on exact revision"
       - "must validate AMD/Vulkan/ROCm inference and training separately"
@@ -31,8 +51,8 @@ candidates:
       text_input: true
       text_output: true
       image_input: true
-      video_input: "verify exact card/revision"
-      audio_input: "verify exact card/revision"
+      video_input: true
+      audio_input: false
       audio_output: false
     status: "historical-priority-baseline"
     role: "comparison against original model selection"
@@ -41,7 +61,7 @@ candidates:
   - id: "gemma4"
     model_id: "Google Gemma 4 (select exact variant after review)"
     family: "Gemma 4"
-    parameter_scale: "E2B / E4B / 26B A4B / 31B and other published variants"
+    parameter_scale: "E2B / E4B / 12B Unified / 26B A4B / 31B"
     license_declared: "Apache-2.0 — official Gemma 4 card checked 2026-10-30; exact artifact review pending"
     modalities_documented:
       text_input: true
@@ -63,7 +83,7 @@ open_questions:
 
 research_mission_001:
   status: "proposed-not-approved"
-  comparison: "docs/model-selection/05-FOUNDATION-MODEL-COMPARISON.md"
+  comparison: "docs/05-FOUNDATION-MODEL-COMPARISON.md"
   economical_probe: "Qwen/Qwen3.5-0.8B"
   economical_core_candidate: "Qwen/Qwen3.5-4B"
   remote_quality_candidate: "Qwen/Qwen3.8-27B"

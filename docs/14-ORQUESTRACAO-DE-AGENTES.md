@@ -1,53 +1,41 @@
-# 14 — Orquestração de agentes e subagentes
+# 14 — Skills e orquestração sem delegação fictícia
 
-## Arquivos
+## Suporte observado e limites
 
-- AGENTS.md: regras gerais e limites de autorização.
-- .agents/skills/: procedimentos reutilizáveis.
-- .codex/agents/*.toml: perfis customizados de Codex.
-- .codex/config.example.toml: exemplo opcional, não ativado automaticamente.
+Codex documenta skills e perfis TOML com `name`, `description`, `developer_instructions`. Fontes oficiais consultadas em 2026-10-30: [skills](https://developers.openai.com/codex/skills/), [subagents](https://developers.openai.com/codex/subagents/) (redirecionou ao Learn), [config](https://developers.openai.com/codex/config-reference/). Os campos do [exemplo opcional](../.codex/config.example.toml) correspondem à seção `[agents]` consultada; parse TOML é testado, invocação real Codex **NOT-TESTED**. Config não é ativada automaticamente.
 
-Codex documenta skills em .agents/skills e perfis de projeto em .codex/agents. Cada perfil TOML exige name, description e developer_instructions e herda permissões da sessão pai.
+A documentação [Arena](https://help.arena.ai/articles/5432423882-how-to-use-agent-mode) consultada descreve terminal/sandbox/GitHub/PR, não garante descoberta de `.agents/skills/` ou execução de `.codex/agents/`. Nesta sessão não há ferramenta real de spawn/wait de subagentes exposta. O principal executou as atividades sequencialmente, com consultas de fonte em paralelo; **não houve subagentes nem revisão independente simulada**.
 
-A documentação pública do Arena Agent Mode consultada em 30/10/2026 descreve sandbox, Bash, integração GitHub, diff, commit e PR, mas não documenta descoberta automática de skills nem subagentes. Até haver suporte exposto e validado, o agente no Arena deve ler manualmente a skill aplicável e trabalhar em sequência. Nunca simular delegação.
+## Registro e divisão de responsabilidades
 
-## Perfis
+| Skill | Revisor read-only por instrução | Escopo de saída; principal integra |
+|---|---|---|
+| model-candidate-research | model-researcher | Fatos de checkpoint e comparação, não aprovação de base |
+| capability-mapping | capability-architect | Responsabilidades A/B/C/D e testes E2E |
+| dataset-governance | dataset-auditor | Origem/direitos/privacidade/splits; não coleta dados |
+| finetuning-plan | training-planner | Hparams/budget/probes de treino; não inicia jobs |
+| experiment-reproducibility | training-planner | Integridade/retomada; separado do desenho de treino |
+| model-evaluation | evaluation-reviewer | Comparabilidade/holdout/regressões; não altera resultados |
+| model-license-release-review | license-reviewer | Obrigações por artefato; não aceita termos nem publica |
+| multi-agent-orchestration | principal | Disponibilidade real, ownership, síntese e conflitos |
+| lia-brand-consistency-review | brand-reviewer | Nome/limites/identidade e alegações; não redefine marca |
 
-| Perfil | Especialidade |
-|---|---|
-| model-researcher | Modelos-base, releases, licenças, fontes |
-| capability-architect | Decomposição pesos/runtime/serviços |
-| dataset-auditor | Proveniência, privacidade, splits |
-| training-planner | Fine-tuning e recursos |
-| evaluation-reviewer | Benchmarks, holdouts, regressões |
-| license-reviewer | Direitos e obrigações |
-| brand-reviewer | Padrões comuns da marca Lia |
+As nove skills não são nove agentes adicionais. Planejamento de treino difere de reprodutibilidade; coleta de licença na pesquisa difere do gate de direitos de cada artefato no release. Mantidas por terem saídas e condições de conclusão diferentes, sem multiplicar estruturas redundantes.
 
-Não fixamos modelo nem permissão nos perfis; herdam a sessão. Delegue apenas tarefas independentes. Não permita edição concorrente do mesmo arquivo. Comece com 2–4 agentes quando o benefício justificar o custo de tokens.
+## Contrato de delegação
 
-## Contrato mínimo
+Antes de delegar, principal define objetivo, entradas/fontes autorizadas, skill, estado de evidência esperado, formato de saída, budget/custo, condição de parada e arquivos de escrita exclusivos (padrão: nenhum). Revisores não editam arquivos. README, AGENTS, configs, SOURCES, manifest e documentos compartilhados ficam com o principal. Se nova ferramenta oferecer subagentes, não assumir que perfis do disco foram carregados: verificar invocação e retorno reais; limitar concorrência conforme a necessidade/custo, não iniciar sete por padrão.
 
-Cada tarefa informa objetivo, escopo, fontes/arquivos permitidos, se pode editar (prefira read-only), skill aplicável, formato de entrega, limites de custo/dados e condição de parada. Resultado esperado: resumo, fatos, inferências, desconhecidos, fontes primárias/data, riscos e recomendação.
+Saída obrigatória: achado, arquivo/linha ou fonte/data/revision, classificação fato/hipótese/desconhecido, risco, sugestão e validação executada/NOT-TESTED. Principal confere fontes e semântica antes de integrar. Instruções read-only **não** criam isolamento nem substituem sandbox/permissões herdadas. Subagentes nunca aprovam compute, dados privados, download grande, upload, termos ou publicação.
 
-## Prompt para o agente principal
+## Fallback sequencial reproduzível
 
-```text
-Divida somente partes independentes e use até 2–4 subagentes especializados disponíveis.
-Peça que leiam a skill correspondente e trabalhem em leitura, citando fontes primárias.
-Não permita edição concorrente nem delegue downloads grandes, GPU paga, dados pessoais, aceite de licença ou upload.
-Aguarde todos os resultados, valide versões e fontes, consolide divergências e só então integre.
-Se o host não oferecer subagentes, não simule: trabalhe sequencialmente e informe a limitação.
-```
+1. Ler AGENTS e índice de skills manualmente.
+2. Selecionar skill por tarefa e seguir entradas/procedimento/critério.
+3. Marcar papel assumido pelo principal, sem dizer “o revisor aprovou”.
+4. Executar checks locais autorizados e registrar outputs, limitações e arquivos.
+5. Principal consolida e abre/atualiza PR, sem merge automático.
 
-## Configuração opcional
+## Checks locais
 
-Para Codex, copie .codex/config.example.toml para .codex/config.toml somente depois de decidir habilitar o paralelismo. Sandbox e aprovação continuam na sessão principal; um perfil não cria isolamento.
-
-## Fontes oficiais consultadas em 30/10/2026
-
-- Codex Skills: https://developers.openai.com/codex/skills/
-- Codex Subagents: https://developers.openai.com/codex/subagents/
-- Codex Configuration: https://developers.openai.com/codex/config-reference/
-- Arena Agent Mode: https://help.arena.ai/articles/1655691990-how-to-use-coding-in-agent-mode
-
-Reconfirme a documentação antes de depender de capacidade nova.
+`python scripts/verify_repository.py` faz parse real de frontmatter YAML/TOML, confere nove skills, sete perfis, seções mínimas, identidade e caminhos explícitos de skill em cada perfil. Testes de software não comprovam comportamento de um agente em outro host. [Índice de skills](../.agents/skills/README.md) e [fundação técnica](15-IMPLEMENTATION-FOUNDATION.md).

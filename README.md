@@ -1,48 +1,43 @@
 # Lia Model Lab
 
-Laboratório independente para pesquisar, adaptar, avaliar e distribuir a família de modelos da **Lia**: uma personagem multimodal com identidade, memória externa, voz, corpo virtual e capacidade de agir — não apenas um chatbot personalizado.
+Laboratório independente para construir e avaliar os primeiros pesos/adapters **Lia Core**, com evolução progressiva para percepção, fala, agentes e jogos. Não é um chatbot renomeado nem o runtime da aplicação Lia.
 
-## Estado — Missão 001 / Fase 0 (30/10/2026)
+## Estado consolidado — 30/10/2026
 
-- Auditoria documental e pesquisa estática de código AIRI **v0.13.0**, com referência **v0.12.0-beta.5** e snapshot separado do Lia Project.
-- Matriz de capacidades com separação entre **pesos, especialistas, runtime e sistemas híbridos**.
-- Arquitetura progressiva Core/Vision/Voice/Speech/Agent/Game/Memory/Omni e três velocidades cognitivas **propostas para revisão**.
-- Modelo-base **não escolhido**; rankings são ordem de avaliação, não resultados de benchmark.
-- **Nenhum treino, pesos próprios, dataset de produção, serviço pago ou runtime alterado nesta missão.**
-- Compatibilidade de treino/export, hardware atual do proprietário, licenças específicas de especialistas e benchmarks permanecem gates abertos.
+Pesquisa e skills integradas em uma única documentação oficial; marca e governança preservadas. Já há **código offline funcional e testes** para Dataset Factory texto/tools, splits/dedup, integridade, planos reproduzíveis, avaliação de predições e exportação estrutural local de adapters.
 
-## Comece por aqui
+**Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
-1. [AGENTS.md](AGENTS.md) — políticas de execução, dados, evidência e aprovação.
-2. [Índice navegável completo](docs/README.md) — documentos da missão, v1.0, blueprint e templates.
-3. [00 — Auditoria do projeto](docs/research/00-PROJECT-AUDIT.md) — contradições e estado verificado.
-4. [01 — Inventário técnico AIRI](docs/research/01-AIRI-CAPABILITY-INVENTORY.md) — referências de código por commit.
-5. [02 — Matriz de capacidades Lia](docs/research/02-LIA-CAPABILITY-MATRIX.md).
-6. [03 — Pesos versus runtime](docs/architecture/03-WEIGHTS-VS-RUNTIME.md).
-7. [04 — Arquitetura da família](docs/architecture/04-MODEL-FAMILY-ARCHITECTURE.md).
-8. [05 — Comparação de modelos](docs/model-selection/05-FOUNDATION-MODEL-COMPARISON.md).
-9. [06 — Treinamento](docs/research/06-TRAINING-STRATEGY.md), [07 — Dados](docs/research/07-DATASET-STRATEGY.md) e [09 — Benchmarks](docs/research/09-BENCHMARK-STRATEGY.md).
-10. [08 — Hardware](docs/research/08-HARDWARE-INFRASTRUCTURE.md), [10 — Arena workflow](docs/research/10-ARENA-AGENT-WORKFLOW.md), [11 — Roadmap](docs/research/11-ROADMAP.md), [12 — Decisões abertas](docs/research/12-OPEN-DECISIONS.md).
-11. [Fontes e limites da pesquisa](docs/research/SOURCES.md).
+## Começar
 
-## Autoridade, histórico e independência
+```sh
+python -m venv .venv
+.venv/bin/pip install -r requirements.lock
+.venv/bin/pip install --no-build-isolation --no-deps -e .
+.venv/bin/python -m pytest -q
+.venv/bin/python scripts/verify_repository.py
+.venv/bin/lia-lab validate-data tests/fixtures/pilot.jsonl
+```
 
-O [blueprint original](docs/Lia_Model_Blueprint.md) está **preservado integralmente**. A [v1.0](docs/00-VISAO-E-ESCOPO.md) e suas [decisões](docs/10-DECISOES-REGISTRADAS.md) continuam disponíveis. A missão acrescenta evidências e correções datadas; não transforma hipóteses em decisões aprovadas. Em especial, o card atual do Gemma 4 declara Apache 2.0; as referências anteriores a termos próprios foram corrigidas explicitamente.
+Windows: usar executáveis em `.venv\Scripts\`; essa plataforma ainda não foi testada. [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Dependências pequenas de ferramentas foram instaladas para validar software; não uma stack de ML com modelos.
 
-A documentação do Lab é a autoridade interna. **AIRI é referência técnica, não dependência arquitetural obrigatória**. Funcionalidades encontradas no AIRI não são automaticamente funcionalidades implementadas/validadas na Lia. A documentação nova distingue `DOCUMENTED`, `CODE-PRESENT`, `EXPERIMENTAL` e `NOT-TESTED`; nenhum teste de runtime upstream foi executado nesta missão.
+## Documentação oficial
 
-## Caminho recomendado (pendente de aprovação)
+- [Índice único](docs/README.md), [AGENTS](AGENTS.md) e [marca](docs/BRAND-STANDARDS.md).
+- [Auditoria e comparação das branches](docs/00-PROJECT-AUDIT.md), [ADR de consolidação](docs/adr/0001-CONSOLIDATION.md).
+- [Inventário AIRI](docs/01-AIRI-CAPABILITY-INVENTORY.md), [matriz de capacidades](docs/02-LIA-CAPABILITY-MATRIX.md).
+- [Pesos versus runtime](docs/03-WEIGHTS-VS-RUNTIME.md), [família Lia](docs/04-MODEL-FAMILY-ARCHITECTURE.md).
+- [Comparação e recomendação de bases](docs/05-FOUNDATION-MODEL-COMPARISON.md).
+- [Treino](docs/06-TRAINING-STRATEGY.md), [dados](docs/07-DATASET-STRATEGY.md), [hardware](docs/08-HARDWARE-INFRASTRUCTURE.md), [benchmarks](docs/09-BENCHMARK-STRATEGY.md).
+- [Governança](docs/13-GOVERNANCA-DE-EXPERIMENTOS.md), [skills/subagentes](docs/14-ORQUESTRACAO-DE-AGENTES.md), [fundação implementada](docs/15-IMPLEMENTATION-FOUNDATION.md).
+- [Fontes](docs/SOURCES.md), [validação executada](docs/VALIDATION.md), [roadmap](docs/11-ROADMAP.md) e [decisões abertas](docs/12-OPEN-DECISIONS.md).
 
-Contratos e mocks → licença/hardware/compatibilidade → benchmark da base → dados curados → SFT LoRA/QLoRA → adapter → merge opcional → quantização → regressão → publicação autorizada.
+## Direção técnica
 
-Piloto econômico: estudar Qwen3.5-0.8B para conformance e 4B como Core candidato. Avaliação remota de qualidade: Qwen3.8-27B, controle Qwen3.5-27B e alternativas Gemma 4. Voz, memória e jogo têm especialistas e testes próprios; não são “cobertos” por uma boa resposta textual.
+**Recomendação de candidato, não adoção aprovada:** Qwen3.5-4B para primeiro piloto útil; 0.8B para conformance econômica; Qwen3.8-27B para comparação remota de qualidade. Qwen3.5-27B é controle histórico; Gemma 4 é alternativa por variante. Português, persona, tools, treinamento/export e custo real ainda exigem medições pareadas. Uma base aberta não é um modelo Lia adaptado.
 
-## Limites operacionais
+Core primeiro; Vision, Hearing, Speech, Game, Reflex e Omni são papéis/direções, não obrigação de sete treinos. Agent/Memory são comportamentos/contratos e serviços externos quando necessário. AIRI é referência técnica. Memória mutável, permissões e execução de ferramentas nunca são substituídas por fine-tuning.
 
-- Sem treinamento do zero na primeira geração; sem pesos/dados brutos no Git.
-- Sem memória pessoal mutável ou segredos nos pesos.
-- Sem dados privados, voz ou conversas de terceiros sem autorização específica.
-- Sem GPU/API paga, grande download ou publicação de artefatos sem aprovação.
-- Git versiona docs, código, configs, cards, manifests e métricas pequenas. Artefatos de ML exigem armazenamento aprovado, proveniência e checksums.
+## Limites
 
-Este repositório é o laboratório de modelos; não modifica nem substitui o runtime da aplicação Lia. O próximo passo é revisar os gates e as [cinco tarefas recomendadas](docs/research/11-ROADMAP.md).
+CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).

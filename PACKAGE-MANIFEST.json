@@ -1,24 +1,123 @@
 {
-  "package": "Lia Model Lab Documentation",
-  "version": "1.1.0-research.1",
-  "created_at": "2026-10-30",
-  "status": "mission-001-proposed-for-review",
-  "manifest_scope": "Documentation, policies, configs and templates; excludes this manifest itself, Git and temporary research checkouts.",
+  "package": "Lia Model Lab",
+  "version": "0.2.0",
+  "status": "offline-foundation-not-model-release",
+  "manifest_scope": "All maintained source/documentation/config/fixture/skill/agent files; excludes itself, Git, caches, installed metadata and ML artifacts.",
   "files": [
     {
+      "path": ".agents/skills/README.md",
+      "bytes": 1492,
+      "sha256": "a6d9567ff33c9880353576266c3200f56a1309b1bdde7a7b546bb62391a4544a"
+    },
+    {
+      "path": ".agents/skills/capability-mapping/SKILL.md",
+      "bytes": 1902,
+      "sha256": "aca4735bdb111d32867eb11e4a044f66e989bd2b0e0dad61964c9375d1fe3665"
+    },
+    {
+      "path": ".agents/skills/dataset-governance/SKILL.md",
+      "bytes": 1987,
+      "sha256": "0013310af3d7528ea77852348a50841175621ac3ff8836409f77020f54855bd3"
+    },
+    {
+      "path": ".agents/skills/experiment-reproducibility/SKILL.md",
+      "bytes": 1934,
+      "sha256": "be4e835719a70584bafbd35d2a545246414416908ac4127fb8bb5e57847a7ba3"
+    },
+    {
+      "path": ".agents/skills/finetuning-plan/SKILL.md",
+      "bytes": 1980,
+      "sha256": "a64283bdbfbad4320e9a32242714edbc84f5efd504f678e574b05b4fd5bd526e"
+    },
+    {
+      "path": ".agents/skills/lia-brand-consistency-review/SKILL.md",
+      "bytes": 1844,
+      "sha256": "98b551f6ac32291e933ab1f06a74c1d2113e5486663bc7cb09fb96e5d12bf0ca"
+    },
+    {
+      "path": ".agents/skills/model-candidate-research/SKILL.md",
+      "bytes": 1958,
+      "sha256": "c0d8f3e787a3da0804482e3792909d5fd6300f7524f051742970797281268da3"
+    },
+    {
+      "path": ".agents/skills/model-evaluation/SKILL.md",
+      "bytes": 1883,
+      "sha256": "a60645c124a77ccd938a142312c49d70f6f296409d7ef487bb60105025b2d8af"
+    },
+    {
+      "path": ".agents/skills/model-license-release-review/SKILL.md",
+      "bytes": 1970,
+      "sha256": "765ec184e05fab649698c73ac296a9ddfcc8b5dd5586c323229d89ee6875e1c2"
+    },
+    {
+      "path": ".agents/skills/multi-agent-orchestration/SKILL.md",
+      "bytes": 1957,
+      "sha256": "54fdae94faf4f7365b6cadfe5c6936d665912b3303786c50c6e284591a7ccde5"
+    },
+    {
+      "path": ".codex/README.md",
+      "bytes": 703,
+      "sha256": "1a2c39e6b3a69d108a9033123564d396425bfbd4f483effdb1d24eab5206fd2b"
+    },
+    {
+      "path": ".codex/agents/brand-reviewer.toml",
+      "bytes": 684,
+      "sha256": "a5631f944604ee6c4a12540ed0aafa9b9f41492ec88e11b79d7f69e317df1fea"
+    },
+    {
+      "path": ".codex/agents/capability-architect.toml",
+      "bytes": 696,
+      "sha256": "b44f13d6e7bcd3f9a9db1ad42f341da805879d45dd5a363fefbcde373164f1af"
+    },
+    {
+      "path": ".codex/agents/dataset-auditor.toml",
+      "bytes": 733,
+      "sha256": "a47d5b05bf29076c1ae84b545cc673bda236b49f1059eec3bda4d42485828c1b"
+    },
+    {
+      "path": ".codex/agents/evaluation-reviewer.toml",
+      "bytes": 668,
+      "sha256": "a63700a5571d48d76f11298adc6e6f7fdb83f4eac7ccaa4d2b7f49fd3ac8229c"
+    },
+    {
+      "path": ".codex/agents/license-reviewer.toml",
+      "bytes": 696,
+      "sha256": "2982bdb492a460eea09fe615688157632a536fcbff36c5f8a546a30c5de873b2"
+    },
+    {
+      "path": ".codex/agents/model-researcher.toml",
+      "bytes": 741,
+      "sha256": "09ac1b0608a95c088728a405bdeb6678809245d1ef41f22a9aef98884b5b4462"
+    },
+    {
+      "path": ".codex/agents/training-planner.toml",
+      "bytes": 724,
+      "sha256": "37abf25ae70f62caa09711f2045be8860a83ac6b24f58b2fd8c3da1cdf427ab2"
+    },
+    {
+      "path": ".codex/config.example.toml",
+      "bytes": 138,
+      "sha256": "68a80881e111eb70f91b9927d2e41a81e7ed6abc7756860feea89f3e12f72e57"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "bytes": 469,
+      "sha256": "2d8333fa19405728dcf9993067e5c985d8c5fe0bf918a327fe66eaf71e4d1152"
+    },
+    {
       "path": ".gitignore",
-      "bytes": 777,
-      "sha256": "f5c46cae3052e034dc9a7cd8c3399fb7aeab17e5e3f66dfcff38214ab68a1b02"
+      "bytes": 1260,
+      "sha256": "7d49c632bc19528f777c39e685d225e5c181c3720a73b797f4442ab6c6a52114"
     },
     {
       "path": "AGENTS.md",
-      "bytes": 6076,
-      "sha256": "a7f5aa836529ee9d879bd2892e4481ea5e6d7614ff311a26b3a4cc65790287ad"
+      "bytes": 4942,
+      "sha256": "ebfec82a5670dc610bfbc1332c102b7a015913188c8a33f052af862c55a7708e"
     },
     {
       "path": "README.md",
-      "bytes": 4447,
-      "sha256": "0fd0c534ace81fa042d6e173c5a426f6b0cb793292e486298421d8bea2169862"
+      "bytes": 3655,
+      "sha256": "96ad39c8e45804525eba401ec4179d6775d91e4dc110fc04633d3fc54fbb2c76"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -27,158 +126,183 @@
     },
     {
       "path": "configs/model-candidates.yaml",
-      "bytes": 2820,
-      "sha256": "d957deb736d11173b06fa9a4b3e3027b8390a2117bdca0ad4652d31e350eefdf"
+      "bytes": 3563,
+      "sha256": "66033f2804e27c1a178ba5e47f620546f181034ede7dce2567d187cd71aa03fe"
     },
     {
-      "path": "docs/00-VISAO-E-ESCOPO.md",
-      "bytes": 5171,
-      "sha256": "e717039620f5df7e0a65a2334965f756d95c03eb6f43da369e6bebdfa6fb85fb"
+      "path": "configs/sft-pilot.template.yaml",
+      "bytes": 1161,
+      "sha256": "648ee4166824ed50bacc6a5c45ef097c2f5071e2f9fb44f40f2b2ae255f6f8fe"
     },
     {
-      "path": "docs/01-CATALOGO-CAPACIDADES-AIRI.md",
-      "bytes": 12893,
-      "sha256": "11bc93d3c9742c4a79c7e7839d1a23c1597164bbd20691f046c9243b8faa333b"
+      "path": "configs/storage.example.yaml",
+      "bytes": 239,
+      "sha256": "ea9efad5ff740ed4ae495516661729169e46c3ba496d0bdde1cc8d0e8328f68b"
     },
     {
-      "path": "docs/02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md",
-      "bytes": 12004,
-      "sha256": "5b33f597e91632c9ee1187566db43398e92ed33386542a6e5c53ff7715924f76"
+      "path": "docs/00-PROJECT-AUDIT.md",
+      "bytes": 4586,
+      "sha256": "047ea524dfc446677e3fea37e8f1574a31736c6691b7ce8d47a5d2f89e197156"
     },
     {
-      "path": "docs/03-ARQUITETURA-ALVO.md",
-      "bytes": 6954,
-      "sha256": "9e418c5551a1d74684ff7b6dc0fcf52422f4138536da8ac840d785a081644daa"
-    },
-    {
-      "path": "docs/04-SELECAO-MODELO-BASE.md",
-      "bytes": 6866,
-      "sha256": "b157e000801771e31c61b64b4f768958f197ddde8cbc69f15b32e89bf14094c1"
-    },
-    {
-      "path": "docs/05-PLANO-DE-TREINAMENTO.md",
-      "bytes": 8052,
-      "sha256": "19bb83c466fd2a4df8483f35a762196692075af39f1951e0d5ea5cdcd7704072"
-    },
-    {
-      "path": "docs/06-DATASETS-E-GOVERNANCA.md",
-      "bytes": 7117,
-      "sha256": "1f407e5032c9254ad64df6c7d8558ca3e2bbf64486abb58e4ad2340b02955c7a"
-    },
-    {
-      "path": "docs/07-AVALIACAO-E-GATES.md",
-      "bytes": 4945,
-      "sha256": "d9500bca1762c38ddb21efdea7a5c092030b9d3bcb9a75171cc292b9be607416"
-    },
-    {
-      "path": "docs/08-INFRAESTRUTURA-E-OPERACAO.md",
-      "bytes": 5379,
-      "sha256": "fe90b8b6df58a9017fddffdd9be5546e16bb8f30b1f995b518f8ef06cf2a72c7"
-    },
-    {
-      "path": "docs/09-ROADMAP.md",
-      "bytes": 4640,
-      "sha256": "0102d5d95d88a9e94ecc643a8211e7cbc41e6b3e7adc27b7c32857f95be04dd1"
-    },
-    {
-      "path": "docs/10-DECISOES-REGISTRADAS.md",
-      "bytes": 2786,
-      "sha256": "db489fa01bb0513bb975f6bf5c0cb59086100489ebb0a822203b785c622e34a5"
-    },
-    {
-      "path": "docs/11-FONTES-E-EVIDENCIAS.md",
-      "bytes": 4640,
-      "sha256": "46d27cbc51a975636549c14e4e12f362f22e5832f1077d515eb0d58514154017"
-    },
-    {
-      "path": "docs/Lia_Model_Blueprint.md",
-      "bytes": 17829,
-      "sha256": "3bc58c024f750644340e787f5ba7aa941cc50033170dcb8bfeef0cf91383933c"
-    },
-    {
-      "path": "docs/README.md",
-      "bytes": 2848,
-      "sha256": "57d0f8bf294efa3852f1780bc46d9f08cc1189983cdcd9612bb224e105c414b7"
-    },
-    {
-      "path": "docs/architecture/03-WEIGHTS-VS-RUNTIME.md",
-      "bytes": 2524,
-      "sha256": "144ad90a6f68ebd771e3fae2351fd0dd51f815130ed8568c8b1a925d93d3a771"
-    },
-    {
-      "path": "docs/architecture/04-MODEL-FAMILY-ARCHITECTURE.md",
-      "bytes": 5724,
-      "sha256": "961479013f4cd53f06b979aed5bb40c5f088bb70c702c37723166c595d63154a"
-    },
-    {
-      "path": "docs/model-selection/05-FOUNDATION-MODEL-COMPARISON.md",
-      "bytes": 10716,
-      "sha256": "6ac6370f03d0f7a86ebfc616ab7bcbe4c36f33ef0922d78885cf7aa448473fb4"
-    },
-    {
-      "path": "docs/research/00-PROJECT-AUDIT.md",
-      "bytes": 3540,
-      "sha256": "4d0361568e4ea492ec399936f615f39316a67faa17144580b90a6dc65eb49391"
-    },
-    {
-      "path": "docs/research/01-AIRI-CAPABILITY-INVENTORY.md",
+      "path": "docs/01-AIRI-CAPABILITY-INVENTORY.md",
       "bytes": 16502,
       "sha256": "cf48be95b68d62debeea90e36c0668cd3747911d31a9d0f7acd80efecf988ee4"
     },
     {
-      "path": "docs/research/02-LIA-CAPABILITY-MATRIX.md",
-      "bytes": 9754,
-      "sha256": "9cc68934772af9d65a95ff62a39c801af40ecaeb1a802a4fdc02a2593b0c66c5"
+      "path": "docs/02-LIA-CAPABILITY-MATRIX.md",
+      "bytes": 9738,
+      "sha256": "d9fa346cef3462837f5560cce01233cd67a95ec043087e6719a9ff634ef4a809"
     },
     {
-      "path": "docs/research/06-TRAINING-STRATEGY.md",
+      "path": "docs/03-WEIGHTS-VS-RUNTIME.md",
+      "bytes": 2512,
+      "sha256": "0c528f8413d8da3f37c067dab7d2b26362cf2ac7acc4c09eea7e86d47d86d5b0"
+    },
+    {
+      "path": "docs/04-MODEL-FAMILY-ARCHITECTURE.md",
+      "bytes": 5726,
+      "sha256": "83a1fa298dc40a00cdbeb916bc70f21d03cb0c399bc8d8589accb954be7f141f"
+    },
+    {
+      "path": "docs/05-FOUNDATION-MODEL-COMPARISON.md",
+      "bytes": 15000,
+      "sha256": "6500b2b50cffa8ac4f0c8a2854ab7affdeeb34abd05c102aab2947c3cff10f6d"
+    },
+    {
+      "path": "docs/06-TRAINING-STRATEGY.md",
       "bytes": 5194,
       "sha256": "cdff95ee5fbe70499d18f66e5d78cdbb7bd46aaed8b55f99ae581a69028c6ad5"
     },
     {
-      "path": "docs/research/07-DATASET-STRATEGY.md",
-      "bytes": 7158,
-      "sha256": "d5f7d37c9e49cdd9d98d2fb5534ab040af08625fb247b40926ba9f3af72fe5a0"
+      "path": "docs/07-DATASET-STRATEGY.md",
+      "bytes": 6707,
+      "sha256": "48583b3782c43c424c181da014197813640339eb0e011f22ddd4c809478f8f8c"
     },
     {
-      "path": "docs/research/08-HARDWARE-INFRASTRUCTURE.md",
-      "bytes": 4676,
-      "sha256": "7caf65e57cdcd87846cdaf5af870b4092a197d9ff3d29c62ef0099c1c97e0ade"
+      "path": "docs/08-HARDWARE-INFRASTRUCTURE.md",
+      "bytes": 4657,
+      "sha256": "ad6ccb78a7f0234622f9c0083adf94a19c7c3537881269c6d840d4c48f348ee1"
     },
     {
-      "path": "docs/research/09-BENCHMARK-STRATEGY.md",
+      "path": "docs/09-BENCHMARK-STRATEGY.md",
       "bytes": 7233,
       "sha256": "f190dd1636ab8f4dd9988fb2ed32cd67371f179d1f4e1fbf3aee2e5aa775ea1c"
     },
     {
-      "path": "docs/research/10-ARENA-AGENT-WORKFLOW.md",
+      "path": "docs/10-ARENA-AGENT-WORKFLOW.md",
       "bytes": 3538,
       "sha256": "62ffb788548311a361d56a67102d9578169b0bc78543e670cf55860e8f43b893"
     },
     {
-      "path": "docs/research/11-ROADMAP.md",
-      "bytes": 3589,
-      "sha256": "078634df7422dca955a972c7008e96dbeb98927f529f250c4a5c7a04a1af3837"
+      "path": "docs/11-ROADMAP.md",
+      "bytes": 3849,
+      "sha256": "99f4c63efef78ad1a50709b57ac0a4de4fd41186418567390b8fe45a51401002"
     },
     {
-      "path": "docs/research/12-OPEN-DECISIONS.md",
-      "bytes": 4274,
-      "sha256": "be2f96f9c3d10cc48b7e9404d050e6156c1ca4dc2aac108d160433ef37a340ff"
+      "path": "docs/12-OPEN-DECISIONS.md",
+      "bytes": 4298,
+      "sha256": "be4c5a5e692205dc1cac10013e37a2f43e450c18a588fb26b0c1356b70417764"
     },
     {
-      "path": "docs/research/SOURCES.md",
-      "bytes": 11076,
-      "sha256": "cc365fc56bfdeb57b1e2d3e4daabe61ec696f7d2208a6d9e6d5a5d295605c091"
+      "path": "docs/13-GOVERNANCA-DE-EXPERIMENTOS.md",
+      "bytes": 5868,
+      "sha256": "5a624b34a80186a7897011f700a4b1f44f2d6f5de2d8245d4f61c1079cba1498"
     },
     {
-      "path": "docs/research/VALIDATION.md",
-      "bytes": 2833,
-      "sha256": "5e15c7b3809292a88aa9e575e16067ad1372e655367d604bd54a7c291e455cf9"
+      "path": "docs/14-ORQUESTRACAO-DE-AGENTES.md",
+      "bytes": 4224,
+      "sha256": "4ec214c53e36676abe999ce7177f73c900cba5f84dbf942791739065d0fd0122"
     },
     {
-      "path": "docs/research/airi-evidence.json",
+      "path": "docs/15-IMPLEMENTATION-FOUNDATION.md",
+      "bytes": 7893,
+      "sha256": "a4b6c5e56d17e6ad8665b4cb34e62ee27af154f49d99c073cc7fd5bb12713257"
+    },
+    {
+      "path": "docs/BRAND-STANDARDS.md",
+      "bytes": 8470,
+      "sha256": "bd6e42e87c941591fd5200a2a2e9447d50a877633fe35621f75f724caa6962b4"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 1672,
+      "sha256": "1720839a9b937bce2ba168f99f78ea7293460218c1cd077280a6401684633071"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 12293,
+      "sha256": "e5384dbaa62e00ff820431642fc6c3488f928817c2ca1356a0ed9de9bbb6a004"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 5577,
+      "sha256": "67bc26129a817359f1f5ca35801b7fe5e8eada3358ff70b9e45461a941cf9c01"
+    },
+    {
+      "path": "docs/adr/0001-CONSOLIDATION.md",
+      "bytes": 3933,
+      "sha256": "165d2995c845f2f3d9f0595c78612e5a5b065ef906915fbc9f494d34e04aeb5a"
+    },
+    {
+      "path": "docs/evidence/airi-evidence.json",
       "bytes": 27129,
       "sha256": "bcff59b8cf8aa3e508ccdb24d42e7044b13f8a0378fdab0ea71a9636ade6d9ce"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 641,
+      "sha256": "de4bb8294e5230a9def0d3df769826c0112a312c808398db1f94f944f29d050a"
+    },
+    {
+      "path": "requirements.lock",
+      "bytes": 290,
+      "sha256": "9056317abdcbc54d973b847d711b7cb681b7801b3b9ca0838fa4094c38086101"
+    },
+    {
+      "path": "scripts/verify_repository.py",
+      "bytes": 5537,
+      "sha256": "bb02c284360311f7c7bd45f2c38ba62efd929c727d95fdfe774661e3793d94cb"
+    },
+    {
+      "path": "src/lia_lab/__init__.py",
+      "bytes": 91,
+      "sha256": "be0eb3c0d7edb8f205b854f4cb34344ff5e7ad1cc984e12700d98a2f1c85e9f9"
+    },
+    {
+      "path": "src/lia_lab/cards.py",
+      "bytes": 2059,
+      "sha256": "2edfd66a8d2b76ff5c0ce7d257b49fe85fefc0873ecec1f99ef34b3f81c6568e"
+    },
+    {
+      "path": "src/lia_lab/cli.py",
+      "bytes": 2993,
+      "sha256": "321f3bf11d30ac189eea9dc8e43952d2c25256990e8a283e27a6d5edecfc3dc9"
+    },
+    {
+      "path": "src/lia_lab/datasets.py",
+      "bytes": 6902,
+      "sha256": "c2b02ebf2500f42f0e9be4a7d97e9ab033792051632702fa92fe8261c144d695"
+    },
+    {
+      "path": "src/lia_lab/evaluation.py",
+      "bytes": 3917,
+      "sha256": "9bb3654439ba47578f9920df17e9a22e285b83baf02f04d2e64ff17ca1b6d8b9"
+    },
+    {
+      "path": "src/lia_lab/experiments.py",
+      "bytes": 11224,
+      "sha256": "317c53701414a5d79b51de583b10417906f3a1bb26b886aadf42d5ea0526a975"
+    },
+    {
+      "path": "src/lia_lab/io.py",
+      "bytes": 2460,
+      "sha256": "f7806009e87c82342b82457adcc1f9c83df2dbd9c0206fba4c3e39a611b928e5"
+    },
+    {
+      "path": "src/lia_lab/schemas/example.schema.json",
+      "bytes": 3217,
+      "sha256": "fc0aeb884a5b72cfa0a70dafc10ce46024c463d644caf0ad7f5639e00c1a5f0d"
     },
     {
       "path": "templates/ADR.md",
@@ -204,6 +328,41 @@
       "path": "templates/MODEL-CARD.md",
       "bytes": 1100,
       "sha256": "a49f4d3ad8e3ae09a00bfd9cbf255889ea76a2b12fc9d17d502c5ffb5e36ce24"
+    },
+    {
+      "path": "tests/fixtures/README.md",
+      "bytes": 903,
+      "sha256": "1c06140954c6e0886963258c9b7b57ca6c3b8a5c44d883d98a3030ff7cfe46aa"
+    },
+    {
+      "path": "tests/fixtures/adapter-quantized.json",
+      "bytes": 1041,
+      "sha256": "6da5b198ca424fabdc07fa4f91a372981b7e2f61c81ffe862a99f2a133939d5b"
+    },
+    {
+      "path": "tests/fixtures/adapter.json",
+      "bytes": 1044,
+      "sha256": "512bf240c6c2d49d0760058d89e0c0e40239a04ae027df63512fe45a398a63d4"
+    },
+    {
+      "path": "tests/fixtures/base.json",
+      "bytes": 1028,
+      "sha256": "e666e6f293be377ea731115c4d5ac99f5c5628ab170f3af79da78a946e9b3ec3"
+    },
+    {
+      "path": "tests/fixtures/pilot.jsonl",
+      "bytes": 4212,
+      "sha256": "a791137eaac8017eea986501738afbb337b82a6a78477690e3a3e78ba96b836a"
+    },
+    {
+      "path": "tests/test_foundation.py",
+      "bytes": 11902,
+      "sha256": "7ed52b26890d74aca0bdd9b67265075f2981fa46c584839110f9b4f9f3943468"
+    },
+    {
+      "path": "tests/test_repository.py",
+      "bytes": 1365,
+      "sha256": "80cbffaa9986932e000280637ec67a6ec72852c608d3d35ef30670091a4e792a"
     }
   ]
 }

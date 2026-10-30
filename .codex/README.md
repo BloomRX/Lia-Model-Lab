@@ -1,5 +1,5 @@
-# Perfis de agentes Codex
+# Perfis opcionais Codex
 
-Um TOML por perfil vive em .codex/agents/. Cada arquivo declara name, description e developer_instructions. Não fixamos modelo nem permissões; os perfis herdam a sessão pai.
+Sete perfis em `agents/*.toml`, com nome/descrição/instruções e skills explícitas. Sintaxe/referências verificadas localmente; execução real no Codex **NOT-TESTED**. Não há garantia de descoberta no Arena. `config.example.toml` é exemplo, não configuração ativa; copiar somente após revisar host/versão/custo. Não versionar configurações locais com segredos.
 
-Leia docs/14-ORQUESTRACAO-DE-AGENTES.md antes de delegar. Instruções de texto não criam sandbox adicional.
+Todos os perfis são read-only por instrução, herdam permissões do principal e não criam sandbox. [Contrato e tabela de ownership](../docs/14-ORQUESTRACAO-DE-AGENTES.md); [skills](../.agents/skills/README.md). Sem subagentes disponíveis: leitura manual e execução sequencial pelo principal.
