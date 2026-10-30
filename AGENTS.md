@@ -14,7 +14,9 @@ Leia nesta ordem:
 2. `docs/00-VISAO-E-ESCOPO.md`
 3. `docs/02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md`
 4. `docs/10-DECISOES-REGISTRADAS.md`
-5. O documento técnico diretamente relacionado à tarefa.
+5. `docs/BRAND-STANDARDS.md` quando a tarefa tocar identidade, linguagem, nomes, integração entre produtos ou distribuição de artefatos.
+6. `docs/13-GOVERNANCA-DE-EXPERIMENTOS.md` para datasets, checkpoints, experimentos, armazenamento, GPU ou releases.
+7. O documento técnico diretamente relacionado à tarefa.
 
 Antes de afirmar que um item da AIRI existe ou está pronto, confira sua classificação em `docs/01-CATALOGO-CAPACIDADES-AIRI.md` e as fontes indicadas.
 
@@ -97,7 +99,21 @@ Todo release precisa de:
 - checksums e instruções de uso;
 - notice de alterações/derivação quando requerido pela licença.
 
-## 9. Política de mudança
+## 9. Marca e vocabulário
+
+- Siga `docs/BRAND-STANDARDS.md`; não trate identidade/personagem/assets como automaticamente cobertos pela licença do código.
+- Distinga pesos de IA, adapters, modelos de avatar/3D, motor de inferência, runtime de agente, memória da Lia e `memory-bank/`.
+- O Model Lab não define armazenamento de memórias pessoais, permissões, ferramentas ou ações externas. Essas responsabilidades continuam no produto/runtime da Lia.
+- O padrão visual da marca é orientação para produtos com interface; não force uma UI de consumidor ao laboratório.
+
+## 10. Delegação e subagentes
+
+- Use subagentes somente quando a sessão/plataforma realmente oferecer a capacidade. Se não oferecer, trabalhe em sequência; nunca simule delegação.
+- Prefira delegar pesquisas e auditorias independentes de leitura. Para tarefas de escrita, atribua arquivos exclusivos a cada agente; não permita dois agentes editarem o mesmo arquivo ou alterarem a mesma configuração simultaneamente.
+- O agente principal define pergunta, escopo, fontes, formato de saída e restrições de custo; revisa os resultados e verifica citações antes de incorporá-los.
+- Subagentes herdam o limite de autorização do agente principal e não podem iniciar GPU paga, downloads grandes, uploads, coleta de dados pessoais ou aceitar licenças.
+
+## 11. Política de mudança
 
 Mudança de modelo-base, licença, método de treinamento, schema de dataset, objetivo de capacidade ou requisito de release exige atualização de `docs/10-DECISOES-REGISTRADAS.md` ou novo ADR em `docs/adr/`.
 
