@@ -113,7 +113,16 @@ Todo release precisa de:
 - O agente principal define pergunta, escopo, fontes, formato de saída e restrições de custo; revisa os resultados e verifica citações antes de incorporá-los.
 - Subagentes herdam o limite de autorização do agente principal e não podem iniciar GPU paga, downloads grandes, uploads, coleta de dados pessoais ou aceitar licenças.
 
-## 11. Política de mudança
+## 11. Skills e subagentes
+
+- Skills vivem em .agents/skills/; leia a skill pertinente antes de pesquisar, planejar treino, avaliar dados ou revisar releases.
+- Perfis customizados de Codex vivem em .codex/agents/*.toml; consulte docs/14-ORQUESTRACAO-DE-AGENTES.md.
+- Delegue tarefas independentes, preferencialmente read-only, com escopo e fontes explícitas. Evite edição concorrente.
+- Perfis herdam permissões da sessão principal; instruções não criam sandbox adicional.
+- Arena pode não descobrir skills nem oferecer subagentes. Sem suporte confirmado, leia a skill manualmente e trabalhe sequencialmente.
+- Nenhum agente pode aprovar GPU paga, APIs pagas, downloads grandes, coleta/upload de dados, aceite de licença ou publicação.
+
+## 12. Política de mudança
 
 Mudança de modelo-base, licença, método de treinamento, schema de dataset, objetivo de capacidade ou requisito de release exige atualização de `docs/10-DECISOES-REGISTRADAS.md` ou novo ADR em `docs/adr/`.
 

@@ -21,6 +21,13 @@
 
 Este repositório contém documentação, políticas e templates. Não contém datasets privados, checkpoints ou pesos de modelos.
 
+## Agentes e skills
+
+- AGENTS.md define os limites e o fluxo.
+- .agents/skills/ contém procedimentos especializados.
+- .codex/agents/ contém perfis de subagentes Codex.
+- docs/14-ORQUESTRACAO-DE-AGENTES.md explica delegação, compatibilidade com Arena e limites.
+
 ## Comece por aqui
 
 1. `AGENTS.md` — regras para Arena.ai Agent Mode e outros agentes.
