@@ -102,3 +102,7 @@ Todo release precisa de:
 Mudança de modelo-base, licença, método de treinamento, schema de dataset, objetivo de capacidade ou requisito de release exige atualização de `docs/10-DECISOES-REGISTRADAS.md` ou novo ADR em `docs/adr/`.
 
 O agente não pode transformar uma proposta em decisão aprovada por conta própria.
+
+## 10. Handoff da Missão 001
+
+Consultar também `docs/README.md`, `docs/research/00-PROJECT-AUDIT.md` e `docs/research/12-OPEN-DECISIONS.md`. Novos contratos, rankings e thresholds são propostas para revisão; nenhum modelo-base, GPU, dataset ou publicação foi aprovado nesta missão. O blueprint original permanece integral. Revalidar fontes mutáveis e congelar revisions antes do Gate 0.

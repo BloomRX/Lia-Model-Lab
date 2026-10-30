@@ -1,5 +1,7 @@
 # 00 — Visão, missão e escopo
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 ## 1. Visão
 
 O **Lia Model Lab** existe para que a Lia possa evoluir de uma aplicação que seleciona modelos de terceiros para um ecossistema com **modelos e pesos próprios**, construídos a partir de bases abertas e treinados para as capacidades, identidade e experiências da Lia.

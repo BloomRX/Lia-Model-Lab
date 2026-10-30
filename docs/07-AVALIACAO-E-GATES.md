@@ -1,5 +1,7 @@
 # 07 — Avaliação, benchmarks e release gates
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 ## 1. Princípio
 
 Cada capacidade da matriz precisa de um teste que reproduza a tarefa real. Não basta comparar perplexity ou benchmark geral. A avaliação tem que responder: a Lia ficou melhor nos cenários que importam e não perdeu capacidades importantes?

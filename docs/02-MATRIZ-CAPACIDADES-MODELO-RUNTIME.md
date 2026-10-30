@@ -1,5 +1,7 @@
 # 02 — Matriz: capacidades dos modelos versus runtime
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 Esta é a matriz central do projeto. Ela impede que o Lab tente “resolver por pesos” funcionalidades que exigem software, dados mutáveis, APIs ou controle de hardware.
 
 Legenda: **P0** = requisito do primeiro Lia Core; **P1** = próxima camada relevante; **P2** = especialização avançada; **P3** = visão futura. O nível é prioridade proposta, não status de implementação.

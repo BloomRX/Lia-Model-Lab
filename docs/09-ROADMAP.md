@@ -1,5 +1,7 @@
 # 09 — Roadmap de execução
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 Roadmap proposto. Datas e custos não são estimados aqui porque dependem do Gate 0, do ambiente GPU e da decisão do proprietário.
 
 ## Fase 0 — Fundação documental e governança

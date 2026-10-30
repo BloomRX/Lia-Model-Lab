@@ -1,5 +1,7 @@
 # 10 — Decisões registradas
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 **ADR index inicial — v1.0 — 30/10/2026**
 
 | ID | Decisão | Estado |

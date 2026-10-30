@@ -1,5 +1,7 @@
 # 01 — Catálogo de capacidades AIRI como referência
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 **Snapshot documental:** manual oficial do AIRI 0.13.0, publicado/atualizado em 28/10/2026.  
 **Snapshot do fork em Lia-Project:** `airi/apps/stage-tamagotchi/package.json` declara `0.12.0-beta.5` na branch `arena/01a10290-lia-project` consultada em 30/10/2026.  
 **Regra:** este catálogo mapeia capacidades a estudar; não declara que todas estão implementadas, estáveis ou aprovadas na Lia.

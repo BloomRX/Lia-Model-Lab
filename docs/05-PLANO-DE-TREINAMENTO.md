@@ -1,5 +1,7 @@
 # 05 — Plano de treinamento e criação de pesos
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 ## 1. Estratégia da primeira geração
 
 Começar com um modelo-base aberto existente e criar pesos personalizados usando **SFT + LoRA/QLoRA**. Não treinar uma arquitetura foundation do zero na primeira etapa.

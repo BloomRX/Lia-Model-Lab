@@ -1,5 +1,7 @@
 # 08 — Infraestrutura, hardware e operação
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 ## 1. Situação de hardware conhecida
 
 Um relatório de benchmark do `Lia-Project` de 29/09/2026 registrou aproximadamente:
@@ -10,6 +12,8 @@ Um relatório de benchmark do `Lia-Project` de 29/09/2026 registrou aproximadame
 - VRAM reportada: aproximadamente 4 GiB.
 
 Isto é um snapshot de uma execução anterior, não uma telemetria atual garantida. Antes de decidir treinamento local, reexecutar diagnóstico de hardware e driver. A placa é apropriada para desenvolvimento do repo e testes pequenos, mas não deve ser tratada como alvo realista para treino local de um modelo 27B. Mesmo inferência de 27B pode ser muito limitada com 4 GiB de VRAM.
+
+> **Ressalva Missão 001:** os valores acima são a atribuição histórica da v1.0/contexto, não verificação nova do relatório primário. O `qa-benchmark.md` consultado documenta o harness, não esses valores. Documentos arquiteturais do Lia Project citam 8 GB; a configuração atual continua desconhecida.
 
 ## 2. Estratégia de infraestrutura
 

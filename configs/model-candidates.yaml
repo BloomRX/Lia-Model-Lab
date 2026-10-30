@@ -42,21 +42,29 @@ candidates:
     model_id: "Google Gemma 4 (select exact variant after review)"
     family: "Gemma 4"
     parameter_scale: "E2B / E4B / 26B A4B / 31B and other published variants"
-    license_declared: "Gemma 4 terms — legal review required"
+    license_declared: "Apache-2.0 — official Gemma 4 card checked 2026-10-30; exact artifact review pending"
     modalities_documented:
       text_input: true
       text_output: true
       image_input: true
-      audio_input: true
-      audio_output: "verify exact variant/card"
+      audio_input: "E2B/E4B/12B only; absent on 26B A4B/31B"
+      audio_output: false
       video_input: "verify exact variant/card"
     status: "historical-alternative"
     role: "multimodal alternative, especially for audio-input investigation"
     risks:
-      - "Gemma terms and model-derivative distribution obligations"
+      - "Verify Apache-2.0 LICENSE/NOTICE of exact artifact and independent data/voice rights"
       - "exact variant architecture and tuning support must be audited"
 open_questions:
   - "Which exact checkpoint and revision is selected?"
   - "Which training framework and target modules support it?"
   - "Which GPU backend is validated for training?"
   - "Which runtime/quantization formats are releasable?"
+
+research_mission_001:
+  status: "proposed-not-approved"
+  comparison: "docs/model-selection/05-FOUNDATION-MODEL-COMPARISON.md"
+  economical_probe: "Qwen/Qwen3.5-0.8B"
+  economical_core_candidate: "Qwen/Qwen3.5-4B"
+  remote_quality_candidate: "Qwen/Qwen3.8-27B"
+  caveat: "No checkpoint downloaded, benchmark run, or training compatibility validated."

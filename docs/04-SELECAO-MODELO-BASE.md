@@ -1,5 +1,7 @@
 # 04 — Seleção do modelo-base
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 **Status:** shortlist para avaliação, nenhum modelo aprovado como base definitiva.
 
 ## 1. Histórico e evolução da shortlist
@@ -40,7 +42,7 @@ A documentação oficial atual descreve Gemma 4 com entrada de texto, áudio e i
 
 **Por que avaliar:** candidato interessante quando áudio e imagem nativos e diversidade de tamanhos são mais importantes do que escolher uma base densa de 27B.
 
-**Licença:** Gemma 4 tem termos de uso próprios. Antes de distribuir pesos derivados, adapters ou serviço hospedado, revisar a licença específica de Gemma 4 e suas obrigações de redistribuição/uso; não tratar como Apache-2.0.
+**Correção Missão 001 (2026-10-30):** o [card oficial atual](https://ai.google.dev/gemma/docs/core/model_card_4) declara **Apache 2.0** para Gemma 4. A hipótese anterior de termos próprios foi corrigida; revisar LICENSE/NOTICE do checkpoint exato e direitos dos dados/vozes antes de distribuir derivados.
 
 **Gate:** conferir o card específico da variante (31B, 26B A4B, E4B etc.), funcionamento de tool calling, templates, finetuning multimodal, quantização e deployment alvo.
 
@@ -54,9 +56,9 @@ A documentação oficial atual descreve Gemma 4 com entrada de texto, áudio e i
 | Vídeo | Declarado no card 3.8 | confirmar por variante | não assumir para toda variante sem card |
 | Áudio de entrada | Não declarado como capacidade principal do card 3.8 | confirmar por variante | declarado na família |
 | Tool/agentic | card destaca long-horizon agentic | medir | medir e testar function calling |
-| Licença | Apache-2.0 no card | Apache-2.0 no card | termos Gemma específicos |
+| Licença | Apache-2.0 no card | Apache-2.0 no card | Apache-2.0 (correção Missão 001) |
 | Fit inicial | candidato forte para Core + Vision | baseline histórico | candidato multimodal alternativo |
-| Risco principal | compatibilidade de tuning/deploy e pt-BR | ganho relativo à geração nova | termos de uso e diferenças entre variantes |
+| Risco principal | compatibilidade de tuning/deploy e pt-BR | ganho relativo à geração nova | footprint real e diferenças entre variantes |
 
 Esta tabela é uma triagem documental, não ranking de qualidade. Métricas públicas de fabricantes não substituem avaliação própria.
 

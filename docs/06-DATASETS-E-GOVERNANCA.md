@@ -1,5 +1,7 @@
 # 06 — Datasets, curadoria, privacidade e licenças
 
+> **Atualização Missão 001 (2026-10-30):** documento v1.0 preservado. Consulte o [índice da pesquisa e correções](README.md), a [auditoria](research/00-PROJECT-AUDIT.md) e as [fontes atuais](research/SOURCES.md). Afirmações históricas não comprovam validação nesta missão.
+
 ## 1. Objetivo
 
 Criar datasets próprios de alta qualidade que ensinem capacidades da Lia sem copiar conversas privadas, violar licenças ou misturar dados de produção com dados de avaliação.
@@ -100,4 +102,4 @@ Trajetórias devem ter `observation`, `action`, `result`, `reward/goal`, `enviro
 
 ## 10. Licença e cadeia de proveniência
 
-O direito de utilizar um modelo-base não implica automaticamente o direito de distribuir qualquer derivative sob a mesma licença. O release gate deve revisar termos da base, dos dados, das vozes, imagens, assets 3D, plugins e ferramentas. Gemma 4, por exemplo, exige análise de seus termos próprios; Qwen3.8-27B e Qwen3.5-27B declaram Apache-2.0 nos respectivos model cards consultados, mas datasets e código ainda têm licenças independentes.
+O direito de utilizar um modelo-base não implica automaticamente o direito de distribuir qualquer derivative sob a mesma licença. O release gate deve revisar termos da base, dos dados, das vozes, imagens, assets 3D, plugins e ferramentas. Correção Missão 001 (2026-10-30): o card oficial do Gemma 4 declara Apache 2.0, mas os direitos dos dados/vozes e notices do checkpoint exato ainda precisam de revisão; Qwen3.8-27B e Qwen3.5-27B declaram Apache-2.0 nos respectivos model cards consultados, mas datasets e código ainda têm licenças independentes.
