@@ -44,12 +44,13 @@ Este repositório contém documentação, políticas e templates. Não contém d
 12. `docs/09-ROADMAP.md` — fases de implementação.
 13. `docs/10-DECISOES-REGISTRADAS.md` — decisões iniciais e pontos ainda abertos.
 14. `docs/13-GOVERNANCA-DE-EXPERIMENTOS.md` — proveniência, custo, reprodutibilidade e ciclo de promoção de artefatos.
+15. `docs/14-ORQUESTRACAO-DE-AGENTES.md` — perfis, skills e delegação segura.
 
 ## Relação com os repositórios existentes
 
 - `BloomRX/Lia-Project` é a aplicação principal/companheira virtual e está em processo de desacoplamento. AIRI é uma referência técnica e fonte de comparação, não uma dependência arquitetural permanente desejada.
 - `BloomRX/Lia-Model-Lab` é o laboratório independente de pesos, datasets, treinamento e avaliação. Ele produz artefatos que podem ser integrados à aplicação por contratos documentados; não assume memória, ferramentas, permissões ou UI.
-- `BloomRX/Lia-VoiceStudio`, `BloomRX/Lia-Studio`, `BloomRX/Lia-Go` e `BloomRX/Lia-Forge` são projetos relacionados, mas mantêm escopos e ciclos próprios. Consulte seus repositórios para estado real e não presuma integração só por compartilharem a marca.
+- `BloomRX/LiaVoiceStudio`, `BloomRX/Lia-Studio`, `BloomRX/Lia-Go` e `BloomRX/Lia-Forge` são projetos relacionados, mas mantêm escopos e ciclos próprios. Consulte seus repositórios para estado real e não presuma integração só por compartilharem a marca.
 
 O blueprint original `docs/Lia_Model_Blueprint.md` foi preservado como referência e complementa a documentação numerada.
 
