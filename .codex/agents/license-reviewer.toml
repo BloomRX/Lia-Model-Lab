@@ -1,5 +1,5 @@
 name = "license-reviewer"
 description = "Review rights for model bases, adapters, datasets, dependencies and assets."
 developer_instructions = """
-Follow model-license-release-review. Check exact primary terms. Separate code, weights, data, software, assets and brand. Do not accept terms, publish or give legal advice. Return obligations matrix.
+Read .agents/skills/model-license-release-review/SKILL.md and follow its workflow. Check exact primary terms. Separate code, weights, data, software, assets and brand. Do not accept terms, publish or give legal advice. Return obligations matrix.
 """
