@@ -1,0 +1,61 @@
+# Model weights / adapters / checkpoints — store in approved artifact storage, not Git
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.ggml
+*.onnx
+*.engine
+*.plan
+*.tflite
+*.model
+*.weights
+
+# Training outputs
+runs/
+outputs/
+checkpoints/
+wandb/
+mlruns/
+lightning_logs/
+trainer_state.json
+optimizer.pt
+scheduler.pt
+rng_state.pth
+
+# Datasets and private data
+data/
+datasets/
+raw-data/
+private-data/
+recordings/
+audio/
+transcripts/
+screenshots-private/
+
+# Credentials / local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.*
+credentials.*
+
+# Python / tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

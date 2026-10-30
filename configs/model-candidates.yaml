@@ -1,0 +1,62 @@
+schema_version: 1
+updated_at: "2026-10-30"
+project: "Lia Model Lab"
+status: "shortlist-only"
+selection_policy: "No base model is approved until Gate 0 and comparative evaluation pass."
+candidates:
+  - id: "qwen3.8-27b"
+    model_id: "Qwen/Qwen3.8-27B"
+    family: "Qwen3.8"
+    parameter_scale: "27B dense"
+    license_declared: "Apache-2.0"
+    modalities_documented:
+      text_input: true
+      text_output: true
+      image_input: true
+      video_input: true
+      audio_input: "not declared as native capability in reviewed card"
+      audio_output: false
+    status: "candidate-added-2026-10-30"
+    role: "first model for comparative evaluation"
+    risks:
+      - "must validate PEFT/LoRA/QLoRA support on exact revision"
+      - "must validate AMD/Vulkan/ROCm inference and training separately"
+      - "must validate pt-BR and Lia tool-call protocol"
+  - id: "qwen3.5-27b"
+    model_id: "Qwen/Qwen3.5-27B"
+    family: "Qwen3.5"
+    parameter_scale: "27B"
+    license_declared: "Apache-2.0"
+    modalities_documented:
+      text_input: true
+      text_output: true
+      image_input: true
+      video_input: "verify exact card/revision"
+      audio_input: "verify exact card/revision"
+      audio_output: false
+    status: "historical-priority-baseline"
+    role: "comparison against original model selection"
+    risks:
+      - "measure against Qwen3.8 rather than assume older model is inferior"
+  - id: "gemma4"
+    model_id: "Google Gemma 4 (select exact variant after review)"
+    family: "Gemma 4"
+    parameter_scale: "E2B / E4B / 26B A4B / 31B and other published variants"
+    license_declared: "Gemma 4 terms — legal review required"
+    modalities_documented:
+      text_input: true
+      text_output: true
+      image_input: true
+      audio_input: true
+      audio_output: "verify exact variant/card"
+      video_input: "verify exact variant/card"
+    status: "historical-alternative"
+    role: "multimodal alternative, especially for audio-input investigation"
+    risks:
+      - "Gemma terms and model-derivative distribution obligations"
+      - "exact variant architecture and tuning support must be audited"
+open_questions:
+  - "Which exact checkpoint and revision is selected?"
+  - "Which training framework and target modules support it?"
+  - "Which GPU backend is validated for training?"
+  - "Which runtime/quantization formats are releasable?"

@@ -1,0 +1,117 @@
+{
+  "package": "Lia Model Lab Documentation",
+  "version": "1.0.0",
+  "created_at": "2026-10-30",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 718,
+      "sha256": "0e53b65605f66aaaeb318363793888a1b3a0973cafa7895292e0a15887d103af"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 5680,
+      "sha256": "29fbb373861027900a833c23ce1d3ae554911cf1b78518f03b15c5075216e0ee"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4857,
+      "sha256": "34ebd5d06fd532610116bf20f8bf2ce07cdeefe0ba28672217386574e3ec98d5"
+    },
+    {
+      "path": "configs/capability-requirements.yaml",
+      "bytes": 2177,
+      "sha256": "1004de4b99f2975d68f6f43782921e0a51ab837e5b92befa73fa6c08e00af7ad"
+    },
+    {
+      "path": "configs/model-candidates.yaml",
+      "bytes": 2379,
+      "sha256": "442dee2ccfca7920a9e857fbc6910ba9b5c6dfb61098ec5d4bbbe8114f76bc2f"
+    },
+    {
+      "path": "docs/00-VISAO-E-ESCOPO.md",
+      "bytes": 4884,
+      "sha256": "f5faff5140488b582e4202a0c78c4c32043e935ab216b5b05a41365c274d994d"
+    },
+    {
+      "path": "docs/01-CATALOGO-CAPACIDADES-AIRI.md",
+      "bytes": 12606,
+      "sha256": "2c5331b29f8b466cc66ee4ae908697e9565932d65dd0afd5de1f9d28d7ca9d1e"
+    },
+    {
+      "path": "docs/02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md",
+      "bytes": 11717,
+      "sha256": "29ef2d02088fef128970fb17a40696070c19f4c8e09cc70e1401dbe87bc1fee8"
+    },
+    {
+      "path": "docs/03-ARQUITETURA-ALVO.md",
+      "bytes": 6667,
+      "sha256": "eb7731fcd213f7a91e39692228fae68fc44d1135da606f9b93d065d75e155cb6"
+    },
+    {
+      "path": "docs/04-SELECAO-MODELO-BASE.md",
+      "bytes": 6494,
+      "sha256": "cbf57d4ddd0e9fb1b15f976c9999cc129bc52b539a514516dac744adc02df911"
+    },
+    {
+      "path": "docs/05-PLANO-DE-TREINAMENTO.md",
+      "bytes": 7765,
+      "sha256": "d1d932972005af894f9ba504ba105c7886bd1cce50027cfce34c1d15091b8bc8"
+    },
+    {
+      "path": "docs/06-DATASETS-E-GOVERNANCA.md",
+      "bytes": 6720,
+      "sha256": "b9a21ea907510cf196c61f1733a1b7fc45183b1d36107ed16ff2f198b7f82a50"
+    },
+    {
+      "path": "docs/07-AVALIACAO-E-GATES.md",
+      "bytes": 4658,
+      "sha256": "74cb050724f946e027c646a53fcc8cfce45d4b9d7066584cac9b1fdaae981ff0"
+    },
+    {
+      "path": "docs/08-INFRAESTRUTURA-E-OPERACAO.md",
+      "bytes": 4778,
+      "sha256": "fa784df56f4c31a6e3d07c827bc697a4b24e2ae5bfd04d0b7ee08dd2f02ebf73"
+    },
+    {
+      "path": "docs/09-ROADMAP.md",
+      "bytes": 4353,
+      "sha256": "3e13e4d8515e1c20add466cb110239e1807f1b967843822cbd6b8399c26715be"
+    },
+    {
+      "path": "docs/10-DECISOES-REGISTRADAS.md",
+      "bytes": 2499,
+      "sha256": "d9770869346a68c5ff5bb04d806f3f7debc088a5f5c8eb7de5be1266a66f58f5"
+    },
+    {
+      "path": "docs/11-FONTES-E-EVIDENCIAS.md",
+      "bytes": 4353,
+      "sha256": "c14faef19ef51c97b1d8022f0f419de362e7f97db8aa611dc8ae9b0bc3f03476"
+    },
+    {
+      "path": "templates/ADR.md",
+      "bytes": 261,
+      "sha256": "06cba7f0bc5478db9c4a49f8d435134a7462482e244a7cf3936b2a12fb2427a3"
+    },
+    {
+      "path": "templates/AVALIACAO.md",
+      "bytes": 421,
+      "sha256": "73b08b6dab60c483db2232c722d77ca9c48e88f09d815a46bf8f83f92f00b11b"
+    },
+    {
+      "path": "templates/DATASET-CARD.md",
+      "bytes": 1085,
+      "sha256": "15a1dfd867572c4595b7ce0f828ed68f2c46efe6748da1f4fbac92b7631da325"
+    },
+    {
+      "path": "templates/EXPERIMENTO.md",
+      "bytes": 1263,
+      "sha256": "4c8a73d55563887e19ff504b2e1c3645b59042d9dc195442c8639c315d4582e5"
+    },
+    {
+      "path": "templates/MODEL-CARD.md",
+      "bytes": 1100,
+      "sha256": "a49f4d3ad8e3ae09a00bfd9cbf255889ea76a2b12fc9d17d502c5ffb5e36ce24"
+    }
+  ]
+}

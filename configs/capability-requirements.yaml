@@ -1,0 +1,75 @@
+schema_version: 1
+updated_at: "2026-10-30"
+capabilities:
+  - id: "chat_ptbr"
+    priority: P0
+    owner: "Lia Core"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "persona_identity"
+    priority: P0
+    owner: "Lia Persona adapter + persona profile"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "reasoning_planning"
+    priority: P0
+    owner: "Lia Core"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "tool_calling"
+    priority: P0
+    owner: "Lia Agent behavior + tool runtime"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "memory_operations"
+    priority: P1
+    owner: "memory behavior adapter + external memory service"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "vision_image_screen"
+    priority: P1
+    owner: "VLM / Lia Vision"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "discord_text_voice"
+    priority: P1
+    owner: "Lia Core + social/tool behavior + Discord connector"
+    model_required: true
+    runtime_required: true
+    external_service_required: true
+  - id: "speech_input"
+    priority: P1
+    owner: "ASR / Lia Hearing"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "speech_output"
+    priority: P1
+    owner: "TTS / Lia Speech"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "avatar_embodiment"
+    priority: P1
+    owner: "structured model signals + animation runtime"
+    model_required: true
+    runtime_required: true
+    external_service_required: false
+  - id: "minecraft_agent"
+    priority: P2
+    owner: "Lia Game + Minecraft connector and environment"
+    model_required: true
+    runtime_required: true
+    external_service_required: true
+  - id: "factorio_agent"
+    priority: P3
+    owner: "Lia Game strategy adapter + Factorio connector"
+    model_required: true
+    runtime_required: true
+    external_service_required: true
