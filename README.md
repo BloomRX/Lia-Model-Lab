@@ -36,6 +36,7 @@ Este repositório contém documentação, políticas e templates. Não contém d
 11. `docs/08-INFRAESTRUTURA-E-OPERACAO.md` — hardware, execução remota, Arena e artefatos.
 12. `docs/09-ROADMAP.md` — fases de implementação.
 13. `docs/10-DECISOES-REGISTRADAS.md` — decisões iniciais e pontos ainda abertos.
+14. `docs/13-GOVERNANCA-DE-EXPERIMENTOS.md` — proveniência, custo, reprodutibilidade e ciclo de promoção de artefatos.
 
 ## Relação com os repositórios existentes
 
@@ -67,7 +68,9 @@ Lia-Model-Lab/
 │   ├── 08-INFRAESTRUTURA-E-OPERACAO.md
 │   ├── 09-ROADMAP.md
 │   ├── 10-DECISOES-REGISTRADAS.md
-│   └── 11-FONTES-E-EVIDENCIAS.md
+│   ├── 11-FONTES-E-EVIDENCIAS.md
+│   ├── BRAND-STANDARDS.md
+│   └── 13-GOVERNANCA-DE-EXPERIMENTOS.md
 └── templates/
     ├── ADR.md
     ├── DATASET-CARD.md
