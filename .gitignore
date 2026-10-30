@@ -60,5 +60,24 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Temporary research checkouts (not deliverables)
+# Caches locais de pesquisa/ML e artefatos não promovidos — nunca versionar
 .cache/
+.cache-*/
+hf_cache/
+model_cache/
+artifacts/local/
+artifacts/cache/
+logs/
+tmp/
+*.partial
+*.incomplete
+
+# Claude Code: somente estado local/espelhos; regras compartilhadas continuam versionadas
+.claude/skills/
+.claude/worktrees/
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Configuração local do Codex pode conter ajustes ou referências específicas da máquina
+.codex/config.toml
+.codex/config.local.toml
