@@ -1,4 +1,23 @@
-# Validação executada — consolidação e fundação offline
+# Validação — fundação offline e infraestrutura de inferência
+
+## Fase 2 — resultado atual, 2026-10-30
+
+- Baseline da fase anterior reexecutado antes de editar: **44 passed**; manifest anterior PASS e CI remoto anterior success.
+- Suíte atual: **84 passed**, incluindo todos os 44 testes anteriores. Não há teste de checkpoint real aprovado.
+- Instalação editável v0.3.0 pelo lock offline e `pip check` executados sem erros. Compilação de todos os módulos/scripts com compileall PASS. CLI doctor/help executados.
+- Novos testes: inventário/header safetensors, schema do manifest de snapshot, adulteração/hash/size, shards, symlinks, tipo/licença/revision/atestações, rejeição de pré-quantização, suite/checks, JSON duplicado, budgets, bloqueio de RAM/runtime, raízes, erro persistido e timeout sintético, renderer/máscaras/tools e contaminação exata de prompts.
+- Um teste lança de fato o subprocesso do worker sem Torch instalado: falha de dependência esperada, sem results.json. Isso **não é inferência**; tensores de zeros são fixtures, não modelo de linguagem.
+- O teste de timeout precisou ser corrigido: interceptava também subprocess.check_output e passava pelo motivo errado. Agora verifica explicitamente a falha de timeout; não usar aquele primeiro resultado como evidência.
+- Verificador atualizado: **85 arquivos, 8 JSON, 6 YAML, 9 TOML, 148 links, 9 skills e 7 perfis**; mais manifest JSON, 9 frontmatters YAML e JSONL/schema. Executado com regeneração e novamente sem flag. Âncoras Markdown e todas as URLs externas não são verificadas automaticamente.
+- Diagnóstico observado e bloqueios reais em `docs/evidence/inference-readiness.json`: aproximadamente 4 GB RAM, 2 CPUs visíveis, sem nós GPU; Torch/Transformers/PEFT/bitsandbytes ausentes. Não é inventário do PC do proprietário.
+- **Inferência real NOT-TESTED:** sem aprovação para adquirir/executar checkpoint, sem revision/listagem/bytes/licença exatos dos pesos, hosts de pesos fora da allowlist, runtime ML ausente e RAM insuficiente para 4B não quantizado. Não há latência/tokens/s/VRAM/qualidade de modelo a reportar; métricas ML permanecem null.
+- **SFT/PEFT/QLoRA NOT-TESTED:** nenhum tokenizer real, generation mask real, forward/backward, optimizer, save/reload, merge/quant ou melhoria de adapter executados. Proposta de versões não é lock ML validado.
+- Nenhuma GPU/API paga, checkpoint/dataset externo, dado pessoal, publicação ou aceite de termos. Somente dependências pequenas do lock de ferramentas foram reinstaladas.
+- CI desta fase: workflow preparado sem pesos, runner ubuntu-24.04 e actions Node24; estado remoto deve ser conferido no PR. Este relatório não infere sucesso remoto de execução local.
+
+Comandos: `.venv/bin/python -m pytest -q`, `.venv/bin/python scripts/verify_repository.py --write-manifest`, repetição sem flag, `.venv/bin/python -m pip check`, `.venv/bin/python -m compileall -q src scripts`, `.venv/bin/lia-lab doctor`, `git diff --check`. Instruções e limites no [piloto](16-REAL-INFERENCE-PILOT.md).
+
+## Registro histórico — fase anterior, v0.2.0 (contagens não atuais)
 
 Data: 2026-10-30. Ambiente: Linux x86_64 kernel 6.1.158+, Python 3.11.2, 2 CPUs visíveis, sem `/dev/dri`, `/dev/kfd` ou `/dev/nvidia0`. Não é telemetria do PC do proprietário.
 

@@ -20,11 +20,13 @@ Coleção consolidada em 2026-10-30. ADRs registram decisões; pesquisa distingu
 - [13-GOVERNANCA-DE-EXPERIMENTOS](13-GOVERNANCA-DE-EXPERIMENTOS.md)
 - [14-ORQUESTRACAO-DE-AGENTES](14-ORQUESTRACAO-DE-AGENTES.md)
 - [15-IMPLEMENTATION-FOUNDATION](15-IMPLEMENTATION-FOUNDATION.md)
+- [16-REAL-INFERENCE-PILOT](16-REAL-INFERENCE-PILOT.md)
 
 ## Evidência e políticas
 
 - [Marca](BRAND-STANDARDS.md)
 - [ADR-0001 — Consolidação](adr/0001-CONSOLIDATION.md)
+- [ADR-0002 — Inferência local](adr/0002-LOCAL-INFERENCE.md)
 - [Fontes](SOURCES.md)
 - [Validação executada](VALIDATION.md)
 - [Ledger AIRI](evidence/airi-evidence.json)

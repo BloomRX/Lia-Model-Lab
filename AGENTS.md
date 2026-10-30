@@ -2,7 +2,7 @@
 
 ## Escopo e leituras
 
-Leia [README](README.md), [índice oficial](docs/README.md), [ADR de consolidação](docs/adr/0001-CONSOLIDATION.md), [marca](docs/BRAND-STANDARDS.md) e [governança](docs/13-GOVERNANCA-DE-EXPERIMENTOS.md). Para código, leia [fundação técnica](docs/15-IMPLEMENTATION-FOUNDATION.md). Documentação numerada e ADRs são a autoridade; não recrie árvores paralelas ou arquivos legados.
+Leia [README](README.md), [índice oficial](docs/README.md), [ADR de consolidação](docs/adr/0001-CONSOLIDATION.md), [marca](docs/BRAND-STANDARDS.md) e [governança](docs/13-GOVERNANCA-DE-EXPERIMENTOS.md). Para código, leia [fundação técnica](docs/15-IMPLEMENTATION-FOUNDATION.md) e [piloto de inferência](docs/16-REAL-INFERENCE-PILOT.md). Documentação numerada e ADRs são a autoridade; não recrie árvores paralelas ou arquivos legados.
 
 Lia Model Lab entrega modelos/adapters, datasets governados, contratos, avaliação e manifests. A aplicação Lia é independente; AIRI é referência, nunca runtime obrigatório. Persistência de memória pessoal, permissões, captura, integrações, execução e avatar/produto ficam externos aos pesos. O Lab especifica contratos de consumo e testa mocks, não implementa o produto final aqui.
 

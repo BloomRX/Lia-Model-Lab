@@ -52,7 +52,7 @@ Raízes precisam ser disjuntas; nenhum caminho dentro da pasta aprovada é escri
   tests/fixtures/adapter-quantized.json --output /home/user/lia-research/fixture-comparison.json
 ```
 
-Recebe **predições pré-calculadas**, com test hash, base revision, hash de artefato, protocolo/seed/template/budget, ambiente e evidência de origem. Rejeita variantes ausentes, IDs faltantes/duplicados, gabaritos divergentes e protocolo diferente. Reporta exact-match e regressões por capacidade, sem gate agregado que esconda perdas. Não executa inferência nem avalia personalidade, qualidade humana ou latência. Fixtures contêm hashes/identidades **fictícios declarados**, não resultados de modelos. Próxima etapa: harness local autorizado que gere predições reais nos mesmos contratos e splits selados; [09](09-BENCHMARK-STRATEGY.md) define o protocolo mais amplo.
+Recebe **predições pré-calculadas**, com test hash, base revision, hash de artefato, protocolo/seed/template/budget, ambiente e evidência de origem. Rejeita variantes ausentes, IDs faltantes/duplicados, gabaritos divergentes e protocolo diferente. Reporta exact-match e regressões por capacidade, sem gate agregado que esconda perdas. Não executa inferência nem avalia personalidade, qualidade humana ou latência. Fixtures contêm hashes/identidades **fictícios declarados**, não resultados de modelos. Harness local preparado em [16](16-REAL-INFERENCE-PILOT.md), ainda sem checkpoint real; integração com o contrato pareado de compare e splits selados permanece gate; [09](09-BENCHMARK-STRATEGY.md) define o protocolo mais amplo.
 
 ## Exportação local de adapters
 
@@ -64,7 +64,7 @@ Não foram produzidos/exportados adapters treinados; os testes criam matrizes mi
 
 Templates [dataset card](../templates/DATASET-CARD.md), [model card](../templates/MODEL-CARD.md), [experimento](../templates/EXPERIMENTO.md) e [avaliação](../templates/AVALIACAO.md) continuam obrigatórios. Nenhum campo pendente deve receber aprovação falsa. Separar atestação humana, validação estrutural, execução de modelo e aprovação de distribuição.
 
-Próximos incrementos: renderização por chat template com loss masking e testes de tools; runner de inferência offline com pesos autorizados; probe LoRA/QLoRA save/reload; treinador SFT específico para arquitetura/processor; near-dedup auditável e mídia. Cada incremento tem orçamento/gate próprio, sem bloquear manutenção local do laboratório.
+Incremento implementado em [16](16-REAL-INFERENCE-PILOT.md): renderer com gate de generation spans e supervisor/worker de inferência local; ambos ainda sem tokenizer/checkpoint real testado. Próximos gates: probe LoRA/QLoRA save/reload; treinador SFT específico para arquitetura/processor; near-dedup auditável e mídia. Cada incremento tem orçamento/gate próprio, sem bloquear manutenção local do laboratório.
 
 ## Cards gerados como rascunho
 

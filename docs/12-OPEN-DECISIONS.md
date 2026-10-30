@@ -34,3 +34,7 @@ Não há base revision fechada, dataset de produção aprovado, test selado/base
 Esquecimento/persona repetitiva → mistura e ablação; alucinação de ação → retorno verificável; reward hacking → métricas de estado e holdout; prompt injection → ACL/sandbox determinísticos; roubo/vazamento de memória → isolamento antes de retrieval; voz sem direitos → consent ledger; licença mutável → snapshots; dependência CUDA → contratos e fallback CPU/Vulkan; arquitetura excessiva → poucos pesos e etapas; base enorme → envelope medido; contaminação → split por grupo/hash; afirmação de maturidade → status de evidência explícito.
 
 Revisitar pesquisa upstream no início de Gate 0 e a cada release. Novos lançamentos não invalidam automaticamente baselines nem autorizam troca de base. A fundação offline foi implementada; não confundir com implementação do runtime da aplicação.
+
+## Atualização — infraestrutura de inferência
+
+Supervisor/worker local e contratos de renderização implementados em [16](16-REAL-INFERENCE-PILOT.md). O-01: 0.8B para smoke, 4B para capacidade; sem aprovação de base. O-02: ainda sem revision/bytes exatos dos checkpoints. O-04: ambiente da sessão ~4 GB RAM, sem nós GPU; isso não descreve o PC do proprietário. O-05: runtime Torch/Transformers não instalado/testado, PEFT e QLoRA continuam sem probe. Nenhuma dessas pendências foi encerrada por testes de fixtures.

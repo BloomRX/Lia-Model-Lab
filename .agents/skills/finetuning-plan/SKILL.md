@@ -15,9 +15,11 @@ Base revision, dataset manifest, hparams, backend/hardware e limite de custo. Se
 - [08-HARDWARE-INFRASTRUCTURE.md](../../../docs/08-HARDWARE-INFRASTRUCTURE.md)
 - [15-IMPLEMENTATION-FOUNDATION.md](../../../docs/15-IMPLEMENTATION-FOUNDATION.md)
 
+- [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
+
 ## Procedimento
 
-1. Exigir baseline e objetivo mensurável, módulos alvo inspecionados, tokenizer/template/hashes.
+1. Exigir baseline real autorizado, renderer com máscara nativa e gates de treinamento; contrato sintético não prova tokenizer/PEFT. Exigir baseline e objetivo mensurável, módulos alvo inspecionados, tokenizer/template/hashes.
 2. Comparar LoRA BF16 e QLoRA NF4; planejar save/retomada e probe de kernels, não declarar suporte por família.
 3. Preencher configs/sft-pilot.template.yaml com valores reais somente quando conhecidos; placeholders devem falhar no registro.
 4. Definir budget/stop; Vulkan não é backend de treino validado aqui. Não iniciar job por haver configuração.

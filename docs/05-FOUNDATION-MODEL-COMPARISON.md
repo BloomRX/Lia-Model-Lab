@@ -109,3 +109,7 @@ Inferência local inicial: modelos pequenos em CPU, opcional Vulkan após teste 
 ### Gate de escolha objetiva
 
 Proposta de pontuação (0–5, pesos somam 100): pt-BR/conversa 15, raciocínio/planejamento 15, tools 15, visão/tela 10, modalidades adicionais 8, tuning reproduzível 12, runtime/quantização 10, licença 10, eficiência/custo 5. Hoje não há notas Lia defensáveis. Licença impeditiva, backend incompatível e dados sem direitos são gates fatais, não compensáveis por média. Baseline→adapter→quantizado precisam dos mesmos testes. Somente então o proprietário pode aprovar uma base como linhagem Lia Core; o ranking atual é recomendação de experimento.
+
+## Primeiro smoke de infraestrutura — fase seguinte
+
+Reconsulta de repositórios e restrições atuais em [16](16-REAL-INFERENCE-PILOT.md): recomendar 0.8B para testar a arquitetura antes do 4B, com Qwen3-0.6B como controle textual. Não muda a recomendação de capacidade 4B nem aprova downloads. Tamanhos exatos/revisions/licenças de artefatos ainda pendentes.

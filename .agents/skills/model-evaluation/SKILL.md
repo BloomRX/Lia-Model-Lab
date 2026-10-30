@@ -14,12 +14,15 @@ Protocolo selado, predições com origem e variantes pareadas. Se faltarem metad
 - [09-BENCHMARK-STRATEGY.md](../../../docs/09-BENCHMARK-STRATEGY.md)
 - [15-IMPLEMENTATION-FOUNDATION.md](../../../docs/15-IMPLEMENTATION-FOUNDATION.md)
 
+- [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
+
 ## Procedimento
 
 1. Verificar IDs, gabarito, test hash, base revision e protocolo idênticos; diferenças de ambiente devem ser relatadas.
 2. Rodar compare só sobre predições autorizadas; exact match não avalia persona nem executa inferência.
 3. Reportar métricas por capability e regressões; LLM judge não substitui rubrica humana.
-4. Distinguir fixture de resultado real; não ajustar no holdout nem promover release pela média.
+4. Para inferência, conferir experiment.json/results.json, saída parcial/falhas, métricas incluindo prefill e revisão pt-BR humana; nunca executar pesos como revisor sem autorização.
+5. Distinguir fixture de resultado real; não ajustar no holdout nem promover release pela média.
 
 ## Saída e ownership
 
@@ -27,7 +30,7 @@ Tabela por capacidade/variante, falhas e limitações, comandos e evidência. Em
 
 ## Critério de conclusão
 
-Base e adapter presentes; quantizado quando alegado; sem IDs faltantes/duplicados ou test usado em tuning. Separar decisão aprovada, proposta, hipótese, plano, execução e resultado testado. Citar fonte/data/versão e comando realmente executado; caso contrário NOT-TESTED.
+Baseline isolado pode ser revisado antes de SFT; alegação de melhoria exige base e adapter presentes, quantizado quando alegado; sem IDs faltantes/duplicados ou test usado em tuning. Separar decisão aprovada, proposta, hipótese, plano, execução e resultado testado. Citar fonte/data/versão e comando realmente executado; caso contrário NOT-TESTED.
 
 ## Exemplo de tarefa
 

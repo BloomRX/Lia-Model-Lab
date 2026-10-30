@@ -14,6 +14,8 @@ Plano/config, manifest de dados, record e artefatos locais autorizados. Se falta
 - [13-GOVERNANCA-DE-EXPERIMENTOS.md](../../../docs/13-GOVERNANCA-DE-EXPERIMENTOS.md)
 - [15-IMPLEMENTATION-FOUNDATION.md](../../../docs/15-IMPLEMENTATION-FOUNDATION.md)
 
+- [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
+
 ## Procedimento
 
 1. Verificar revisions imutáveis, dataset/code/config hashes, seed, dependências exatas e ambiente observado versus planejado.

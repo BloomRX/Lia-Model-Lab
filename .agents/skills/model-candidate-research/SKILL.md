@@ -14,6 +14,8 @@ Lista de checkpoints exatos, tarefa Lia, teto de memória/custo e modalidades. S
 - [05-FOUNDATION-MODEL-COMPARISON.md](../../../docs/05-FOUNDATION-MODEL-COMPARISON.md)
 - [SOURCES.md](../../../docs/SOURCES.md)
 
+- [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
+
 ## Procedimento
 
 1. Conferir card/README/LICENSE oficiais; registrar URL, revision e data; separar parâmetros totais, ativos e footprint residente.

@@ -2,9 +2,11 @@
 
 Laboratório independente para construir e avaliar os primeiros pesos/adapters **Lia Core**, com evolução progressiva para percepção, fala, agentes e jogos. Não é um chatbot renomeado nem o runtime da aplicação Lia.
 
-## Estado consolidado — 30/10/2026
+## Estado — fundação e piloto de inferência, 30/10/2026
 
 Pesquisa e skills integradas em uma única documentação oficial; marca e governança preservadas. Já há **código offline funcional e testes** para Dataset Factory texto/tools, splits/dedup, integridade, planos reproduzíveis, avaliação de predições e exportação estrutural local de adapters.
+
+**Novo:** diagnóstico de ambiente, verificação de snapshots, supervisor/worker de inferência local autorizada e preparação de máscaras SFT implementados. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 continua aberta; este trabalho não está presumido integrado à main.
 
 **Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
@@ -17,6 +19,7 @@ python -m venv .venv
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/verify_repository.py
 .venv/bin/lia-lab validate-data tests/fixtures/pilot.jsonl
+.venv/bin/lia-lab doctor
 ```
 
 Windows: usar executáveis em `.venv\Scripts\`; essa plataforma ainda não foi testada. [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Dependências pequenas de ferramentas foram instaladas para validar software; não uma stack de ML com modelos.
@@ -40,4 +43,4 @@ Core primeiro; Vision, Hearing, Speech, Game, Reflex e Omni são papéis/direç�
 
 ## Limites
 
-CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).
+`infer-local` pode carregar somente snapshots locais após autorização explícita, com runtime opcional e limites; nesta entrega não foi executado com checkpoint real. CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).

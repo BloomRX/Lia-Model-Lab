@@ -21,10 +21,12 @@
 
 Fases de percepção/jogo podem ter pesquisa paralela, mas não furam gates de execução/custo. Minecraft é trilha prioritária de agente após ferramentas e contratos: não depende de treinar fala ou de construir Omni. Nenhuma fase exige oito modelos independentes.
 
-## Próximas cinco tarefas após a consolidação
+## Próximos gates após implementação da infraestrutura de inferência
 
 1. **Revisão de decisões e persona:** proprietário revisa PR, confirma escopo do primeiro Core e profile; aceite = ADRs propostos revisados, nenhuma hipótese promovida silenciosamente.
 2. **Diagnóstico local e plano remoto:** reconciliar 4/8 GB, SO/driver/Vulkan; obter proposta de envelope/custo sem contratar; aceite = inventário datado e orçamento máximo para aprovação.
-3. **Renderer de dados para treino:** chat template nativo, tool serialization e loss masking com fixtures; aceite = tokens e labels verificados sem misturar resultados de tools com fala do assistant. Event/action/memory/embodiment continuam contratos futuros, não implementados por estes testes.
+3. **Renderer real para treino:** contrato implementado em training_prep com testes sintéticos; falta tokenizer/template real e spans auditados; aceite = tokens e labels verificados sem misturar resultados de tools com fala do assistant. Event/action/memory/embodiment continuam contratos futuros, não implementados por estes testes.
 4. **Gate 0 comparativo:** fixar revisions/licenças de Qwen3.5-0.8B/4B, Qwen3.8-27B e alternativa Gemma; planejar probes e downloads autorizados; aceite = checklist compatibilidade com PASS/FAIL/INCONCLUSIVE por operação.
-5. **Runner de baseline + dados aprovados:** gerar predições reais após autorização e medir base no test selado; revisar cards/proveniência/mistura de treino. O scorer offline já existe, mas fixtures não substituem baseline de modelo. Só depois aprovar SFT LoRA/QLoRA e PEFT save/reload.
+5. **Baseline + dados aprovados:** supervisor/worker implementados, sem checkpoint real. Gerar predições após autorização e medir base no test selado; revisar cards/proveniência/mistura de treino. O scorer offline já existe, mas fixtures não substituem baseline de modelo. Só depois aprovar SFT LoRA/QLoRA e PEFT save/reload.
+
+Infraestrutura da fase 2: ver [16](16-REAL-INFERENCE-PILOT.md). Código preparado não encerra gates de licença, hardware, inferência real, máscaras nativas ou PEFT.

@@ -15,6 +15,8 @@ Cards, LICENSE/NOTICE por revision, linhagem e manifest de export. Se faltarem m
 - [BRAND-STANDARDS.md](../../../docs/BRAND-STANDARDS.md)
 - [15-IMPLEMENTATION-FOUNDATION.md](../../../docs/15-IMPLEMENTATION-FOUNDATION.md)
 
+- [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
+
 ## Procedimento
 
 1. Separar código, base, adapter, merge, quantização, dados, voz, assets e marca.
