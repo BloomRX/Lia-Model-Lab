@@ -6,7 +6,8 @@ from jsonschema import Draft202012Validator
 from .io import LabError, atomic_json, digest, load
 
 REV = re.compile(r'^[0-9a-f]{40}$')
-MODEL_TYPES = {'qwen2', 'qwen3', 'qwen3_5', 'gemma4'}
+# Only architecture contracts verified against TF 5.22.1 are executable.
+from .model_backends import select_backend
 SAFE_SUFFIXES = {'.json', '.safetensors', '.txt', '.md', '.jinja', '.model'}
 
 
@@ -37,8 +38,7 @@ def files_at(root):
     config = load(root / 'config.json')
     if config.get('quantization_config'):
         raise LabError('prequantized safetensors require a separate reviewed loader; reference path is unquantized')
-    if config.get('model_type') not in MODEL_TYPES:
-        raise LabError('unsupported model_type; add and test an explicit backend mapping')
+    select_backend(config)
     # Read real headers without allocating model tensors.
     params = 0
     keys = set()

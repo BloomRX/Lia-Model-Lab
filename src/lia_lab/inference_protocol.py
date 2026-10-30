@@ -46,3 +46,35 @@ def check_output(case, text):
         return {'status': 'qwen-envelope-only-no-tool-execution', 'passed': passed}
     except (ValueError, KeyError, TypeError):
         return {'status': 'unparsed-or-incorrect-tool-call-review-raw-output', 'passed': False}
+
+
+def validate_worker_results(data, request, request_hash, complete=False):
+    """Structural/protocol validation, NOT a signature proving the origin of local results."""
+    import math
+    if not isinstance(data, dict) or data.get('schema_version') != 2:
+        raise LabError('invalid worker result schema')
+    if data.get('evidence') != 'real-local-checkpoint-inference' or data.get('request_sha256') != request_hash:
+        raise LabError('worker result binding mismatch')
+    operation = request['authorization']['operation']
+    if data.get('model_id') != operation['model_id'] or data.get('revision') != operation['revision']:
+        raise LabError('worker result model mismatch')
+    responses = data.get('responses')
+    count, calls = data.get('successful_requests'), data.get('generation_calls_completed')
+    expected = [(case, repeat) for repeat in range(request['repeats']) for case in request['suite']['cases']]
+    if (type(count) is not int or type(calls) is not int or not isinstance(responses,list) or
+            len(responses) != count or not 0 <= count <= calls <= len(expected)):
+        raise LabError('invalid result counts')
+    for response, (case, repeat) in zip(responses, expected):
+        if (response.get('id') != case['id'] or response.get('repeat') != repeat or
+                response.get('capability') != case['capability'] or not isinstance(response.get('text'),str) or not response['text'].strip()):
+            raise LabError('worker response order/identity/empty text mismatch')
+        tokens=response.get('output_tokens_including_eos')
+        if type(tokens) is not int or not 1 <= tokens <= request['max_tokens']:
+            raise LabError('invalid result token budget')
+        for key in ('generation_seconds_including_prefill','generation_process_cpu_seconds'):
+            value=response.get(key)
+            if type(value) not in (int,float) or not math.isfinite(value) or value < 0:
+                raise LabError('invalid generation metric')
+    if complete and (data.get('completed') is not True or count != len(expected) or calls != count or not isinstance(data.get('metrics'),dict)):
+        raise LabError('incomplete worker results')
+    return data

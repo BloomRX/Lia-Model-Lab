@@ -15,17 +15,6 @@ from lia_lab.training_prep import hf_messages, render_sft_example
 from lia_lab.cli import main
 
 
-@pytest.fixture
-def snapshot(tmp_path):
-    directory = tmp_path / 'snapshot'
-    directory.mkdir()
-    atomic_json(directory / 'config.json', {'model_type': 'qwen3'})
-    atomic_json(directory / 'tokenizer_config.json', {'chat_template': 'synthetic-test-only'})
-    (directory / 'LICENSE').write_text('SYNTHETIC placeholder: not actual Apache license review')
-    save_file({'fixture': np.zeros((2, 3), dtype=np.float32)}, directory / 'model.safetensors')
-    manifest = tmp_path / 'snapshot-manifest.json'
-    seal_snapshot(directory, manifest, 'fictional/fixture-only', 'a'*40, 'Apache-2.0', 'LICENSE', 'TEST-ATTESTATION-NOT-REAL-AUTHORIZATION')
-    return directory, manifest
 
 
 def test_environment_is_weight_free():
@@ -125,8 +114,15 @@ def test_invalid_budgets(options):
 
 
 def run_fixture(snapshot, tmp_path, run_id='unit-fixture', **options):
-    return run_inference(*snapshot, 'configs/inference-suite.json', tmp_path/'research', tmp_path/'approved',
-                         run_id, 'TEST-ONLY-SYNTHETIC-NOT-OWNER-APPROVAL', **options)
+    from lia_lab.inference import make_operation
+    from support_authorization import fixture_grant
+    args = dict(snapshot=snapshot[0], snapshot_manifest=snapshot[1], suite_path='configs/inference-suite.json',
+        research_root=tmp_path/'research', approved_root=tmp_path/'approved', run_id=run_id, **options)
+    if (tmp_path/'research/experiments'/run_id).exists():
+        return run_inference(**args, approval_store=tmp_path/'operator/grants.db', approval_id='used-fixture')
+    operation = make_operation(**args)
+    store, grant_id = fixture_grant(tmp_path/'operator/grants.db', operation)
+    return run_inference(**args, approval_store=store, approval_id=grant_id)
 
 
 def test_uninstalled_runtime_blocks_and_records(snapshot, tmp_path, monkeypatch):
@@ -145,8 +141,8 @@ def test_uninstalled_runtime_blocks_and_records(snapshot, tmp_path, monkeypatch)
 
 def test_snapshot_failure_is_recorded(snapshot, tmp_path):
     (snapshot[0]/'model.safetensors').write_bytes(b'invalid')
-    result = run_fixture(snapshot, tmp_path)
-    assert result['status'] == 'failed' and result['inference_executed'] is False
+    with pytest.raises(LabError): run_fixture(snapshot, tmp_path)
+    assert not (tmp_path/'research').exists()
 
 
 def test_memory_block(snapshot, tmp_path, monkeypatch):
@@ -162,25 +158,22 @@ def test_timeout_never_promotes(snapshot, tmp_path, monkeypatch):
     real = doctor(); real['ram']['available_bytes'] = 10**12
     real['dependencies'].update(torch='synthetic-version', transformers='synthetic-version')
     monkeypatch.setattr(inference, 'doctor', lambda _: real)
-    real_subprocess_run = subprocess.run
-    def timeout(*args, **kwargs):
-        if "env" not in kwargs:
-            return real_subprocess_run(*args, **kwargs)
-        assert kwargs['env']['HF_HUB_OFFLINE'] == '1'
-        assert kwargs['timeout'] == 1
-        raise subprocess.TimeoutExpired('synthetic-unit-test', 1)
-    monkeypatch.setattr(inference.subprocess, 'run', timeout)
+    def timeout(command, env, log, duration):
+        assert env['HF_HUB_OFFLINE'] == '1'
+        assert 0 < duration <= 1
+        raise subprocess.TimeoutExpired('synthetic-unit-test', duration)
+    monkeypatch.setattr(inference, 'supervise', timeout)
     result = run_fixture(snapshot, tmp_path, timeout=1)
-    assert result['status'] == 'failed' and result['inference_executed'] is False
-    assert 'timeout' in result['failure']
+    assert result['status'] == 'timed-out' and result['inference_executed'] is False
+    assert 'deadline' in result['failure']
     assert result['model_metrics'] is None
 
 
 def test_roots_and_approval(snapshot, tmp_path):
     with pytest.raises(LabError):
-        run_inference(*snapshot, 'configs/inference-suite.json', tmp_path, tmp_path/'application', 'fixture','test')
+        run_inference(*snapshot, 'configs/inference-suite.json', tmp_path, tmp_path/'application', 'fixture',tmp_path/'operator/grants.db','test')
     with pytest.raises(LabError):
-        run_inference(*snapshot, 'configs/inference-suite.json', tmp_path/'r', tmp_path/'a', 'fixture','PENDING')
+        run_inference(*snapshot, 'configs/inference-suite.json', tmp_path/'r', tmp_path/'a', 'fixture',tmp_path/'operator/grants.db','PENDING')
 
 
 class SyntheticTokenizer:
@@ -189,15 +182,17 @@ class SyntheticTokenizer:
     def apply_chat_template(self, *args, **kwargs):
         assert kwargs['return_assistant_tokens_mask'] is True
         assert kwargs['truncation'] is False
-        return {'input_ids': [1, 2, 3], 'assistant_masks': [0, 1, 1]}
+        messages=args[0]
+        return {'input_ids':list(range(1,len(messages)*2+1)), 'assistant_masks':[v for m in messages for v in ([1,1] if m['role']=='assistant' else [0,0])]}
 
 
 def test_sft_mask_contract():
     row = {'messages': [{'role':'user','content':'a'}, {'role':'assistant','content':'b'}]}
     result = render_sft_example(row, SyntheticTokenizer())
-    assert result['labels'] == [-100, 2, 3]
+    assert result['labels'] == [-100, -100, 3, 4]
     tokenizer = SyntheticTokenizer(); tokenizer.chat_template = 'native without spans'
-    with pytest.raises(LabError, match='generation-span'): render_sft_example(row, tokenizer)
+    tokenizer.apply_chat_template=lambda *a, **k: {'input_ids':[1,2,3,4],'assistant_masks':[0,0,0,0]}
+    with pytest.raises(LabError, match='empty'): render_sft_example(row, tokenizer)
 
 
 def test_invalid_sft_masks():
@@ -212,7 +207,7 @@ def test_tool_translation():
     row = {'messages': [{'role':'assistant','tool_calls':[{'id':'a','name':'lookup','arguments':{'id':7}}]},
                         {'role':'tool','tool_call_id':'a','content':'fictional'}]}
     with pytest.raises(LabError, match='schema'): hf_messages(row)
-    converted = hf_messages(row,[{'type':'function','function':{'name':'lookup'}}])
+    converted = hf_messages(row,[{'type':'function','function':{'name':'lookup','parameters':{'type':'object','properties':{'id':{'type':'integer'}},'required':['id']}}}])
     assert converted[0]['tool_calls'][0]['function']['arguments'] == {'id':7}
     assert converted[1]['name'] == 'lookup'
     assert row['messages'][0]['tool_calls'][0]['name'] == 'lookup'  # no mutation
@@ -243,18 +238,21 @@ def test_prequantized_model_is_not_silently_loaded(snapshot):
     with pytest.raises(LabError, match='prequantized'): verify_snapshot(directory, manifest)
 
 
-def test_private_worker_missing_runtime_is_a_real_failure(snapshot, tmp_path):
+def test_private_worker_rejects_missing_external_grant(snapshot, tmp_path):
     import os, sys
     # Only run this dependency-negative test when Torch really is absent; never instantiate a fake giant config.
     if doctor()['dependencies']['torch'] is not None:
         pytest.skip('requires actually missing optional Torch runtime')
     request = tmp_path/'request.json'
-    atomic_json(request, {'snapshot':str(snapshot[0]), 'snapshot_manifest':str(snapshot[1])})
+    from lia_lab.containment import policy
+    from lia_lab.io import digest
+    atomic_json(request, {'snapshot':str(snapshot[0]), 'snapshot_manifest':str(snapshot[1]),
+        'snapshot_manifest_sha256':digest(snapshot[1]), 'containment':policy('portable-process',10,'cpu')})
     output = tmp_path/'results.json'
     env = dict(os.environ, HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1')
     result = subprocess.run([sys.executable,'-m','lia_lab.inference_worker',str(request),str(output)],
                             capture_output=True, text=True, env=env, timeout=10)
-    assert result.returncode != 0 and 'torch' in result.stderr
+    assert result.returncode != 0 and 'external worker grant required' in result.stderr
     assert not output.exists()
 
 
@@ -262,3 +260,17 @@ def test_private_worker_missing_runtime_is_a_real_failure(snapshot, tmp_path):
 def test_snapshot_schema_cannot_promote_or_invent_types(snapshot, field, value):
     data = load(snapshot[1]); data[field] = value; atomic_json(snapshot[1],data)
     with pytest.raises(LabError, match='schema'): verify_snapshot(*snapshot)
+
+
+def test_actual_worker_missing_torch_with_fixture_grant(snapshot,tmp_path,monkeypatch):
+    from lia_lab import inference
+    if doctor()['dependencies']['torch'] is not None:
+        pytest.skip('negative test requires actually missing Torch')
+    report=doctor();report['dependencies'].update(torch='synthetic-preflight-only',transformers='synthetic-preflight-only')
+    report['ram']['available_bytes']=10**12
+    monkeypatch.setattr(inference,'doctor',lambda _:report)
+    result=run_fixture(snapshot,tmp_path)
+    assert result['status']=='failed' and result['inference_executed'] is False
+    log=(tmp_path/'research/experiments/unit-fixture/worker.log').read_text()
+    assert "No module named 'torch'" in log
+    assert result['containment']['security_sandbox'] is False

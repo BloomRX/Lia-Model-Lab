@@ -7,6 +7,10 @@ import threading
 import time
 from .checkpoints import verify_snapshot
 from .environment import dependencies, rss
+from .containment import apply_limits
+from .authorization import claim_worker
+from .io import source_snapshot_hash
+from .model_backends import select_backend, load_frontend, load_model, prepare_inputs, output_text, check_context, select_dtype, generation_options
 from .inference_protocol import check_output
 from .io import LabError, atomic_json, canonical, digest, load
 
@@ -49,14 +53,41 @@ def torch_device(torch, requested, resident):
     return 'cpu', {'provider': 'cpu', 'vram_bytes': None}
 
 
+def validate_worker_grant(request):
+    auth = request.get('authorization')
+    if not isinstance(auth, dict):
+        raise LabError('external worker grant required; offline env flags are not authorization')
+    operation = auth['operation']
+    args = operation['arguments']
+    for key in ('snapshot', 'snapshot_manifest', 'device', 'dtype', 'repeats', 'max_tokens', 'context'):
+        if request[key] != args[key]:
+            raise LabError('worker request differs from authorized operation')
+    if (operation['action'] != 'local-inference' or request['seed'] != 42 or
+        request['snapshot_manifest_sha256'] != operation['snapshot_manifest_sha256'] or
+        hashlib.sha256(canonical(request['suite']).encode()).hexdigest() != operation['suite_content_sha256'] or
+        request['containment'] != operation['containment'] or
+        source_snapshot_hash() != operation['source_snapshot_sha256']):
+        raise LabError('worker binding mismatch')
+    claim_worker(auth['store'], auth['id'], operation)
+
+
 def execute(request, output):
     if os.environ.get('HF_HUB_OFFLINE') != '1':
-        raise LabError('worker must be launched by authorized offline supervisor')
+        raise LabError('library offline mode required; this is not authorization or OS network isolation')
+    validate_worker_grant(request)
+    containment = apply_limits(request['containment'])
+    atomic_json(Path(output).parent / 'containment.json', {'request_sha256':request.get('_request_sha256'), 'report':containment})
+    if digest(request['snapshot_manifest']) != request['snapshot_manifest_sha256']:
+        raise LabError('authorized manifest changed')
     manifest = verify_snapshot(request['snapshot'], request['snapshot_manifest'])
+    import_started = time.perf_counter()
     import torch
-    from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText
-    dtype = getattr(torch, request['dtype'])
+    import transformers
+    if transformers.__version__ != '5.22.1':
+        raise LabError('reference API requires Transformers 5.22.1')
+    runtime_import_seconds = time.perf_counter() - import_started
     device, hardware = torch_device(torch, request['device'], manifest['stored_tensor_elements'] * (4 if request['dtype'] == 'float32' else 2))
+    dtype = select_dtype(torch, device, request['dtype'])
     torch.manual_seed(request['seed'])
     if device.startswith('cuda'):
         torch.cuda.manual_seed_all(request['seed'])
@@ -68,68 +99,68 @@ def execute(request, output):
         elif device == 'mps':
             torch.mps.synchronize()
     snapshot = request['snapshot']
-    common = {'local_files_only': True, 'trust_remote_code': False}
     with MemorySampler() as sampler:
-        load_start = time.perf_counter()
-        tokenizer = AutoTokenizer.from_pretrained(snapshot, **common)
-        if not tokenizer.chat_template:
-            raise LabError('checkpoint has no native chat template; do not invent one')
         config = load(Path(snapshot) / 'config.json')
-        cls = AutoModelForImageTextToText if config['model_type'] in {'qwen3_5', 'gemma4'} else AutoModelForCausalLM
-        model = cls.from_pretrained(snapshot, dtype=dtype, use_safetensors=True, attn_implementation='eager', **common)
+        spec = select_backend(config)
+        frontend_started = time.perf_counter()
+        frontend = load_frontend(transformers, snapshot, spec)
+        frontend_load_seconds = time.perf_counter() - frontend_started
+        tokenizer = frontend.tokenizer if spec.multimodal else frontend
+        frontend.get_chat_template()  # fail safely if missing/ambiguous
+        weights_started = time.perf_counter()
+        model = load_model(transformers, snapshot, spec, dtype)
         model.to(device).eval()
         sync()
-        loading = time.perf_counter() - load_start
+        weights_load_seconds = time.perf_counter() - weights_started
         rss_loaded = rss()
         responses = []
-        result = {'schema_version': 1, 'evidence': 'real-local-checkpoint-inference',
+        result = {'schema_version': 2, 'completed': False, 'containment': containment,
+                  'request_sha256': request['_request_sha256'], 'evidence': 'real-local-checkpoint-inference',
                   'model_id': manifest['model_id'], 'revision': manifest['revision'],
-                  'default_template_sha256': hashlib.sha256(tokenizer.get_chat_template().encode()).hexdigest(),
+                  'default_template_sha256': hashlib.sha256(frontend.get_chat_template().encode()).hexdigest(),
                   'generation_config': model.generation_config.to_dict(),
                   'sft_readiness': {'peft_probe_executed': False, 'assistant_mask_verified': False,
                       'linear_modules_observed_not_approved_targets': {n: list(m.weight.shape) for n, m in model.named_modules() if isinstance(m, torch.nn.Linear)}},
                   'backend': 'transformers-local', 'dependencies': dependencies(), 'hardware': hardware,
                   'seed': request['seed'], 'determinism': 'greedy; cross-device bitwise equality not guaranteed',
-                  'successful_requests': 0, 'responses': responses,
-                  'metrics': {'load_seconds': loading, 'rss_after_load_bytes': rss_loaded,
+                  'successful_requests': 0, 'generation_calls_completed': 0, 'responses': responses,
+                  'metrics': {'runtime_import_seconds': runtime_import_seconds,
+                              'frontend_load_seconds': frontend_load_seconds, 'weights_load_and_device_transfer_seconds': weights_load_seconds,
+                              'process_rss_after_load_bytes': rss_loaded, 'prefill_seconds': None,
                               'ttft_seconds': None, 'decode_only_tokens_per_second': None}}
+        atomic_json(output, result)
         for repeat in range(request['repeats']):
             for case in request['suite']['cases']:
-                template = tokenizer.get_chat_template(tools=case.get('tools'))
-                prompt = tokenizer.apply_chat_template(case['messages'], tools=case.get('tools'), chat_template=template,
-                           tokenize=False, add_generation_prompt=True, enable_thinking=False)
-                inputs = tokenizer(prompt, add_special_tokens=False, return_tensors='pt').to(device)
-                count = inputs['input_ids'].shape[-1]
-                if count + request['max_tokens'] > request['context']:
-                    raise LabError('prompt plus generation exceeds context; no silent truncation')
+                inputs, template = prepare_inputs(spec, frontend, case)
+                inputs = inputs.to(device)
+                count = check_context(tuple(inputs['input_ids'].shape), model.config, request['context'], request['max_tokens'])
                 sync()
                 started, cpu_started = time.perf_counter(), time.process_time()
                 with torch.inference_mode():
-                    generated = model.generate(**inputs, max_new_tokens=request['max_tokens'], do_sample=False,
-                                num_beams=1, use_cache=True, pad_token_id=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id)
+                    generated = model.generate(**inputs, **generation_options(tokenizer, request['max_tokens']))
                 sync()
                 elapsed = time.perf_counter() - started
-                ids = generated[0, count:].tolist()
-                eos = model.generation_config.eos_token_id
-                eos = eos if isinstance(eos, list) else [eos]
-                text_ids = ids[:-1] if ids and ids[-1] in eos else ids
-                text = tokenizer.decode(text_ids, skip_special_tokens=False)
+                cpu_seconds = time.process_time() - cpu_started
+                result['generation_calls_completed'] += 1
+                result['last_generation_seconds_including_prefill'] = elapsed
+                atomic_json(output, result)
+                ids, text = output_text(generated, count, tokenizer, model.generation_config.eos_token_id, request['max_tokens'])
                 response = {'id': case['id'], 'repeat': repeat, 'capability': case['capability'],
                             'input_tokens': count, 'output_tokens_including_eos': len(ids), 'text': text,
                             'template_sha256': hashlib.sha256(template.encode()).hexdigest(),
-                            'prompt_sha256': hashlib.sha256(prompt.encode()).hexdigest(),
+                            'input_ids_sha256': hashlib.sha256(canonical(inputs['input_ids'].tolist()).encode()).hexdigest(),
                             'tool_schema_sha256': hashlib.sha256(canonical(case.get('tools', [])).encode()).hexdigest(),
                             'generation_seconds_including_prefill': elapsed,
-                            'output_tokens_per_generation_second': len(ids) / elapsed if elapsed > 0 else None,
-                            'process_cpu_seconds': time.process_time() - cpu_started, 'rss_after_bytes': rss(),
+                            'output_tokens_per_second_including_prefill': len(ids) / elapsed if elapsed > 0 else None,
+                            'generation_process_cpu_seconds': cpu_seconds, 'process_rss_after_bytes': rss(),
                             'budget_exhausted': len(ids) >= request['max_tokens'],
                             'check': check_output(case, text)}
                 responses.append(response)
                 result['successful_requests'] += 1
                 atomic_json(output, result)  # partial result survives crash, never considered completed by supervisor
-        result['metrics'].update(sampled_peak_rss_bytes=sampler.peak,
-              gpu_peak_allocated_bytes=torch.cuda.max_memory_allocated() if device.startswith('cuda') else None,
-              gpu_peak_reserved_bytes=torch.cuda.max_memory_reserved() if device.startswith('cuda') else None,
+        result['metrics'].update(process_sampled_peak_rss_bytes=sampler.peak,
+              torch_gpu_peak_allocated_bytes=torch.cuda.max_memory_allocated() if device.startswith('cuda') else None,
+              torch_gpu_peak_reserved_bytes=torch.cuda.max_memory_reserved() if device.startswith('cuda') else None,
               total_requests=len(responses), all_responses_nonempty=all(bool(r['text'].strip()) for r in responses),
               automatic_checks_passed=sum(r['check']['passed'] is True for r in responses),
               automatic_checks_failed=sum(r['check']['passed'] is False for r in responses),
@@ -137,8 +168,13 @@ def execute(request, output):
         result['metrics']['repeat_text_consistency'] = {c['id']: len({r['text'] for r in responses if r['id'] == c['id']}) == 1 for c in request['suite']['cases']}
         # Detect on-disk mutation during execution, not merely at startup.
         verify_snapshot(snapshot, request['snapshot_manifest'])
+        if digest(request['snapshot_manifest']) != request['snapshot_manifest_sha256']:
+            raise LabError('authorized manifest changed during execution')
+        result['completed'] = True
         atomic_json(output, result)
 
 
 if __name__ == '__main__':
-    execute(load(sys.argv[1]), sys.argv[2])
+    request = load(sys.argv[1])
+    request['_request_sha256'] = digest(sys.argv[1])
+    execute(request, sys.argv[2])
