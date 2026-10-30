@@ -236,8 +236,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 5577,
-      "sha256": "67bc26129a817359f1f5ca35801b7fe5e8eada3358ff70b9e45461a941cf9c01"
+      "bytes": 5597,
+      "sha256": "cd6e212d87f07f5f0c57c1b92bb486b3348b94d53c426c111885bc2bdd62c2eb"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",

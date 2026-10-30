@@ -18,6 +18,7 @@ Data: 2026-10-30. Ambiente: Linux x86_64 kernel 6.1.158+, Python 3.11.2, 2 CPUs 
 | Export/retomada | Parser real safetensors e cópia/hashes exercitados somente com matrizes minúsculas de zeros e arquivos fictícios em diretórios temporários; não há adapter treinado |
 | Integridade histórica útil | Ledger AIRI igual ao de `c18c4ee`; 39 registros preservados, 48 linhas da matriz e seus IDs de benchmark conferidos. Não foi repetido clone/execução upstream nesta consolidação |
 | Marca | Conteúdo igual ao `origin/main` consultado, sem alteração de BRAND-STANDARDS |
+| GitHub Actions remoto | **PASS** em `51717b2`: runs `41045875666` (PR) e `41045875244` (push), ambos concluídos com success; não inferido do resultado local |
 | `git diff --check` | Sem erros de whitespace ao fechar a entrega |
 
 A instalação limpa inicialmente falhou porque `pip freeze` omitia setuptools/wheel de bootstrap e `bdist_wheel` não existia no venv novo. **Corrigido**: ambos foram fixados no lock/build-system; reinstalação sem isolamento e testes repetidos passaram. Não ocultar esse erro nem chamar a primeira tentativa de PASS.
@@ -42,7 +43,6 @@ Após editar fontes/docs/configs, regenerar o manifest com `--write-manifest` e 
 - Inferência real, baseline de qualidade Lia, pt-BR/persona/tools end-to-end com modelo, métricas humanas e benchmarks de jogos/voz/visão: fixtures não substituem essas avaliações.
 - GPU CUDA/ROCm/Vulkan, hardware atual do usuário, Windows/macOS e instalação em outras versões Python: não acessados/executados.
 - Invocação real dos sete agentes Codex, descoberta automática de skills no Arena e concorrência de agentes: não há ferramenta de delegação exposta; somente sintaxe/referências locais verificadas.
-- Workflow GitHub Actions remoto: arquivo criado e YAML parseado; execução remota deve ser consultada no PR, não inferida do sucesso local.
 - Revalidação de cada permalink AIRI, testes runtime AIRI/Lia e integrações Discord/Minecraft/Factorio: pesquisa estática anterior preservada, sem execução nesta entrega.
 - Auditoria automática de PII, near-dedup semântico, esquema multimodal e verificação de consentimentos reais: não implementados. Curador continua responsável; valores de atestação não autorizam dados.
 
