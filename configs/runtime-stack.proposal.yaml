@@ -1,0 +1,32 @@
+# Registry metadata checked 2026-10-30; NOT a tested ML lock. No installation by tests/CLI.
+status: proposed-not-runtime-tested
+python: '3.11'
+reference_versions:
+  torch: '2.15.0'
+  transformers: '5.22.1'
+  peft: '0.21.2'
+  accelerate: '1.15.0'
+providers:
+  cpu: {dtype: float32, quantization: null}
+  cuda: {dtype: float16, quantization: null}
+  rocm: {dtype: float16, quantization: null}
+  mps: {dtype: float16, quantization: null}
+# Do not use a generic pip torch install as evidence of the right accelerator wheel.
+quantization:
+  inference_bitsandbytes: not-implemented-pending-provider-probe
+  qlora: planned-NF4-double-quant-pending-kernel-and-PEFT-backward-save-reload
+training:
+  executed: false
+  method: LoRA-before-QLoRA
+  objective: reduce validation JSON/instruction failures without pt-BR/tools regression
+  proposed_steps: 30
+  proposed_sequence_length: 512
+  proposed_microbatch: 1
+  proposed_gradient_accumulation: 4
+  proposed_learning_rate: 0.0001
+  proposed_rank: 8
+  proposed_alpha: 16
+  proposed_dropout: 0.05
+  target_modules: PENDING-runtime-inspection
+  baseline: PENDING-authorized-real-inference
+  stop: NaN-or-OOM-or-time-budget-or-regression

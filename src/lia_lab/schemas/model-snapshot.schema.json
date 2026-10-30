@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local reviewed snapshot integrity v1 (not upstream authentication)",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "model_id", "revision", "source", "license", "files", "stored_tensor_elements", "total_bytes", "evidence", "release_approved"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "model_id": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$"},
+    "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "source": {"type": "string", "pattern": "^https://huggingface.co/"},
+    "license": {
+      "type": "object", "additionalProperties": false, "required": ["id", "file", "review_ref"],
+      "properties": {
+        "id": {"const": "Apache-2.0"}, "file": {"type": "string", "minLength": 1},
+        "review_ref": {"type": "string", "minLength": 1, "pattern": "^(?!PENDING)"}
+      }
+    },
+    "files": {
+      "type": "object", "minProperties": 4,
+      "additionalProperties": {
+        "type": "object", "additionalProperties": false, "required": ["bytes", "sha256"],
+        "properties": {"bytes": {"type": "integer", "minimum": 0}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+      }
+    },
+    "stored_tensor_elements": {"type": "integer", "minimum": 1},
+    "total_bytes": {"type": "integer", "minimum": 1},
+    "evidence": {"const": "local-integrity-and-operator-attestation-not-upstream-authenticity"},
+    "release_approved": {"const": false}
+  }
+}

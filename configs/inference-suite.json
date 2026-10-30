@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "evidence": "original-public-engineering-cases-not-training-data",
+  "cases": [
+    {"id": "ptbr-plano", "capability": "ptbr", "check": "human", "messages": [{"role": "system", "content": "Responda em português brasileiro. Não invente medições ou acesso a ferramentas."}, {"role": "user", "content": "Uma biblioteca de bairro tem três computadores e internet instável. Sugira um plano curto para organizar um clube de leitura digital sem gastar dinheiro. Explique uma limitação."}]},
+    {"id": "instrucao-selo", "capability": "instructions", "check": "exact", "expected": "PONTE-47", "messages": [{"role": "user", "content": "Teste de protocolo: responda apenas PONTE-47, sem explicação, aspas ou pontuação adicional."}]},
+    {"id": "json-biblioteca", "capability": "structured", "check": "json", "expected_json": {"cidade": "Recife", "livros": 7}, "messages": [{"role": "user", "content": "Converta estes dados em um único objeto JSON sem markdown: cidade Recife; livros 7. Use apenas as chaves cidade e livros, com livros como número."}]},
+    {"id": "contexto-correto", "capability": "chat-template", "check": "exact", "expected": "verde", "messages": [{"role": "user", "content": "Neste teste a cor da caixa é verde."}, {"role": "assistant", "content": "Entendido: a caixa é verde."}, {"role": "user", "content": "Qual é a cor da caixa? Responda somente a palavra em minúsculas."}]},
+    {"id": "tool-consulta", "capability": "tools", "check": "tool", "expected_call": {"name": "consultar_estante", "arguments": {"codigo": "LIV-27"}}, "tools": [{"type": "function", "function": {"name": "consultar_estante", "description": "Consulta fictícia ao catálogo. Nenhuma ação será executada.", "parameters": {"type": "object", "properties": {"codigo": {"type": "string"}}, "required": ["codigo"], "additionalProperties": false}}}], "messages": [{"role": "user", "content": "Use a função consultar_estante para consultar o código LIV-27. Não invente o resultado da consulta."}]}
+  ]
+}

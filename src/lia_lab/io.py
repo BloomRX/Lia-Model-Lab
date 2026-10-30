@@ -83,3 +83,10 @@ def roots(research_root, approved_root):
     if research.is_relative_to(approved) or approved.is_relative_to(research):
         raise LabError("research and application-approved storage must be disjoint")
     return research, approved
+
+
+def source_snapshot_hash():
+    """Fingerprint executing package source and schemas, including uncommitted edits."""
+    module = Path(__file__).resolve().parent
+    paths = sorted([*module.rglob('*.py'), *module.joinpath('schemas').glob('*.json')])
+    return hashlib.sha256(canonical({p.relative_to(module).as_posix(): digest(p) for p in paths}).encode()).hexdigest()

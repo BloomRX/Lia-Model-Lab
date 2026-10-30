@@ -7,7 +7,7 @@ import shutil
 import subprocess
 from pathlib import Path
 from .datasets import read_examples, fingerprint
-from .io import LabError, atomic_json, canonical, digest, load, owned, roots
+from .io import LabError, atomic_json, canonical, digest, load, owned, roots, source_snapshot_hash
 
 SHA = re.compile(r"^[a-f0-9]{64}$")
 REV = re.compile(r"^[a-f0-9]{40}$")
@@ -109,10 +109,7 @@ def register_plan(config_path, research_root, approved_root):
     except subprocess.CalledProcessError:
         raise LabError("registration requires a git checkout") from None
     checkout = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], text=True).strip())
-    module = Path(__file__).resolve().parent
-    source_files = sorted([*module.rglob("*.py"), *module.joinpath("schemas").glob("*.json")])
-    import hashlib
-    source_hash = hashlib.sha256(canonical({p.relative_to(module).as_posix(): digest(p) for p in source_files}).encode()).hexdigest()
+    source_hash = source_snapshot_hash()
     git_dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], text=True))
     record = {"schema_version": 1, "status": "planned", "training_executed": False,
               "git_dirty": git_dirty, "source_snapshot_sha256": source_hash,
