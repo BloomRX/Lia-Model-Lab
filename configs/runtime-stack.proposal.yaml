@@ -1,5 +1,5 @@
 # Registry metadata checked 2026-10-30; NOT a tested ML lock. No installation by tests/CLI.
-status: proposed-not-runtime-tested
+status: lightweight-API-tested-without-Torch-model-runtime-NOT-TESTED
 python: '3.11'
 reference_versions:
   torch: '2.15.0'
@@ -30,3 +30,18 @@ training:
   target_modules: PENDING-runtime-inspection
   baseline: PENDING-authorized-real-inference
   stop: NaN-or-OOM-or-time-budget-or-regression
+
+lightweight_api_validation:
+  installed_transformers: '5.22.1'
+  safetensors_required_and_pinned: '0.8.0'
+  lock: requirements-api.lock
+  weights_or_original_tokenizer: false
+  registry_and_AutoConfig: executed
+  native_assistant_masks_API_with_local_WordLevel: executed
+  full_processor_and_model_instantiation: NOT-TESTED
+  qwen3_5_frontend: AutoProcessor-Qwen3VLProcessor
+  qwen3_5_full_model: AutoModelForImageTextToText-Qwen3_5ForConditionalGeneration
+  qwen3_control_frontend: AutoTokenizer-Qwen2Tokenizer
+  qwen3_control_model: AutoModelForCausalLM-Qwen3ForCausalLM
+  thinking: forwarded-enable_thinking-false-exact-native-template-NOT-TESTED
+  note: No remote kernels or Torch installation in the lightweight API lock.

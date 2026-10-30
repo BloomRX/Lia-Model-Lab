@@ -113,3 +113,7 @@ Proposta de pontuação (0–5, pesos somam 100): pt-BR/conversa 15, raciocínio
 ## Primeiro smoke de infraestrutura — fase seguinte
 
 Reconsulta de repositórios e restrições atuais em [16](16-REAL-INFERENCE-PILOT.md): recomendar 0.8B para testar a arquitetura antes do 4B, com Qwen3-0.6B como controle textual. Não muda a recomendação de capacidade 4B nem aprova downloads. Tamanhos exatos/revisions/licenças de artefatos ainda pendentes.
+
+## Hardening — evidência do loader (não benchmark)
+
+TF5.22.1 instalado **sem Torch/pesos** confirma registries/configs. Qwen3.5 completo exige o caminho AutoProcessor/Qwen3VLProcessor + AutoModelForImageTextToText/Qwen3_5ForConditionalGeneration no Lab. Controle Qwen3-0.6B exige qwen3/Qwen3ForCausalLM + AutoTokenizer/Qwen2Tokenizer. Config/arquitetura divergente falha; shortlist Gemma/MoE não significa suporte no loader. Testes slow oficiais usam o ID Qwen3.5-0.8B em dois caminhos (texto e VLM); os de Qwen3 consultados usam **0.6B-Base**, não o controle post-trained. Não foram executados aqui. Config/revision/template originais de 0.8B/4B/0.6B ainda não foram adquiridos; não há validação real de pesos/qualidade. Ver [16](16-REAL-INFERENCE-PILOT.md) para matrizes, autorização externa e próximo gate.

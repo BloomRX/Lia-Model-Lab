@@ -16,6 +16,8 @@ Protocolo selado, predições com origem e variantes pareadas. Se faltarem metad
 
 - [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
 
+- [ADR-0003 — autorização e hardening](../../../docs/adr/0003-INFERENCE-HARDENING.md)
+
 ## Procedimento
 
 1. Verificar IDs, gabarito, test hash, base revision e protocolo idênticos; diferenças de ambiente devem ser relatadas.
@@ -37,5 +39,7 @@ Baseline isolado pode ser revisado antes de SFT; alegação de melhoria exige ba
 > Compare fixtures base/adapter/adapter-quantized; explique por que isso não prova qualidade Lia.
 
 ## Limites
+
+Não criar/confirmar grants operacionais reais. Revisar recibo consumido, hashes, deadline e perfis aplicados; API leve/mocks não provam pesos nem sandbox.
 
 Sem GPU/API paga, download grande, treino longo, dados pessoais, aceite de termos, upload ou publicação. Não apagar/modificar artefatos do usuário. Ferramentas executam só no escopo autorizado; esta skill não concede permissões.

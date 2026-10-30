@@ -2,6 +2,8 @@
 
 Data: 2026-10-30. Estado: **implementado para revisão**, execução com checkpoint real BLOCKED. Não aprova aquisição de pesos, licença específica, gasto, treinamento ou release.
 
+**Revisão posterior:** autorização, loader, métricas e contenção deste registro foram endurecidos pelo [ADR-0003](0003-INFERENCE-HARDENING.md). Referência textual antiga não é autorização operacional atual.
+
 ## Estado de partida verificado
 
 PR #1 permanece OPEN, `merged=false`; `main=20f1883ad1671139d7c023eff42b72c6bca96525`, consolidação `30e9b2e2acb1f95c3a162188638bba006025b5aa`. CI anterior success em push/PR; suíte original executada: 44 testes PASS. Não foi feito merge na main. O snapshot restaurado tinha exatamente os bytes desse HEAD remoto mas HEAD/index antigos; comparação de cada arquivo contra o remoto precedeu o alinhamento mixed do histórico, sem sobrescrever conteúdo. Trabalho continua na única branch da sessão e PR #1, não em outra branch.

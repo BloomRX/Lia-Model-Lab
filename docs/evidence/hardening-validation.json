@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "mission": "inference-hardening",
+  "observed_on": "2026-10-30",
+  "starting_head": "2cb652353e1429ae75dd647e824edc107019babd",
+  "evidence": "software-contracts-and-lightweight-APIs-not-model-inference",
+  "base_suite": {
+    "passed": 143,
+    "skipped_modules": 1,
+    "skip_reason": "Transformers API suite runs in separate lightweight environment"
+  },
+  "lightweight_api_suite": {
+    "passed": 151,
+    "transformers": "5.22.1",
+    "safetensors": "0.8.0",
+    "torch_installed": false,
+    "tokenizer_origin": "original-local-WordLevel-test-not-Qwen-assets",
+    "verified": [
+      "AutoConfig",
+      "AutoModel string registries",
+      "AutoProcessor registry",
+      "AutoTokenizer registry",
+      "native assistant_masks API",
+      "multi-turn/tool/end-token masks"
+    ]
+  },
+  "os_probes": {
+    "platform": "Linux CPU disposable Python children",
+    "rlimit_applied": true,
+    "IP_network_namespace_applied": true,
+    "security_sandbox": false,
+    "filesystem_isolation": false,
+    "Windows_macOS_GPU_protection_validated": false
+  },
+  "findings": [
+    "safetensors0.6.2 conflicted with Transformers5.22.1; pin updated to0.8.0",
+    "Native tokenizer generation span ending in whitespace can over-mask later turns; per-turn gate rejects, not silently repairs",
+    "Offline env flags are not authorization or OS network policy"
+  ],
+  "original_checkpoint_configs_acquired": false,
+  "original_tokenizers_acquired": false,
+  "real_operator_grants_created": 0,
+  "test_grants": "synthetic-model-only in disposable test directories",
+  "weights_downloaded_bytes": 0,
+  "real_inference_executed": false,
+  "quality_evaluated": false,
+  "training_or_backward_executed": false,
+  "paid_resources_provisioned": false
+}

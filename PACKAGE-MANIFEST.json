@@ -1,6 +1,6 @@
 {
   "package": "Lia Model Lab",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "inference-infrastructure-not-model-release",
   "manifest_scope": "All maintained source/documentation/config/fixture/skill/agent files; excludes itself, Git, caches, installed metadata and ML artifacts.",
   "files": [
@@ -21,13 +21,13 @@
     },
     {
       "path": ".agents/skills/experiment-reproducibility/SKILL.md",
-      "bytes": 2008,
-      "sha256": "e682309bb8f03721e3bc7227debac345e086ce06f9ef010588eb4e0b3b0fdbc7"
+      "bytes": 2257,
+      "sha256": "4cb611f117eb07aae82861e8de97e98e27f47c2e5a015b227c3a3d1a3592928e"
     },
     {
       "path": ".agents/skills/finetuning-plan/SKILL.md",
-      "bytes": 2187,
-      "sha256": "6492e09034332fa0912a4b1af43372c76c3d4d0ac2b5089d673861f2c0d7bd45"
+      "bytes": 2436,
+      "sha256": "8a7de1d20dfedfa2b2e7c18909f397710f9dfe7e23081fcdae97546a25a571ae"
     },
     {
       "path": ".agents/skills/lia-brand-consistency-review/SKILL.md",
@@ -41,8 +41,8 @@
     },
     {
       "path": ".agents/skills/model-evaluation/SKILL.md",
-      "bytes": 2224,
-      "sha256": "f72f5fdee2f4554dd358c18062cf319e5ddfea1e9e24f154288221628577c3c5"
+      "bytes": 2473,
+      "sha256": "ce3ba4b1e7438c01db7c48531117e5dc86689cb7e29031a0bbbff900dc808aa2"
     },
     {
       "path": ".agents/skills/model-license-release-review/SKILL.md",
@@ -61,38 +61,38 @@
     },
     {
       "path": ".codex/agents/brand-reviewer.toml",
-      "bytes": 684,
-      "sha256": "a5631f944604ee6c4a12540ed0aafa9b9f41492ec88e11b79d7f69e317df1fea"
+      "bytes": 817,
+      "sha256": "2ceaf09972afbb8f95f59fcc2b1ed9466e05e3851f8968554ce7e81d69dcafe5"
     },
     {
       "path": ".codex/agents/capability-architect.toml",
-      "bytes": 696,
-      "sha256": "b44f13d6e7bcd3f9a9db1ad42f341da805879d45dd5a363fefbcde373164f1af"
+      "bytes": 829,
+      "sha256": "deb7d0c5e8d3a5d7141aa3eef5ad7bcab32b2ccce9cb978271cd572400a2ac08"
     },
     {
       "path": ".codex/agents/dataset-auditor.toml",
-      "bytes": 733,
-      "sha256": "a47d5b05bf29076c1ae84b545cc673bda236b49f1059eec3bda4d42485828c1b"
+      "bytes": 866,
+      "sha256": "f09d78f087efc3037fe518e16b7903fc2d1d2bd26e531e4ea2c728006d755a0c"
     },
     {
       "path": ".codex/agents/evaluation-reviewer.toml",
-      "bytes": 701,
-      "sha256": "f4042532c3601f3de15f254aed159c614e12407bfd901bc590c3c40bc82369d5"
+      "bytes": 834,
+      "sha256": "54f8220a158b143cd06f175e2ab55ed464d403ad7b50eac011be9be6765a1b59"
     },
     {
       "path": ".codex/agents/license-reviewer.toml",
-      "bytes": 696,
-      "sha256": "2982bdb492a460eea09fe615688157632a536fcbff36c5f8a546a30c5de873b2"
+      "bytes": 829,
+      "sha256": "73cdbcbbe0126d39f239990be34462b77d1622c8033e9d5f553ef8be268d5593"
     },
     {
       "path": ".codex/agents/model-researcher.toml",
-      "bytes": 774,
-      "sha256": "c71aed4d53268543cd6ce81dae88b2c4e9ac91139ee25f26be6c634f90094844"
+      "bytes": 907,
+      "sha256": "592bb6407cb880b944030b2567d3dab89ffefb447eaf301dc327074320ebe393"
     },
     {
       "path": ".codex/agents/training-planner.toml",
-      "bytes": 757,
-      "sha256": "0402bcbfdf65ee8f386c0fa9199ec427902e45710edcf0fc9504e6701a9d8a7b"
+      "bytes": 890,
+      "sha256": "527406f4cbd5298b33cc35316f458357ea87b1c0fe316a76945bf40e8e0c9333"
     },
     {
       "path": ".codex/config.example.toml",
@@ -101,8 +101,8 @@
     },
     {
       "path": ".github/workflows/verify.yml",
-      "bytes": 468,
-      "sha256": "3e488663d4a1c6d8872b76c49c5f7f95826faa0b5cde68d901d7c1c46393b0df"
+      "bytes": 978,
+      "sha256": "8d540ab585bc130dbda0f6d918ec276129f8c98a3da93292e7eb1a1f1377cc5b"
     },
     {
       "path": ".gitignore",
@@ -111,13 +111,13 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 5001,
-      "sha256": "d5325a1e008a6fa10ad0537e22619e3c3e97df8332b061eb71ab6a2e4b0de981"
+      "bytes": 5493,
+      "sha256": "a10aa60131badd91a16cc17e7b39e81145218fa0fb8eb080eb25de1d2d54d0c0"
     },
     {
       "path": "README.md",
-      "bytes": 4175,
-      "sha256": "828134d58ce3d4bc56a6312474ccbd2fadb19806781fba30944b737a171ab4e0"
+      "bytes": 4348,
+      "sha256": "51057ee19cf1fc9836e8a128a166b55fdbf9d242378322ef33c89e98ee3af2e4"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -131,13 +131,13 @@
     },
     {
       "path": "configs/model-candidates.yaml",
-      "bytes": 3563,
-      "sha256": "66033f2804e27c1a178ba5e47f620546f181034ede7dce2567d187cd71aa03fe"
+      "bytes": 4752,
+      "sha256": "3116bbcdd72601e897c128cd7978c322197e8e8349dc620fe5f5d539a4be96e7"
     },
     {
       "path": "configs/runtime-stack.proposal.yaml",
-      "bytes": 1173,
-      "sha256": "fc8a2ba29b92c71079e6a3c2cae673a9bf297e4e4282d1acb4b2a31b5ccb192f"
+      "bytes": 1935,
+      "sha256": "e617bce06de6cbcf3e095164282d949b091a08fa1802c9f596a195948f9bdc4b"
     },
     {
       "path": "configs/sft-pilot.template.yaml",
@@ -176,8 +176,8 @@
     },
     {
       "path": "docs/05-FOUNDATION-MODEL-COMPARISON.md",
-      "bytes": 15368,
-      "sha256": "65879765dc47fa72eb63496e0a6c256696c705d993fe10385dcdb6f26aaa5e35"
+      "bytes": 16194,
+      "sha256": "94f64f21b2d67222318210dfc641a806dbabdf61d59fcebb097306ea2934f05b"
     },
     {
       "path": "docs/06-TRAINING-STRATEGY.md",
@@ -211,8 +211,8 @@
     },
     {
       "path": "docs/12-OPEN-DECISIONS.md",
-      "bytes": 4828,
-      "sha256": "a904c61eaca9beaa35b51e6c337eeccf79c67f3d31008107fd3eb1540f869afb"
+      "bytes": 5255,
+      "sha256": "88302acd88097ff8db48fd6c395198821557cd82d17636acc1787dbafd4de692"
     },
     {
       "path": "docs/13-GOVERNANCA-DE-EXPERIMENTOS.md",
@@ -231,8 +231,8 @@
     },
     {
       "path": "docs/16-REAL-INFERENCE-PILOT.md",
-      "bytes": 14354,
-      "sha256": "b0a44a4b1775b48c41a3d282f15585da74d91703a8e704539bb9fa48b2e9741a"
+      "bytes": 15370,
+      "sha256": "c913f0bf31132f80b53b2c8c57b1985de86559b74bab50b1e6381876d996fed8"
     },
     {
       "path": "docs/BRAND-STANDARDS.md",
@@ -241,18 +241,18 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 1792,
-      "sha256": "36c362a984d43a16131c0205bc6337020543d34a4c749570858abb45798842b9"
+      "bytes": 1868,
+      "sha256": "811f725dfee996b14678b63e267c8e14cdc52a033eba1c1edaf4ce5b734df17b"
     },
     {
       "path": "docs/SOURCES.md",
-      "bytes": 15194,
-      "sha256": "662c55e63a669d9b342cac3588605248e581dd8ae92a5d594f12282cd11fb0ab"
+      "bytes": 17544,
+      "sha256": "aaded379ceeeeae813dc8c622eb01e8a14637f9e4a34ecc73d3cba38daa9e33f"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 8696,
-      "sha256": "59f773683b61327c9a5c0d9ff28b91ba51537f1bb2d296fa3a16e034e6a4d874"
+      "bytes": 6266,
+      "sha256": "12d2a0974c3f22680342420d2df415b8df5dc9692ad2acfd7c122b3d920f90c1"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -261,13 +261,23 @@
     },
     {
       "path": "docs/adr/0002-LOCAL-INFERENCE.md",
-      "bytes": 4591,
-      "sha256": "37de2fc6918c421efdec97d892d936f3ae856bc6bbd6773bb81e45a50221375d"
+      "bytes": 4810,
+      "sha256": "a037f094869ce11774b6c5dad2112a45523f5fb3ac29d5ad0b8c254825f18a51"
+    },
+    {
+      "path": "docs/adr/0003-INFERENCE-HARDENING.md",
+      "bytes": 5435,
+      "sha256": "44911ba904b34c33fa43b00e1e21ff6d22cbad98efdb54c100bbf242e8ec3a7f"
     },
     {
       "path": "docs/evidence/airi-evidence.json",
       "bytes": 27129,
       "sha256": "bcff59b8cf8aa3e508ccdb24d42e7044b13f8a0378fdab0ea71a9636ade6d9ce"
+    },
+    {
+      "path": "docs/evidence/hardening-validation.json",
+      "bytes": 1766,
+      "sha256": "dc3ed4fabdb298ab4f22ac55bbfceb8dd6852ffba2d217d35f3071ca8fe1a9b3"
     },
     {
       "path": "docs/evidence/inference-readiness.json",
@@ -276,23 +286,33 @@
     },
     {
       "path": "pyproject.toml",
-      "bytes": 777,
-      "sha256": "4985caa3bdd9fd0c1937831eba89ab7ef01d648b8c9398a282152bfa6faecabf"
+      "bytes": 812,
+      "sha256": "d6da3eff1a0d4c3c83a94902d4df591480c9c170db2ac0f6e104a3ddb60c6553"
+    },
+    {
+      "path": "requirements-api.lock",
+      "bytes": 766,
+      "sha256": "9bc60b04cb5df33db3ee0f1bbe2d5c01422ad06bc4e5d41a38a8c13cc2e858a6"
     },
     {
       "path": "requirements.lock",
       "bytes": 290,
-      "sha256": "9056317abdcbc54d973b847d711b7cb681b7801b3b9ca0838fa4094c38086101"
+      "sha256": "e8a9efa626d4b1a7e57b0caaa94abf6480c941d3bdb5bd494f2a157788067594"
     },
     {
       "path": "scripts/verify_repository.py",
-      "bytes": 5543,
-      "sha256": "be2bb425ce4e25e485d879ad87ab96f47e062a8597d17973d8d68055d4200139"
+      "bytes": 5568,
+      "sha256": "ce47cdd400ce67a00246fac10a74e1a2b5b6c393bdda2d13a1c68132965ceca1"
     },
     {
       "path": "src/lia_lab/__init__.py",
       "bytes": 91,
-      "sha256": "42840b21caa9c811ff848af2fc0b7fe220fd7696e2bdb337b1286fee2e269367"
+      "sha256": "8f46b609e38d58f63e5ae4633b00aba342adb61485611c3c4677033dbffa0151"
+    },
+    {
+      "path": "src/lia_lab/authorization.py",
+      "bytes": 6626,
+      "sha256": "38702205dbcf8490b84bbe0ede9f4d16c86d585ff376b3758a24ab83d4540a97"
     },
     {
       "path": "src/lia_lab/cards.py",
@@ -301,13 +321,18 @@
     },
     {
       "path": "src/lia_lab/checkpoints.py",
-      "bytes": 5723,
-      "sha256": "701c8395dc5b111207832b6889660e2540477c9c94566af330d6eeaa63972f73"
+      "bytes": 5669,
+      "sha256": "76789e4f22c04438c9d7b3a9a7ce7a02ddd7c4891de59a7f5f230ea1323bc78d"
     },
     {
       "path": "src/lia_lab/cli.py",
-      "bytes": 4797,
-      "sha256": "20938987580f05696c7a63428fc51cc5750ed6879767762d85855572dab96ecd"
+      "bytes": 6106,
+      "sha256": "39283333eecd1947ab9e813a190c9b336314804d7143fc3023eb084659620910"
+    },
+    {
+      "path": "src/lia_lab/containment.py",
+      "bytes": 3768,
+      "sha256": "0f0e3e6a7545d5bf25f6618ef6c6adc9b64a9327a5139f3058960b7532c829a5"
     },
     {
       "path": "src/lia_lab/datasets.py",
@@ -331,23 +356,28 @@
     },
     {
       "path": "src/lia_lab/inference.py",
-      "bytes": 7245,
-      "sha256": "829015026eaa9508234e07c6ba17dbcfbba54413831c8c88302e42945f981c02"
+      "bytes": 12566,
+      "sha256": "865c132635950d0c7617362cf4168ae54eb76707a7f2d6bf4838476f787ce49b"
     },
     {
       "path": "src/lia_lab/inference_protocol.py",
-      "bytes": 2538,
-      "sha256": "55f1331462923fa21ed45f97378e0a2b69f221c52a3bcd74229cf45c8d08f697"
+      "bytes": 4752,
+      "sha256": "87aa8e1981ffd520e63da8ae6a456a1e1a9a05a15dfe041288b4114d9e072fa2"
     },
     {
       "path": "src/lia_lab/inference_worker.py",
-      "bytes": 8522,
-      "sha256": "0bc1b59436fe6e50a0d659547c757e294b695fba63d7947fd77ee49ed4dce2d8"
+      "bytes": 10556,
+      "sha256": "47c19d312db8878f82fe3eb26959ef9e1ec08a9fbe08671520d737170b040fda"
     },
     {
       "path": "src/lia_lab/io.py",
       "bytes": 2832,
       "sha256": "90b04485f76c1bf4d59579fd0b52ce5aa517c163d7f22606afcf015f3975bc95"
+    },
+    {
+      "path": "src/lia_lab/model_backends.py",
+      "bytes": 5142,
+      "sha256": "6879481e7feab94b7b2386ce364fe4ca914d46364bfa792702b598881ffa05b9"
     },
     {
       "path": "src/lia_lab/schemas/example.schema.json",
@@ -361,8 +391,8 @@
     },
     {
       "path": "src/lia_lab/training_prep.py",
-      "bytes": 3324,
-      "sha256": "772bc5edae38c477a4bea1c442718266580480359d2a1d1921ac9e59b3784f2b"
+      "bytes": 6258,
+      "sha256": "d0bb7d4bee8a919fd69b14a987b35b02c11a9bc340336d5475c0f0feab261a4e"
     },
     {
       "path": "templates/ADR.md",
@@ -390,6 +420,11 @@
       "sha256": "a49f4d3ad8e3ae09a00bfd9cbf255889ea76a2b12fc9d17d502c5ffb5e36ce24"
     },
     {
+      "path": "tests/conftest.py",
+      "bytes": 960,
+      "sha256": "8a9d1fc5d34bfa03d8118023a6ab2a62b38c36746be293c6f9319f4c92105c38"
+    },
+    {
       "path": "tests/fixtures/README.md",
       "bytes": 903,
       "sha256": "1c06140954c6e0886963258c9b7b57ca6c3b8a5c44d883d98a3030ff7cfe46aa"
@@ -415,19 +450,49 @@
       "sha256": "a791137eaac8017eea986501738afbb337b82a6a78477690e3a3e78ba96b836a"
     },
     {
+      "path": "tests/support_authorization.py",
+      "bytes": 802,
+      "sha256": "18817d103fd8c3527d2c8a1099950e305715ab44c195b909e6aec4fa9cefcf23"
+    },
+    {
+      "path": "tests/test_authorization.py",
+      "bytes": 6329,
+      "sha256": "cb9363ea5400df8eccb0035189516131c5f3c36ea4ab7c39d8fad1328bba0a30"
+    },
+    {
+      "path": "tests/test_backend_contracts.py",
+      "bytes": 5967,
+      "sha256": "d09b33fc3a2a91cc72c7b5052e3e16b2f53f7a6b508918561492a7e01c5cc591"
+    },
+    {
+      "path": "tests/test_containment.py",
+      "bytes": 2843,
+      "sha256": "9cf2e38401e6268a4bbeee5ed96e2cf03184f8e513748d5fd79fee56c0a83568"
+    },
+    {
       "path": "tests/test_foundation.py",
       "bytes": 11902,
       "sha256": "7ed52b26890d74aca0bdd9b67265075f2981fa46c584839110f9b4f9f3943468"
     },
     {
       "path": "tests/test_inference.py",
-      "bytes": 12783,
-      "sha256": "b6c341e22c80949f36e7e532ada4095c5209469e36bef9dcf1bdd3933feaea83"
+      "bytes": 13791,
+      "sha256": "e056408ef58ee6ece2b48e30dddcc225ff744c81d0b315f29c886c7b530c912f"
     },
     {
       "path": "tests/test_repository.py",
       "bytes": 1365,
       "sha256": "80cbffaa9986932e000280637ec67a6ec72852c608d3d35ef30670091a4e792a"
+    },
+    {
+      "path": "tests/test_supervisor_results.py",
+      "bytes": 3907,
+      "sha256": "6fe90cf8c1577d1f72e31b2d63fa8b18501afa0746a031f6504a3fa6b9d20678"
+    },
+    {
+      "path": "tests/test_transformers_api.py",
+      "bytes": 5009,
+      "sha256": "71a5d552f7c2f92fc2e6edf6ba9741caf277cfd9d72bd23e261d38b8181f3a8c"
     }
   ]
 }

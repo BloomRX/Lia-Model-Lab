@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from lia_lab.io import LabError, load, json_loads, atomic_json
 from jsonschema import Draft202012Validator
 
-ROOT_FILES = {".gitignore", "README.md", "AGENTS.md", "pyproject.toml", "requirements.lock"}
+ROOT_FILES = {".gitignore", "README.md", "AGENTS.md", "pyproject.toml", "requirements.lock", "requirements-api.lock"}
 TREES = ("docs", "configs", "templates", "src", "tests", "scripts", ".agents", ".codex", ".github")
 EXTENSIONS = {".md", ".json", ".jsonl", ".yaml", ".yml", ".toml", ".py", ".txt"}
 
@@ -32,7 +32,7 @@ def package_paths(root=ROOT):
 
 
 def manifest(root=ROOT):
-    return {"package": "Lia Model Lab", "version": "0.3.0", "status": "inference-infrastructure-not-model-release",
+    return {"package": "Lia Model Lab", "version": "0.4.0", "status": "inference-infrastructure-not-model-release",
             "manifest_scope": "All maintained source/documentation/config/fixture/skill/agent files; excludes itself, Git, caches, installed metadata and ML artifacts.",
             "files": [{"path": p.relative_to(root).as_posix(), "bytes": p.stat().st_size,
                        "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in package_paths(root)]}

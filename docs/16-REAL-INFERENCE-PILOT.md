@@ -1,91 +1,100 @@
-# 16 — Primeiro piloto real: infraestrutura pronta, inferência ainda bloqueada
+# 16 — Inferência local: contratos endurecidos, pesos ainda NOT-TESTED
 
-Estado: **código e contratos offline testados; checkpoint real NOT-TESTED**. Nenhum peso baixado ou modelo carregado nesta fase. [ADR-0002](adr/0002-LOCAL-INFERENCE.md), [registro observado](evidence/inference-readiness.json), [validação](VALIDATION.md).
+Estado v0.4.0: **software e API leve testados**, não inferência real aprovada. [ADR atual](adr/0003-INFERENCE-HARDENING.md), [validação](VALIDATION.md), [evidência do hardening](evidence/hardening-validation.json). Nenhum peso/tokenizer upstream, treinamento, aprovação operacional real ou qualidade de modelo nesta missão. A [readiness anterior](evidence/inference-readiness.json) é snapshot histórico, não inventário atualizado de dependências.
 
-## Pesquisa e seleção, 2026-10-30
+## Evidência por candidato e arquitetura
 
-Reconsultados repositórios oficiais [Qwen3.5, hoje redirecionado para Qwen3.8](https://github.com/QwenLM/Qwen3.8/tree/2ea10dc725823bf7c3e21ce8557cbe15245132ae), [Qwen3](https://github.com/QwenLM/Qwen3/tree/7a2f61ffc7a20d47efcd2bf97f6f2bf52729042e), [Gemma](https://github.com/google-deepmind/gemma/tree/9e1f74131ba9d45e5fe6ae7bb3941d9f2abb39c3), [SmolLM](https://github.com/huggingface/smollm/tree/438be18dae658a638f3a6976fdf5190bb6d68619), Transformers, PEFT, bitsandbytes e llama.cpp. O README atual da família Qwen distingue releases 3.5/3.6/3.8: não renomear um checkpoint 3.5 para 3.8 nem extrapolar MoE aos densos pequenos.
+| Candidato exato | Contrato de carregamento implementado | Evidência e limites |
+|---|---|---|
+| `Qwen/Qwen3.5-0.8B` | config completo `model_type=qwen3_5`, `architectures=[Qwen3_5ForConditionalGeneration]`, text_config qwen3_5_text + vision_config; AutoProcessor/Qwen3VLProcessor e AutoModelForImageTextToText/Qwen3_5ForConditionalGeneration | Registries/AutoConfig TF5.22.1 verificados. Teste slow oficial desse ID documenta processor + conditional generation e caminho CausalLM textual distinto; **não executado aqui**. config.json/tokenizer/template/revision dos pesos não obtidos |
+| `Qwen/Qwen3.5-4B` | Mesmo contrato somente se **o snapshot real declarar exatamente essa arquitetura** | Família documentada, registry executado. Config/revision específicos não consultáveis nos hosts autorizados; não presumir equivalência de arquivos, dimensões, kernels ou qualidade ao 0.8B |
+| `Qwen/Qwen3-0.6B` | `qwen3` + `[Qwen3ForCausalLM]`; AutoTokenizer/Qwen2Tokenizer e AutoModelForCausalLM/Qwen3ForCausalLM | Registry/AutoConfig verificados. Não confundir com `Qwen/Qwen3-0.6B-Base`, usado pelos testes upstream consultados; não atribuir esses resultados ao checkpoint post-trained |
 
-**Limitação de pesquisa desta fase:** hosts de pesos Hugging Face/ModelScope e ai.google.dev não estão na allowlist de rede do ambiente. Os cards consultados na consolidação estão registrados em [05](05-FOUNDATION-MODEL-COMPARISON.md) e [fontes](SOURCES.md); aqui não alegamos nova consulta aos arquivos individuais de pesos. SHA upstream de checkpoint, listagem/bytes exatos, licença/notices e hashes de tokenizer/template continuam **PENDING**. Commit do repositório de código não é revision dos pesos. Nenhum campo foi preenchido com SHA inventado.
+[Fontes versionadas](SOURCES.md). TF5.22.1 também registra AutoModelForCausalLM para qwen3_5 por compatibilidade VLM e qwen3_5_text; isso é **outro caminho**. Não escolhemos esse fallback só para evitar processor. O Lab carrega o VLM completo, mesmo para smoke textual; não promete remover encoder/memória. Texto puro é normalizado para content blocks de texto, sem carregar imagens/URLs. `AutoProcessor.from_pretrained` pode requerer componentes multimodais da instalação real: a construção completa do processor Qwen sem componentes não pôde ser validada sem stack Torch/vision. Instalação dessa stack é gate, não capacidade demonstrada.
 
-| Checkpoint exato proposto | Arquitetura/escopo | Direitos/formato e compatibilidade documental | Decisão e limites |
-|---|---|---|---|
-| `Qwen/Qwen3.5-0.8B` | denso híbrido Gated DeltaNet/atenção + visão; tamanho nominal 0.8B | Safetensors/Transformers, templates da família e tools documentados; licença de pesos Apache declarada na pesquisa anterior, confirmar arquivo exato; GGUF precisa provenance própria | **Primeiro smoke recomendado da arquitetura 3.5**, não qualidade Core; encoder/cache aumentam footprint; PEFT/QLoRA ainda sem probe |
-| `Qwen/Qwen3.5-2B` | denso híbrido VLM, nominal 2B | Mesma investigação por checkpoint; não herdar módulos/tokenizer de 0.8B | Intermediário, sem vantagem medida que justifique dobrar o primeiro download |
-| `Qwen/Qwen3.5-4B` | denso híbrido VLM, nominal 4B | Safetensors e Transformers; modelos auto mapeados no código atual; quantização/LoRA/QLoRA condicionais | **Candidato de capacidade Lia Core**, não alvo BF16/FP32 adequado a sandbox de 4 GB |
-| `Qwen/Qwen3.5-9B` | denso híbrido VLM, nominal 9B | Release confirmado pelo README, artefatos exatos pendentes | Adiado: custo maior sem necessidade para provar infraestrutura |
-| `google/gemma-4-E2B-it` | 2.3B efetivos, ~5.1B com embeddings conforme card anterior; multimodal/PLE | JAX oficial `GEMMA4_E2B_IT`, Transformers atual tem `gemma4`; licença Apache declarada no card anterior, arquivo de pesos ainda gate | Não confundir E2B com residente 2B; pouca vantagem de memória no piloto |
-| `google/gemma-4-E4B-it` | 4.5B efetivos, ~8B com embeddings conforme card anterior | Checkpoint JAX IT distinto de PT; safetensors HF e template exato precisam inventário | Adiado pelo footprint/complexidade; áudio futuro não é requisito do Core textual |
-| `Qwen/Qwen3-0.6B` | denso texto, nominal 0.6B, atenção convencional | README oficial declara Apache-2.0 para pesos, Transformers/template thinking e tools; quantizações precisam revisão separada | **Controle de engenharia alternativo**, mais simples que híbrido VLM; não escolher como identidade final por caber |
-| `HuggingFaceTB/SmolLM3-3B` | denso texto, nominal 3B; receita pública | Repo oficial confirma checkpoint distinto de `-Base`; licença/artefatos de pesos e pt-BR precisam card exato | Vantagem concreta: transparência de treinamento e stack textual simples; não menor que smoke 0.8B, sem vantagem pt-BR medida; loader desta fase não o permite |
+Outros modelos continuam na [comparação](05-FOUNDATION-MODEL-COMPARISON.md), mas Gemma/qwen2/MoE/text-only exports/arquiteturas desconhecidas **não são executáveis por este loader**. Ele falha por ausência de model_type/architectures, classe divergente, auto_map ou pré-quantização. Nome comercial ou ID sozinho não seleciona classe nem prova autenticidade. Headers/hashes não autenticam a origem upstream.
 
-Qwen anuncia 201 idiomas/dialetos para a família 3.5; isso não demonstra domínio de pt-BR em cada tamanho. Qwen3 declara 100+. Para Gemma/SmolLM, não extrapolar português de benchmarks multilíngues gerais. Todos os candidatos: pt-BR/persona/instruções/tools locais **NOT-TESTED**. Pesos abertos não autorizam dados/voz/marca. Apache-2.0 permite uso, modificação e distribuição com condições (licença/notices/alterações); a allowlist do CLI é política de piloto, não interpretação jurídica nem aceite pelo usuário.
+### Template, tools, thinking e geração
 
-## Proposta de download — não autorização
+Usar template nativo do frontend, com tools explícitas, add_generation_prompt=true e `enable_thinking=false` encaminhado ao Jinja. Isso não demonstra que o template **da revision exata** respeite o knob: templates/tokenizer_config/generation_config dos checkpoints continuam não adquiridos. Não confundir knobs 3.5 com reasoning_effort/preserve_thinking de releases 3.8. Hash de template efetivo por request; erro se não existir template default/não ambíguo.
 
-Fonte de pesos: organização oficial Hugging Face de cada ID acima, **não adquirida aqui**. Somente após acesso aos metadados: congelar revision de 40 hex, inventário e tamanho exato; revisar licença/notices; apresentar ao proprietário para autorização específica. Não usar estimativa como tamanho confirmado.
+Texto: tokenizer sem BOS adicional, padding/truncation=false. VLM: processor.apply_chat_template(tokenize=true, return_dict=true, return_tensors=pt), sem truncagem/padding implícitos. Contexto efetivo = menor do limite aprovado e limite declarado do modelo; um único batch não vazio. Saída é sliced a partir do input_count, remove somente EOS final para texto e preserva envelope de tool calls. Resposta vazia ou orçamento excedido falha. Tools só são analisadas pelo [checker](../src/lia_lab/inference_protocol.py), **nunca executadas**; parser apenas envelope Qwen, outros formatos exigem revisão.
 
-| Alvo | Pesos BF16 nominais, limite inferior decimal | CPU FP32 residente nominal | Orçamento exploratório de ambiente, não mínimo validado |
-|---|---|---|---|
-| Qwen3.5-0.8B | ~1.6 GB, sem encoder/metadata | ~3.2 GB, sem extras | 8–12 GB RAM, >=6 GB disco; GPU opcional ~4 GB livres a investigar |
-| Qwen3.5-2B | ~4 GB, sem extras | ~8 GB, sem extras | 16–24 GB RAM, >=12 GB disco; GPU ~8 GB a investigar |
-| Qwen3.5-4B | ~8 GB, sem extras | ~16 GB, sem extras | 32 GB RAM, >=24 GB disco; GPU ~12–16 GB livres a investigar |
-| Qwen3-0.6B | ~1.2 GB, sem extras | ~2.4 GB, sem extras | 8 GB RAM preferível, >=4 GB disco; sem garantia no host de 4 GB |
-| Gemma4 E2B/E4B | >=10.2/16 GB pelas contagens com embeddings, encoders podem acrescentar | >=20.4/32 GB | Não dimensionar como denso 2B/4B; obter inventário antes de reservar ambiente |
+Geração greedy, seed42, max_new_tokens exato, num_beams1, use_cache=true, pad/eos nativos (preservando pad ID zero). Dtype explícito: CPU float32, CUDA/ROCm float16 ou BF16 somente se device/build declararem suporte. Sem device_map/offload silencioso, quantização, kernels baixados ou código remoto. Config BF16 de fornecedor não obriga CPU BF16 nem prova kernels. CUDA/ROCm/MPS, drivers, estabilidade numérica e desempenho com pesos continuam NOT-TESTED.
 
-São hipóteses conservadoras para contexto curto/uma requisição, não medições/cotações ou requisitos oficiais. Staging, cache de pacotes, shard duplicado e conversão podem exigir mais disco. GPU remota: custo desconhecido, **não provisionado**; CPU local não envolve tarifa de GPU, mas tempo/energia não medidos. Para GGUF Q4, 0.8B × 0.5 ≈ 0.4 GB é apenas piso aritmético: scales, pesos não quantizados, tokenizer/projector/cache e engine acrescentam memória. Não há repositório/revision/bytes de GGUF aprovados; não baixar quant comunitário pelo nome parecido.
+## Autorização: plano → operador → uso único
 
-## Implementação e fronteiras
+`approval_ref` foi removido da execução. `seal-model --license-review-ref` guarda **atestação de revisão legal**, não autoriza inferência nem aceita termos.
 
-- `environment.py`: RAM disponível/cgroup v2, CPU, disco, nós de dispositivos, versões de pacotes sem importar Torch. RAM não suportada retorna null e bloqueia sizing, em vez de supor capacidade. cgroup v1/Windows/macOS não têm medição validada aqui.
-- `checkpoints.py`: `seal-model` e verificação de snapshot local independente, sem symlinks/código/pickle. Inventário completo e headers safetensors reais, índice de shards, modelo explicitamente permitido (`qwen2`, `qwen3`, `qwen3_5`, `gemma4`), revisão/atestações/licença. Rejeita quantização prévia não implementada. Não autentica upstream offline nem prova compatibilidade de cada variante.
-- `inference.py`: novo registro `kind=inference` sob o mesmo `research_root/experiments`, sem modificar registro de planos SFT existente. Estados started/blocked/failed/completed-not-quality-approved; falhas, timeout e execuções parciais preservados. Hashes de snapshot, suite, request, resultados, código/lock e estado Git; duração observada, custo null se não medido. ID novo, raiz aprovada nunca escrita.
-- `inference_worker.py`: subprocesso separado, Transformers local-only/offline, trust_remote_code=false, safetensors, template nativo e codificação sem BOS duplicado, greedy/seed, sem truncagem implícita ou execução de tools. A referência carrega o VLM inteiro para texto, **não** promete reduzir encoder. CPU float32; CUDA/ROCm/MPS explícitos, kernels realmente verificados somente ao executar.
-- Sem implementação atual GGUF, quantização, API externa, vLLM, streaming ou trainer. A fronteira de subprocesso/request/result permite backend novo sem acoplar dados, identidade, memória ou avatar.
+1. Após aquisição **separadamente autorizada**, selar snapshot local e gerar plan-inference. Nenhum destes comandos baixa algo ou executa modelo.
+2. Humano, fora do agente, revisa plano completo, URL/model_id/revision, licença/hash do arquivo legal, manifesto SHA/bytes, suite/código, roots/ID, backend, perfil e limites.
+3. No terminal do operador, approve-inference revalida os arquivos, imprime a operação exata e exige a frase `ALLOW LOCAL INFERENCE <SHA256-OPERAÇÃO>`. stdin/stdout TTY obrigatórios, sem --yes. Só então cria grant no store SQLite externo ao checkout/snapshot/roots de pesquisa/aprovados.
+4. infer-local não interativo exige **store existente + approval-id**, não uma string livre. Transação BEGIN IMMEDIATE consome grant uma vez; worker também reivindica o grant externo uma vez, não aceita env flags como aprovação. Plano alterado, grant ausente/consumido/expirado/incompatível ou store inválido bloqueia antes de pesos. Tentativa bloqueada/falha/interrompida também queima o grant.
 
-Métricas previstas no worker: tempo tokenizer/model load (exclui import de dependências), latência de geração **incluindo prefill**, tokens gerados incluindo EOS por essa duração, CPU seconds, RSS após carga/requests e pico amostrado a 50 ms, picos allocated/reserved do alocador Torch CUDA/ROCm, repetição e resultados por caso. São amostras/RSS de processo e allocator, não total de RAM/VRAM/potência do sistema. TTFT, throughput decode-only, utilização GPU/potência e VRAM MPS ficam null/não medidos. A primeira requisição é fria, explicitada por repeat=0; sem warmup escondido. Textos crus permanecem em armazenamento local; uma falha não é removida nem substituída por fixture.
+Vinculados: ação **local-inference apenas**, modelo/revision, SHA exato do manifesto, licença, suite, código e argumentos/paths completos. Limites: max output tokens/request, total de requests/tokens, contexto, duração e **zero custo externo USD**. Não há download, treino, publicação ou release permitido. TTL1..3600s (default900), não antes da confirmação; deadline = menor da duração aprovada e expiração restante. Preflight/hashes são preparação antes do claim; a duração de execução começa no claim e inclui setup/worker. Operador controla ambiente gratuito: não existe medidor/bloqueador de billing de um host pago escolhido fora do Lab.
 
-## Executar após autorização e artefatos reais
+Store em diretório administrado pelo operador, não criado pelo agente. POSIX verifica UID atual e permissões owner-only; Windows não tem essa verificação POSIX aplicada e requer ACL/revisão externa. Confirmação/store/ID **não provam identidade criptográfica ou civil**. Atacante com mesmo UID/controle de código/relógio/SQLite/TTY, cópia ou rollback do DB pode derrotar o gate. Modelo de ameaça: evitar acidente e permitir auditoria em host confiável, não combater administrador/host comprometido. SQLite local, não autorização distribuída/NFS. **Nenhuma aprovação real foi criada nesta missão**; testes usam grants temporários para checkpoint fictício.
 
 ```sh
-# Diagnóstico sem pesos e sem Torch:
-.venv/bin/lia-lab doctor --storage /caminho/lia-research
-
-# Em venv de runtime separado, escolher wheel Torch CPU/CUDA/ROCm conforme hardware.
-# Versões candidatas e gates: configs/runtime-stack.proposal.yaml (NÃO lock testado de ML).
-# pip install -e '.[inference]' instala Transformers opcional, não escolhe wheel Torch.
-
-# Materializar snapshot oficial revisado SEM symlinks, guardado fora do Git.
-# LICENSE deve ser o arquivo real revisado; placeholders abaixo NÃO devem ser executados literalmente.
-.venv/bin/lia-lab seal-model /pesos/snapshot /pesos/snapshot-manifest.json \
+.venv/bin/lia-lab doctor
+# Somente após autorização de aquisição e revisão de arquivos reais; placeholders NÃO são comandos prontos:
+.venv/bin/lia-lab seal-model /pesos/snapshot /pesos/manifest.json \
   --model-id Qwen/Qwen3.5-0.8B --revision REVISION_REAL_40_HEX \
-  --license-id Apache-2.0 --license-file LICENSE --approval-ref APROVACAO_REAL
+  --license-id Apache-2.0 --license-file LICENSE --license-review-ref REVISAO_REAL
 
-.venv/bin/lia-lab infer-local --snapshot /pesos/snapshot \
-  --snapshot-manifest /pesos/snapshot-manifest.json --suite configs/inference-suite.json \
-  --research-root /caminho/lia-research --approved-root /caminho/lia-approved \
-  --run-id baseline-qwen35-08b-001 --approval-ref APROVACAO_REAL \
-  --device cpu --dtype float32 --repeats 2 --max-tokens 128 --context 2048 --timeout 600
+.venv/bin/lia-lab plan-inference --snapshot /pesos/snapshot \
+  --snapshot-manifest /pesos/manifest.json --suite configs/inference-suite.json \
+  --research-root /lab/research --approved-root /lab/approved --run-id baseline-001 \
+  --device cpu --dtype float32 --repeats 2 --max-tokens 128 --context 2048 --timeout 600 \
+  --containment linux-netns-rlimit --output /lab/research/plan.json
+
+# OPERADOR HUMANO em terminal próprio, não agente/CI; store externo a todos os artefatos:
+.venv/bin/lia-lab approve-inference /lab/research/plan.json --store /operator/grants.db --ttl 900
+# Repetir os MESMOS argumentos do plano, agora em infer-local, mais:
+# --approval-store /operator/grants.db --approval-id ID_REAL_RETORNADO
 ```
 
-O CLI não valida a existência jurídica da referência de autorização: o operador precisa da aprovação efetiva, não inventar texto para desbloquear. Não há download sequer com flags de execução. CPU tem envelope host de 1.5 × elementos armazenados × bytes do dtype + 1 GiB; conservador e não garantia contra OOM. GPU verifica também memória livre via Torch, 1.25 × residente + 512 MiB. Driver/versão/kernel incompatível deve produzir failed, não fallback silencioso. O timeout limita o subprocesso (import/load/generation/verificação final), não o hash/preflight anterior; a duração total registrada pode ser maior. Comando retorna 2 para blocked/failed e 0 só para execução completa, **não aprovação de qualidade**.
+## Separação de processo, contenção e sandbox são coisas diferentes
 
-## Casos e comparação de resultados
+Worker herda permissões OS do usuário. O supervisor filtra variáveis de ambiente (não repassa tokens/API keys comuns), mas isso **não impede leitura de arquivos/segredos pelo mesmo UID**. HF_HUB_OFFLINE/TRANSFORMERS_OFFLINE são flags de bibliotecas, não firewall. trust_remote_code=false e safetensors não eliminam vulnerabilidades de parsers/dependências/kernels. Conteúdo hostil e dados privados exigem sandbox/VM/container avaliado externamente.
 
-[Suite original](../configs/inference-suite.json): pt-BR com restrição de orçamento fictícia (humano), selo exato PONTE-47, objeto JSON de biblioteca, conversa multi-turn cor da caixa, chamada fictícia consultar_estante. Dois repeats mínimos medem estabilidade de execução/texto, não variância estatística suficiente para benchmark. Não pontuar personalidade por string exata. Parser de tool-call reconhece somente envelope Qwen; saída Gemma/outro formato deve ser revista crua, não lida como ferramenta realmente executada.
+| Perfil obrigatório escolhido pelo operador | Controles implementados | Não aplicado / limites |
+|---|---|---|
+| portable-process | subprocesso, deadline, logs/resultados separados; kill do grupo POSIX ao expirar/interromper | OS CPU/AS/FSIZE/NOFILE/NPROC e rede **não aplicados**; Windows mata somente worker, sem Job Object; não impede processos escapando do grupo |
+| linux-rlimit | Linux CPU somente: CPU timeout×4, AS8GiB, arquivo64MiB por arquivo, 128 FDs, NPROC128; efetivos registrados, erro ao aplicar bloqueia | AS é espaço virtual, não RSS; sem hard limit VRAM; NPROC é por UID e pode ser ignorado por privilegiados; sem namespace PID, rede/FS/IPC |
+| linux-netns-rlimit | Os limites anteriores + unshare user/net; worker confirma inode de namespace diferente antes de carregar modelo | Somente Linux CPU com suporte real. Erro de unshare ou mesmo inode = falha, sem fallback. Isola rede IP, **não** filesystem ou Unix sockets compartilhados; não é sandbox completo |
 
-O contrato antigo `compare` exige base e adapter, e não é substituído por este smoke. Os resultados ricos de inferência **não são automaticamente convertidos para exact-match-v1**: essa comparação precisa dataset/test_hash/protocolo/gabaritos selados comuns e variantes reais. Testes de software/safely-failing worker não entram como resultados de qualidade. Não ajustar treinamento com estes prompts nem usar o teste holdout para escolher hiperparâmetros.
+`containment.json` registra controles efetivamente aplicados mesmo se faltar Torch. Perfil Linux solicitado em Windows/macOS/GPU é rejeitado. Políticas de rede/FS/VRAM ausentes aparecem como not-applied. API de rlimit e namespace foram testadas em Python descartável neste Linux, não com modelo. CI pode bloquear user namespaces: teste verifica recusa explícita, não simula aplicação. Nenhuma promessa de proteção equivalente em Windows/macOS/AMD.
 
-## Preparação SFT implementada versus pendente
+## Métricas v2 e resultados parciais
 
-Reutilizar Dataset Factory, separação por grupos, verify-data, plano, registro, verify-resume e export estrutural existentes. `training_prep.py` converte tool calls canônicas para o formato HF, exige schema explícito, renderiza assistant-only labels com máscara **nativa de generation spans**, falha se inexistente/inválida ou se a sequência exceder limite. Não inventa fronteiras de loss por substring, não trunca trajetórias e não inicia treinamento. `assert_no_suite_overlap` detecta igualdade normalizada de prompts de usuário contra esta suite; **não** detecta paráfrases/near-dedup semântico. Runner futuro deve chamar o gate em todos os splits de treino antes de renderizar.
+- runtime_import_seconds: imports de topo Torch/Transformers; imports lazy de classes ficam nos estágios seguintes.
+- frontend_load_seconds: from_pretrained do tokenizer/processor.
+- weights_load_and_device_transfer_seconds: pesos + model.to/eval + sincronização.
+- generation_seconds_including_prefill: generate + sync; **não** tempo puro de decode.
+- output_tokens_per_second_including_prefill: tokens de saída incluindo EOS divididos por esse tempo.
+- generation_process_cpu_seconds: CPU do processo durante geração/sync, não utilização total da máquina.
+- process_rss_after_load_bytes/process_rss_after_bytes e process_sampled_peak_rss_bytes (50ms): processo, não RAM total; pico amostrado pode perder transitórios.
+- torch_gpu_peak_allocated_bytes/reserved_bytes: allocator Torch CUDA/ROCm, não VRAM total/driver/outros processos. MPS não medido.
+- prefill_seconds, ttft_seconds, decode_only_tokens_per_second: **null**, sem streaming/instrumentação separada. Potência/utilização GPU não medidas.
+- repeat_text_consistency e checks por caso não substituem estatística de estabilidade, revisão humana pt-BR ou benchmark de qualidade.
 
-Os testes do renderer usam um tokenizer sintético declarado, somente para verificar contrato/máscara. Templates reais de Qwen/Gemma podem não conter generation spans: será necessário template de treino auditado, hash próprio e teste de limites com tokenizer real. Não anunciar essa preparação como tokenizer Qwen validado.
+Resultados recebem completed=false até todos os requests e verificação final. Cada geração concluída é registrada antes de validar texto; resposta vazia pode deixar geração parcial sem request bem-sucedido. Supervisor verifica schema, hash do request, modelo/revision, contagens, ordem, texto não vazio e budgets, não apenas um número de sucessos. Estados distintos: blocked, failed, timed-out, interrupted, completed-not-quality-approved. Parciais malformados/lista/JSON quebrado/hash errado não mascaram a falha. Marca de origem em JSON não é assinatura contra adulteração pelo mesmo usuário. Código de saída 0 significa execução completa, **não qualidade/release**.
 
-Proposta pequena em [runtime-stack](../configs/runtime-stack.proposal.yaml): LoRA primeiro, 30 passos, seq512, microbatch1, acumulação4, rank8/alpha16/dropout0.05, LR1e-4; tudo ajustável após probe e dados aprovados, não valores ótimos. Worker apenas inventaria módulos Linear reais quando carregar; não aprova targets nem cria adapters. QLoRA NF4/double-quant exige probe de versão/wheel/backend/gradientes, não apenas sucesso de inferência.
+## Preparação SFT e o que a API real ensinou
 
-Antes do treino: baseline completo e revisão pt-BR, direitos/persona/dados, máscara real, forward/backward finito e PEFT save/reload equivalentes, optimizer/scheduler/RNG + config/data/código/lock para retomada. Gate de melhoria: menos falhas em validação independente de JSON/instrução sem regressão de pt-BR/tools, comparação pareada e teste selado não usado em tuning. Salvamento/export estrutural jamais prova melhoria. Métricas/checkpoints reais continuam ausentes.
+Reutilizar Dataset Factory/dedup/splits/grupos/verify-data e planos/resume/export estruturais. `hf_messages` converte tool_calls para type=function/function{name,arguments}, mantém arguments objeto, content=null quando apropriado, adiciona name/tool_call_id aos resultados e exige schema/argumentos/IDs/ordem/retornos consistentes. Não confundir texto afirmando ação com resultado real.
 
-## Identidade técnica
+Renderer usa `return_assistant_tokens_mask=true`, campo **assistant_masks** confirmado em TF5.22.1. Suporta sequência única plana de tokenizer ou batch unitário de processor; rejeita batches múltiplos/máscara vazia/full-prompt/inválida/seq longa. Usa máscara nativa, não procura substring nem inventa limites de loss. Renderiza prefixes com a mesma API e exige tokens/máscaras prefix-stable: todo assistant (texto/tool call/fim de turno conforme template) supervisionado, nenhum system/user/tool. Se a template depender do último turno ou BPE/offsets não permitirem provar isso, falha e exige variante de treino auditada.
 
-Checkpoint-base ≠ Lia Core. Adapter futuro é artefato versionado separado; persona/política e prompt têm aprovação própria; template é formatação técnica. Memória, execução e permissões de ferramentas, orquestração, visão/áudio, voz e avatar continuam fora dos pesos. Neste piloto o modelo não recebe uma persona “Lia” ficticiamente aprovada, não persiste memória e não executa ações. Trocar base/adapter/template não obriga reconstruir a aplicação.
+A simples presença de generation tag não basta: o teste real com tokenizer WordLevel original detectou que span com whitespace final em TF5.22.1 podia estender máscara aos turnos seguintes (end offset sem token). Não corrigimos máscara silenciosamente nem copiamos template para Qwen: renderer rejeita; template local de teste termina a span no token de fim. Testes também cobrem multi-turn, tool call/retorno/continuação, EOS, escopos incorretos e sequência longa. Tokenizer WordLevel/API Jinja reais **não são tokenizer/template Qwen**; processor Qwen completo e forward/backward continuam NOT-TESTED.
+
+`assert_no_suite_overlap` cobre substring normalizada NFKC/casefold/whitespace de prompts da suite em todas as mensagens; não é detecção semântica de paráfrases nem auditoria de direitos/PII. Ainda faltam dados/persona aprovados, baseline real, template/máscaras nativas reais, targets PEFT, save/reload e avaliação pareada antes do treino. Não há treinador nesta fase.
+
+## Hardware, download e próximo gate
+
+Manter Qwen3.5-0.8B para smoke da família, Qwen3.5-4B para capacidade, Qwen3-0.6B como controle textual. Cards/licenças de artefatos, revisions imutáveis e bytes exatos ainda pendentes: hosts HF/ModelScope fora da allowlist. 0.8B×2≈1.6GB e 4B×2≈8GB BF16 são pisos aritméticos **sem** encoder/metadata/cache, não tamanhos de download. Planejamento exploratório: 0.8B em 8–12GB RAM/>=6GB disco; 4B em 32GB RAM/>=24GB disco, sem validação ou cotação. Host desta sessão ~4GB RAM sem GPU não é alvo seguro para 4B não quantizado.
+
+[Stack proposta](../configs/runtime-stack.proposal.yaml) não é lock ML validado. [Lock API leve](../requirements-api.lock) serve apenas API sem Torch. Próximo gate: obter metadados exatos em ambiente com acesso autorizado, proposta específica de aquisição/licença/tamanho, aprovação humana fora do agente, ambiente adequado, baseline e revisão. Não houve download de pesos, API/GPU paga, aceitação de termos, dados pessoais ou publicação de adapters/datasets.
+
+Checkpoint-base ≠ Lia Core. Adapter/persona/prompt/template são versionados e aprovados separadamente; memória, ferramentas/permissões, orquestração, percepção, voz e avatar continuam externos, sem acoplamento AIRI.

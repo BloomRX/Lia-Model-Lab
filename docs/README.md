@@ -27,6 +27,7 @@ Coleção consolidada em 2026-10-30. ADRs registram decisões; pesquisa distingu
 - [Marca](BRAND-STANDARDS.md)
 - [ADR-0001 — Consolidação](adr/0001-CONSOLIDATION.md)
 - [ADR-0002 — Inferência local](adr/0002-LOCAL-INFERENCE.md)
+- [ADR-0003 — Hardening e autorização](adr/0003-INFERENCE-HARDENING.md)
 - [Fontes](SOURCES.md)
 - [Validação executada](VALIDATION.md)
 - [Ledger AIRI](evidence/airi-evidence.json)

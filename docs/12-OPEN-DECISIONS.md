@@ -38,3 +38,5 @@ Revisitar pesquisa upstream no início de Gate 0 e a cada release. Novos lançam
 ## Atualização — infraestrutura de inferência
 
 Supervisor/worker local e contratos de renderização implementados em [16](16-REAL-INFERENCE-PILOT.md). O-01: 0.8B para smoke, 4B para capacidade; sem aprovação de base. O-02: ainda sem revision/bytes exatos dos checkpoints. O-04: ambiente da sessão ~4 GB RAM, sem nós GPU; isso não descreve o PC do proprietário. O-05: runtime Torch/Transformers não instalado/testado, PEFT e QLoRA continuam sem probe. Nenhuma dessas pendências foi encerrada por testes de fixtures.
+
+Hardening atual: registries/AutoConfig/API de máscaras TF5.22.1 testados sem Torch. O-02/O-05 não encerrados: arquivos originais e inferência/PEFT ainda ausentes. String de referência foi removida da execução em favor de grant operacional humano externo, uso único; isso não autentica identidade. Perfis Linux CPU limitam recursos/IP quando explicitamente aplicados; não são proteção equivalente em outros OS/GPU.

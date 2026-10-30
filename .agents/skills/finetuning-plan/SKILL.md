@@ -17,6 +17,8 @@ Base revision, dataset manifest, hparams, backend/hardware e limite de custo. Se
 
 - [16-REAL-INFERENCE-PILOT.md](../../../docs/16-REAL-INFERENCE-PILOT.md)
 
+- [ADR-0003 — autorização e hardening](../../../docs/adr/0003-INFERENCE-HARDENING.md)
+
 ## Procedimento
 
 1. Exigir baseline real autorizado, renderer com máscara nativa e gates de treinamento; contrato sintético não prova tokenizer/PEFT. Exigir baseline e objetivo mensurável, módulos alvo inspecionados, tokenizer/template/hashes.
@@ -37,5 +39,7 @@ Status planned explícito, custos assumidos, provas faltantes listadas; nenhum t
 > Planeje SFT de persona em 4B; cite o que ainda impede o primeiro job.
 
 ## Limites
+
+Não criar/confirmar grants operacionais reais. Revisar recibo consumido, hashes, deadline e perfis aplicados; API leve/mocks não provam pesos nem sandbox.
 
 Sem GPU/API paga, download grande, treino longo, dados pessoais, aceite de termos, upload ou publicação. Não apagar/modificar artefatos do usuário. Ferramentas executam só no escopo autorizado; esta skill não concede permissões.

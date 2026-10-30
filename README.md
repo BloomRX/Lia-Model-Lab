@@ -6,7 +6,7 @@ Laboratório independente para construir e avaliar os primeiros pesos/adapters *
 
 Pesquisa e skills integradas em uma única documentação oficial; marca e governança preservadas. Já há **código offline funcional e testes** para Dataset Factory texto/tools, splits/dedup, integridade, planos reproduzíveis, avaliação de predições e exportação estrutural local de adapters.
 
-**Novo:** diagnóstico de ambiente, verificação de snapshots, supervisor/worker de inferência local autorizada e preparação de máscaras SFT implementados. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 continua aberta; este trabalho não está presumido integrado à main.
+**Hardening v0.4:** autorização operacional externa/temporária/uso único, classes Qwen explícitas, processor VLM, métricas v2 e máscaras validadas por turno. API real TF5.22.1 executada apenas com tokenizer original de teste e sem Torch. Perfis Linux de recursos/namespace não são sandbox completo. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 continua aberta; este trabalho não está presumido integrado à main.
 
 **Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
@@ -43,4 +43,4 @@ Core primeiro; Vision, Hearing, Speech, Game, Reflex e Omni são papéis/direç�
 
 ## Limites
 
-`infer-local` pode carregar somente snapshots locais após autorização explícita, com runtime opcional e limites; nesta entrega não foi executado com checkpoint real. CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).
+`infer-local` pode carregar somente snapshots locais após grant humano externo vinculado à operação exata, com runtime opcional e limites; nesta entrega não foi executado com checkpoint real. CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).

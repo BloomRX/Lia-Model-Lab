@@ -1,48 +1,28 @@
-# Validação — fundação offline e infraestrutura de inferência
+# Validação atual — hardening v0.4.0
 
-## Fase 2 — resultado atual, 2026-10-30
+Data: 2026-10-30. Partida: `2cb652353e1429ae75dd647e824edc107019babd`, PR #1 OPEN e main não integrada. Antes de editar, comparação byte a byte do snapshot com o remoto, alinhamento do HEAD/index restaurados e execução dos **84 testes anteriores PASS**. Nenhum trabalho recente remoto sobrescrito; sem force push/merge.
 
-- Baseline da fase anterior reexecutado antes de editar: **44 passed**; manifest anterior PASS e CI remoto anterior success.
-- Suíte atual: **84 passed**, incluindo todos os 44 testes anteriores. Não há teste de checkpoint real aprovado.
-- Instalação editável v0.3.0 pelo lock offline e `pip check` executados sem erros. Compilação de todos os módulos/scripts com compileall PASS. CLI doctor/help executados.
-- Novos testes: inventário/header safetensors, schema do manifest de snapshot, adulteração/hash/size, shards, symlinks, tipo/licença/revision/atestações, rejeição de pré-quantização, suite/checks, JSON duplicado, budgets, bloqueio de RAM/runtime, raízes, erro persistido e timeout sintético, renderer/máscaras/tools e contaminação exata de prompts.
-- Um teste lança de fato o subprocesso do worker sem Torch instalado: falha de dependência esperada, sem results.json. Isso **não é inferência**; tensores de zeros são fixtures, não modelo de linguagem.
-- O teste de timeout precisou ser corrigido: interceptava também subprocess.check_output e passava pelo motivo errado. Agora verifica explicitamente a falha de timeout; não usar aquele primeiro resultado como evidência.
-- Verificador atualizado: **85 arquivos, 8 JSON, 6 YAML, 9 TOML, 148 links, 9 skills e 7 perfis**; mais manifest JSON, 9 frontmatters YAML e JSONL/schema. Executado com regeneração e novamente sem flag. Âncoras Markdown e todas as URLs externas não são verificadas automaticamente.
-- Diagnóstico observado e bloqueios reais em `docs/evidence/inference-readiness.json`: aproximadamente 4 GB RAM, 2 CPUs visíveis, sem nós GPU; Torch/Transformers/PEFT/bitsandbytes ausentes. Não é inventário do PC do proprietário.
-- **Inferência real NOT-TESTED:** sem aprovação para adquirir/executar checkpoint, sem revision/listagem/bytes/licença exatos dos pesos, hosts de pesos fora da allowlist, runtime ML ausente e RAM insuficiente para 4B não quantizado. Não há latência/tokens/s/VRAM/qualidade de modelo a reportar; métricas ML permanecem null.
-- **SFT/PEFT/QLoRA NOT-TESTED:** nenhum tokenizer real, generation mask real, forward/backward, optimizer, save/reload, merge/quant ou melhoria de adapter executados. Proposta de versões não é lock ML validado.
-- Nenhuma GPU/API paga, checkpoint/dataset externo, dado pessoal, publicação ou aceite de termos. Somente dependências pequenas do lock de ferramentas foram reinstaladas.
-- CI desta fase: workflow preparado sem pesos, runner ubuntu-24.04 e actions Node24; estado remoto deve ser conferido no PR. Este relatório não infere sucesso remoto de execução local.
+## Executado
 
-Comandos: `.venv/bin/python -m pytest -q`, `.venv/bin/python scripts/verify_repository.py --write-manifest`, repetição sem flag, `.venv/bin/python -m pip check`, `.venv/bin/python -m compileall -q src scripts`, `.venv/bin/lia-lab doctor`, `git diff --check`. Instruções e limites no [piloto](16-REAL-INFERENCE-PILOT.md).
-
-## Registro histórico — fase anterior, v0.2.0 (contagens não atuais)
-
-Data: 2026-10-30. Ambiente: Linux x86_64 kernel 6.1.158+, Python 3.11.2, 2 CPUs visíveis, sem `/dev/dri`, `/dev/kfd` ou `/dev/nvidia0`. Não é telemetria do PC do proprietário.
-
-## Testes e verificações realmente executados
-
-| Procedimento | Resultado e alcance |
+| Procedimento real | Resultado e alcance |
 |---|---|
-| `.venv/bin/python -m pytest -q` | **44 passed**; schema/JSONL, roles/tools, direitos pendentes, consent_ref, limites, dedup/linkagem/grupos, splits, hashes, caminhos/symlinks, planos, retomada de metadados, predições e export/cards com tensores sintéticos |
-| `python scripts/verify_repository.py --write-manifest` e novamente sem flag | **PASS**; 72 arquivos do pacote, cobertura exata/tamanhos/SHA-256, JSON real, YAML real com chaves duplicadas rejeitadas, TOML real, links relativos, skills e perfis |
-| Parsers | 5 JSON do pacote + manifest JSON; 5 YAML de configs/CI; 9 frontmatters YAML; 9 TOML de projeto/config/perfis; JSONL fixture parseado e validado por schema Draft202012 |
-| Links e agentes | 125 links relativos resolvem; 9 skills com frontmatter/entradas/procedimento/saída/critério/limites e 7 perfis com nome/descrição/instruções read-only e referências explícitas existentes. Âncoras de títulos e URLs externas não revalidadas automaticamente |
-| Testes do próprio verificador | Incluídos nos 44: detectar link quebrado, symlink fora do pacote e alterações de cobertura/hash, além do happy path |
-| Instalação editável e `pip check` | Pacote/CLI instalado, sem dependências quebradas |
-| Instalação em venv separado | Reinstalado com `requirements.lock` + `--no-build-isolation --no-deps -e .`, 44 testes passaram e `pip check` sem erros |
-| Smoke CLI instalado | validate-data, build-data, verify-data, write-card dataset e compare executados com fixtures; splits/card/relatório em `.cache/` ignorado, sem artefatos de produção |
-| Template incompleto | `register-plan` rejeita PENDING com exit 2, sem criar raiz/experimento; comportamento também em teste automatizado |
-| Export/retomada | Parser real safetensors e cópia/hashes exercitados somente com matrizes minúsculas de zeros e arquivos fictícios em diretórios temporários; não há adapter treinado |
-| Integridade histórica útil | Ledger AIRI igual ao de `c18c4ee`; 39 registros preservados, 48 linhas da matriz e seus IDs de benchmark conferidos. Não foi repetido clone/execução upstream nesta consolidação |
-| Marca | Conteúdo igual ao `origin/main` consultado, sem alteração de BRAND-STANDARDS |
-| GitHub Actions remoto | **PASS** em `51717b2`: runs `41045875666` (PR) e `41045875244` (push), ambos concluídos com success; não inferido do resultado local |
-| `git diff --check` | Sem erros de whitespace ao fechar a entrega |
+| Suíte base `.venv/bin/python -m pytest -q` | **143 passed, 1 skipped**. Skip é o módulo TF opcional, executado no ambiente abaixo; não é inferência faltante mascarada |
+| Ambiente separado `.cache/api/.venv`, lock requirements-api.lock | **151 passed**, com **Transformers5.22.1 real e sem Torch**. Config/registry/API Jinja/tokenizer WordLevel próprio, não tokenizer/modelo Qwen |
+| `pip check` em ambos os ambientes | Sem dependências quebradas; conflito safetensors corrigido para0.8.0 |
+| Compilação `python -m compileall -q src scripts` | PASS |
+| CLI doctor/help e recusa approve-inference não interativo | Executados/testados, sem criar grant real |
+| Autorizações em testes | Stores temporários de checkpoint fictício, confirmação TTY simulada declarada, limites/modelo/revision/hash/suite/código/paths/ação, expiração/futuro/TTL, concorrência, consumo, worker claim, finalização e replay. Nenhuma autorização operacional real |
+| Backend em testes | Mocks de Auto classes, frontend, from_pretrained/offline/dtype, processor textual, contexto, output slicing/EOS, texto vazio, tools opacas; mocks não comprovam pesos |
+| API real HF5.22.1 | AutoConfig e mappings; assistant_masks, multi-turn, tool calls/retornos, EOS e spans ruins com tokenizer original. Nenhum forward/backward/modelo instanciado |
+| Processo real sem Torch | Worker com grant sintético falha por dependência; worker sem grant recusa mesmo com flags offline. Nenhum resultado de linguagem gerado |
+| Linux recursos/rede | RLIMITs aplicados/consultados em Python descartável; unshare user/net aplicado e inode diferente confirmado neste host. Timeout real de filho descartável testado. Não teste de proteção de Windows/macOS/GPU nem sandbox completo |
+| Resultados/falhas | Stubs sintéticos testam completed, incomplete, failed, timed-out, interrupted, parciais, hash/model/order divergentes, respostas vazias, JSON/listas corruptos e não sobrescrever ID. São contratos, não métricas de modelo |
+| Verificador e manifest | JSON/YAML/TOML/frontmatter/schema, links locais, cobertura/bytes/SHA, perfis/skills e symlinks realmente verificados; regenerado e repetido sem flag. Contagens finais no output do verificador/PR |
+| Marca e whitespace | BRAND-STANDARDS igual à main consultada; git diff --check limpo |
 
-A instalação limpa inicialmente falhou porque `pip freeze` omitia setuptools/wheel de bootstrap e `bdist_wheel` não existia no venv novo. **Corrigido**: ambos foram fixados no lock/build-system; reinstalação sem isolamento e testes repetidos passaram. Não ocultar esse erro nem chamar a primeira tentativa de PASS.
+Correções decorrentes de falhas reais durante desenvolvimento: pin safetensors antigo não satisfazia TF5.22.1; máscara nativa com whitespace final podia incluir tool/user posterior; gate antigo de falha sem Torch precisou exigir grant sintético antes de alcançar import, mantendo também teste explícito de recusa sem grant. Teste do próprio verificador detectou link de evidência ainda não criado durante a edição; artefato foi criado e testes repetidos. Não ocultar esses resultados intermediários como PASS.
 
-## Reprodução
+## Reprodução sem pesos
 
 ```sh
 python -m venv .venv
@@ -51,20 +31,29 @@ python -m venv .venv
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/verify_repository.py
 .venv/bin/python -m pip check
-.venv/bin/lia-lab validate-data tests/fixtures/pilot.jsonl
+.venv/bin/python -m compileall -q src scripts
+.venv/bin/lia-lab doctor
+
+# Ambiente API separado: somente libs pequenas, sem Torch/modelos/tokenizers upstream.
+python -m venv .cache/api/.venv
+.cache/api/.venv/bin/pip install -r requirements-api.lock
+.cache/api/.venv/bin/pip install --no-build-isolation --no-deps -e .
+.cache/api/.venv/bin/python -m pytest -q
+.cache/api/.venv/bin/python -m pip check
 ```
 
-Após editar fontes/docs/configs, regenerar o manifest com `--write-manifest` e repetir sem flag. O verificador inclui a si próprio e todos os arquivos mantidos de fonte, docs, configs, skills, perfis, testes e CI; exclui apenas o próprio manifest, Git, caches, metadata instalada/config local e artefatos ML. Validar hashes não constitui revisão legal ou prova de qualidade do conteúdo.
+CI tem jobs separados base e lightweight-api; ambos não adquirem pesos. Estado remoto deve ser consultado no HEAD final, não inferido dos testes locais. Em CI com user namespaces proibidos, teste verifica recusa explícita, não registra namespace aplicado. Regenerar manifest após últimas edições; verificador não valida anchors Markdown, todas as URLs externas nem autenticidade/legalidade de conteúdo por hashes.
 
-## NOT-TESTED / não realizado
+## NOT-TESTED / desconhecido
 
-- Treinamento SFT/LoRA/QLoRA, Transformers/PEFT/TRL, carga de modelo/tokenizer/processor, gradientes/kernels, PEFT save/reload e equivalência após merge/quantização: sem pesos adquiridos nem GPU/autorização de execução.
-- Inferência real, baseline de qualidade Lia, pt-BR/persona/tools end-to-end com modelo, métricas humanas e benchmarks de jogos/voz/visão: fixtures não substituem essas avaliações.
-- GPU CUDA/ROCm/Vulkan, hardware atual do usuário, Windows/macOS e instalação em outras versões Python: não acessados/executados.
-- Invocação real dos sete agentes Codex, descoberta automática de skills no Arena e concorrência de agentes: não há ferramenta de delegação exposta; somente sintaxe/referências locais verificadas.
-- Revalidação de cada permalink AIRI, testes runtime AIRI/Lia e integrações Discord/Minecraft/Factorio: pesquisa estática anterior preservada, sem execução nesta entrega.
-- Auditoria automática de PII, near-dedup semântico, esquema multimodal e verificação de consentimentos reais: não implementados. Curador continua responsável; valores de atestação não autorizam dados.
+- Config.json, LICENSE, revision, tokenizer_config, template e geração originais dos checkpoints: hosts de pesos fora da allowlist. Fonte oficial de código/tests não substitui artefato exato. Qwen3.5-0.8B é citado por teste slow upstream, **não rodado**; para0.6B o teste consultado é **-Base**, não post-trained.
+- Inferência real, qualidade pt-BR/persona/tools, RAM/VRAM/latência/throughput de modelo: nenhum checkpoint, runtime Torch ou GPU. Todos sem resultado real; não há modelo Lia aprovado.
+- Processor Qwen completo com seus componentes, dtype/kernels/driver CUDA/ROCm/MPS/CPU com pesos, proteção em Windows/macOS/AMD/GPU e robustez contra conteúdo hostil: sem execução específica. RLIMIT/namespace não provam segurança de modelos.
+- PEFT, forward/backward, treinamento, reload/merge/quant/export equivalentes e melhoria mensurável de adapter: não realizados. Renderer validado com API leve não aprova template Qwen real ou dados/persona.
+- Revalidação/execução upstream AIRI e descoberta/delegação real de agentes: não realizadas; fallback sequencial, sem revisão independente simulada.
 
-## Custos, dados e aprovação
+## Custos e governança
 
-Nenhuma GPU/API paga provisionada; nenhum checkpoint ou corpus grande baixado; nenhum dado pessoal/conversa/áudio usado; nenhum adapter/modelo/dataset de produção publicado. Houve apenas download de dependências pequenas de software, incluindo NumPy (~17 MB de wheel), parsers, testes e ferramentas de build. Root de pesquisa e root de modelos aprovados permanecem separados; export/registro não promovem um modelo à aplicação. Aprovação de modelo-base, persona/dados, direitos de voz, teto de GPU/download e distribuição continuam pendentes.
+Zero pesos/datasets externos adquiridos, zero GPU/API paga, zero dados pessoais, zero licença aceita, zero publicação de pesos/datasets/adapters. Somente dependências pequenas de desenvolvimento/API foram instaladas. Grants dos testes são fictícios/temporários; operador humano deve confirmar uma operação real em terminal próprio e store externo. JSON/SQLite/TTY não autenticam identidade criptográfica; código/relógio/host e conta local são fronteiras de confiança.
+
+[Guia atual](16-REAL-INFERENCE-PILOT.md), [ADR](adr/0003-INFERENCE-HARDENING.md), [evidência](evidence/hardening-validation.json). Histórico de relatórios permanece no Git, sem coleções documentais paralelas.

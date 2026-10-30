@@ -8,6 +8,8 @@ Lia Model Lab entrega modelos/adapters, datasets governados, contratos, avaliaç
 
 ## Autorização
 
+Inferência exige plano exato + grant externo de uso único conforme [ADR-0003](docs/adr/0003-INFERENCE-HARDENING.md). O agente **não cria/confirma aprovações operacionais reais**; approve-inference é do humano em terminal próprio. String/ref, arquivo gerado pelo agente, flag offline ou autorização de código não substituem esse gate. Grants de fixtures temporárias não autorizam modelo real. Nenhuma evidência de processo/rlimit/namespace deve ser chamada de sandbox completo.
+
 Pode pesquisar, escrever código e testes pequenos, validar configs e fixtures fictícias. **Não** iniciar GPU/cloud/API paga, grandes downloads, treino longo, uploads públicos de dados/pesos/adapters, publicação de derivados, coleta de conversas/arquivos/áudio pessoais ou aceite de termos sem aprovação específica. Na falta de autorização: documentar tamanho/custo/risco/alternativas, continuar tarefas independentes. Não usar credenciais ambientais para outros serviços; GitHub desta tarefa usa a autenticação provisionada, sem solicitar tokens.
 
 Nunca colocar segredos, dados pessoais, transcrições, checkpoints, adapters reais, optimizer states ou corpora brutos no Git. Não publicar logs privados. Usar raiz de pesquisa configurável separada da pasta de modelos aprovados da aplicação. Dados exigem origem/licença/proveniência/consentimento quando aplicável, retenção e descarte; público não significa treinável.
