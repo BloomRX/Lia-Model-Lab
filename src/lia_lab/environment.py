@@ -23,7 +23,11 @@ def memory():
                   for line in Path('/proc/meminfo').read_text().splitlines() if ':' in line}
         available, total = values['MemAvailable'], values['MemTotal']
         limit_path = Path('/sys/fs/cgroup/memory.max')
-        if limit_path.exists() and limit_path.read_text().strip() != 'max':
+        if not limit_path.exists():
+            # cgroup v1/unknown controller layout must not be reported as host RAM
+            # available to the worker. A separate sizing implementation is needed.
+            return {'total_bytes': None, 'available_bytes': None}
+        if limit_path.read_text().strip() != 'max':
             limit = int(limit_path.read_text())
             total = min(total, limit)
             available = min(available, max(0, limit - int(Path('/sys/fs/cgroup/memory.current').read_text())))

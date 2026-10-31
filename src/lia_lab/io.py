@@ -1,6 +1,7 @@
 """Strict serialization, bounded path ownership and atomic publication."""
 import hashlib
 import json
+import math
 import os
 import tempfile
 from pathlib import Path
@@ -20,8 +21,15 @@ def _unique(pairs):
     return result
 
 
+def _finite_float(text):
+    value = float(text)
+    if not math.isfinite(value):
+        raise LabError('nonfinite numeric literal')
+    return value
+
+
 def json_loads(text):
-    return json.loads(text, object_pairs_hook=_unique,
+    return json.loads(text, object_pairs_hook=_unique, parse_float=_finite_float,
                       parse_constant=lambda x: (_ for _ in ()).throw(LabError(f"nonfinite {x}")))
 
 
@@ -36,10 +44,23 @@ def _yaml_mapping(loader, node):
 StrictLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _yaml_mapping)
 
 
+def _yaml_float(loader, node):
+    value = yaml.SafeLoader.construct_yaml_float(loader, node)
+    if not math.isfinite(value):
+        raise LabError('nonfinite YAML number')
+    return value
+
+
+StrictLoader.add_constructor('tag:yaml.org,2002:float', _yaml_float)
+
+
 def load(path):
     path = Path(path)
     text = path.read_text(encoding="utf-8")
-    return yaml.load(text, Loader=StrictLoader) if path.suffix in {".yaml", ".yml"} else json_loads(text)
+    try:
+        return yaml.load(text, Loader=StrictLoader) if path.suffix in {".yaml", ".yml"} else json_loads(text)
+    except yaml.YAMLError as exc:
+        raise LabError('invalid YAML: ' + str(path)) from exc
 
 
 def digest(path):
@@ -54,7 +75,7 @@ def canonical(value):
     return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
 
 
-def atomic_json(path, value):
+def atomic_json(path, value, *, overwrite=True):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
@@ -64,7 +85,12 @@ def atomic_json(path, value):
             f.write(text)
             f.flush()
             os.fsync(f.fileno())
-        os.replace(tmp, path)
+        if overwrite:
+            os.replace(tmp, path)
+        else:
+            # Publish only a fully written file; link is atomic and refuses existing
+            # paths (including symlinks). No check-then-replace race for new artifacts.
+            os.link(tmp, path)
     finally:
         if os.path.exists(tmp):
             os.unlink(tmp)

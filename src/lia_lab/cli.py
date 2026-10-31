@@ -63,7 +63,7 @@ def main(argv=None):
             if args.command == "plan-inference":
                 if Path(args.output).exists():
                     raise LabError("plan output already exists")
-                result = make_operation(**options); atomic_json(args.output, result)
+                result = make_operation(**options); atomic_json(args.output, result, overwrite=False)
             else:
                 result = run_inference(**options, approval_store=args.approval_store, approval_id=args.approval_id)
                 print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
@@ -81,7 +81,7 @@ def main(argv=None):
         elif args.command == "compare":
             if Path(args.output).exists():
                 raise LabError("comparison output already exists")
-            result = compare([load(p) for p in args.runs]); atomic_json(args.output, result)
+            result = compare([load(p) for p in args.runs]); atomic_json(args.output, result, overwrite=False)
         elif args.command == "write-card":
             result = write_card(args.kind, args.source, args.output)
         elif args.command == "inspect-adapter":

@@ -27,11 +27,13 @@ def result_fixture(request,request_hash,n,completed=False):
     for repeat in range(request['repeats']):
         for c in request['suite']['cases']:
             responses.append(dict(id=c['id'],repeat=repeat,capability=c['capability'],text='SYNTHETIC',
-                output_tokens_including_eos=1,generation_seconds_including_prefill=0.01,generation_process_cpu_seconds=0.01))
+                input_tokens=1,output_tokens_including_eos=1,generation_seconds_including_prefill=0.01,generation_process_cpu_seconds=0.01))
     op=request['authorization']['operation']
     return dict(schema_version=2,completed=completed,evidence='real-local-checkpoint-inference',
         request_sha256=request_hash,model_id=op['model_id'],revision=op['revision'],
-        successful_requests=n,generation_calls_completed=n,responses=responses[:n],metrics={'SYNTHETIC':True},containment=request['containment'])
+        successful_requests=n,generation_calls_completed=n,responses=responses[:n],metrics={'SYNTHETIC':True,'runtime_import_seconds':0.01,'frontend_load_seconds':0.01,
+        'weights_load_and_device_transfer_seconds':0.01,'prefill_seconds':None,'ttft_seconds':None,
+        'decode_only_tokens_per_second':None,'total_requests':n},containment=request['containment'])
 
 
 @pytest.mark.parametrize('mode',['completed','incomplete','failed-partial','timeout-partial','interrupted-partial','corrupt-list','corrupt-json','wrong-hash','empty','wrong-model','wrong-order'])

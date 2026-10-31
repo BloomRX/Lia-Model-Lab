@@ -16,6 +16,7 @@ ID = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,79}$")
 
 def verify_dataset(path):
     path = Path(path)
+    manifest_hash = digest(path)
     manifest = load(path)
     if manifest.get("schema_version") != 1:
         raise LabError("unsupported dataset manifest schema")
@@ -27,6 +28,8 @@ def verify_dataset(path):
         if digest(file) != entry["sha256"]:
             raise LabError(f"split hash mismatch: {name}")
         rows = read_examples(file)
+        if digest(file) != entry["sha256"]:
+            raise LabError("split changed during verification")
         if len(rows) != entry["count"]:
             raise LabError("split count mismatch")
         current_groups = {manifest["report"]["lineage"][r["group_id"]] for r in rows}
@@ -37,6 +40,8 @@ def verify_dataset(path):
         groups |= current_groups
         contents |= current_contents
         ids |= current_ids
+    if digest(path) != manifest_hash:
+        raise LabError("dataset manifest changed during verification")
     return manifest
 
 
@@ -68,7 +73,7 @@ def validate_plan(config):
             raise LabError(f"positive integer required: {field}")
     if not isinstance(t.get("learning_rate"), (int, float)) or not 0 < t["learning_rate"] < 1:
         raise LabError("invalid learning rate")
-    if not t.get("target_modules") or not all(isinstance(x, str) and x for x in t["target_modules"]):
+    if not isinstance(t.get("target_modules"), list) or not t["target_modules"] or not all(isinstance(x, str) and x for x in t["target_modules"]):
         raise LabError("explicit inspected target modules required")
     if t.get("compute_dtype") not in {"bfloat16", "float16"}:
         raise LabError("invalid compute dtype")
@@ -98,9 +103,13 @@ def validate_plan(config):
 
 def register_plan(config_path, research_root, approved_root):
     root, _ = roots(research_root, approved_root)
+    config_hash = digest(config_path)
     config = validate_plan(load(config_path))
     dataset_path = (Path(config_path).parent / config["dataset_manifest"]).resolve()
+    dataset_hash = digest(dataset_path)
     verify_dataset(dataset_path)
+    if digest(config_path) != config_hash or digest(dataset_path) != dataset_hash:
+        raise LabError("plan or dataset manifest changed during registration")
     run = owned(root, "experiments/" + config["experiment_id"])
     if run.exists():
         raise LabError("experiment id already registered; no overwrite")
@@ -114,13 +123,18 @@ def register_plan(config_path, research_root, approved_root):
     record = {"schema_version": 1, "status": "planned", "training_executed": False,
               "git_dirty": git_dirty, "source_snapshot_sha256": source_hash,
               "dependency_lock_sha256": digest(checkout / "requirements.lock"),
-              "config": config, "config_sha256": digest(config_path),
-              "dataset_manifest_sha256": digest(dataset_path), "code_commit": code_commit,
+              "config": config, "config_sha256": config_hash,
+              "dataset_manifest_sha256": dataset_hash, "code_commit": code_commit,
               "observed_planner_environment": {"python": platform.python_version(), "os": platform.platform(),
                   "dependencies": {p: importlib.metadata.version(p) for p in ("PyYAML", "jsonschema", "safetensors", "numpy")}},
               "resume": {"checkpoint": None, "optimizer": None, "scheduler": None, "rng": None},
               "actual_duration_seconds": None, "actual_cost": None}
-    atomic_json(run / "experiment.json", record)
+    # Reserve the ID atomically: concurrent registrars must never overwrite a plan.
+    try:
+        run.mkdir(parents=True, exist_ok=False)
+    except FileExistsError as exc:
+        raise LabError("experiment id already registered; no overwrite") from exc
+    atomic_json(run / "experiment.json", record, overwrite=False)
     return record
 
 

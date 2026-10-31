@@ -111,6 +111,12 @@ def finalize_grant(store, grant_id, operation):
     path = check_store(store, operation)
     try:
         with sqlite3.connect(path.as_uri() + '?mode=rw', uri=True) as db:
-            db.execute('UPDATE grants SET finished=? WHERE id=? AND consumed IS NOT NULL', (time.time(), grant_id))
+            db.execute('BEGIN IMMEDIATE')
+            row = db.execute('SELECT operation, consumed, finished FROM grants WHERE id=?', (grant_id,)).fetchone()
+            if row is None or row[1] is None or canonical(json_loads(row[0])) != canonical(operation):
+                raise LabError('cannot finalize absent/unconsumed/mismatched grant')
+            if row[2] is None:
+                db.execute('UPDATE grants SET finished=? WHERE id=?', (time.time(), grant_id))
+            # Repeated finalization of the same operation preserves the first audit time.
     except sqlite3.Error as exc:
         raise LabError('cannot finalize operator audit record') from exc

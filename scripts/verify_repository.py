@@ -19,12 +19,23 @@ EXTENSIONS = {".md", ".json", ".jsonl", ".yaml", ".yml", ".toml", ".py", ".txt"}
 
 
 def package_paths(root=ROOT):
-    paths = [root / n for n in ROOT_FILES if (root / n).is_file()]
+    paths = []
+    for p in [root / n for n in ROOT_FILES]:
+        if p.is_symlink():
+            raise LabError(f"package symlink: {p}")
+        if p.is_file():
+            paths.append(p)
     for tree in TREES:
-        paths += [p for p in (root / tree).rglob("*") if p.is_file()
-                  and p.suffix in EXTENSIONS and not any(
-                      x == "__pycache__" or x.endswith(".egg-info") for x in p.parts)
-                  and p.relative_to(root).as_posix() not in {".codex/config.toml", ".codex/config.local.toml"}]
+        for p in (root / tree).rglob("*"):
+            if any(x == "__pycache__" or x.endswith(".egg-info") for x in p.parts):
+                continue
+            if p.relative_to(root).as_posix() in {".codex/config.toml", ".codex/config.local.toml"}:
+                continue
+            if p.is_symlink():
+                raise LabError(f"package symlink: {p}")
+            if (p.is_file() and p.suffix in EXTENSIONS and p.relative_to(root).as_posix()
+                    not in {".codex/config.toml", ".codex/config.local.toml"}):
+                paths.append(p)
     for p in paths:
         if p.is_symlink() or not p.resolve().is_relative_to(root.resolve()):
             raise LabError(f"package symlink: {p}")

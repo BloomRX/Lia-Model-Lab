@@ -20,12 +20,14 @@ BACKENDS = {
 
 
 def select_backend(config):
+    if not isinstance(config, dict) or not isinstance(config.get('model_type'), str):
+        raise LabError('invalid model config/type')
     spec = BACKENDS.get(config.get('model_type'))
     if spec is None or config.get('architectures') != [spec.architecture]:
         raise LabError('unknown/mismatched architecture; no generic loading fallback')
     if config.get('quantization_config') or config.get('auto_map'):
         raise LabError('quantized/custom-code architecture not approved by reference loader')
-    if spec.multimodal and (config.get('text_config', {}).get('model_type') != 'qwen3_5_text' or
+    if spec.multimodal and (not isinstance(config.get('text_config'), dict) or config['text_config'].get('model_type') != 'qwen3_5_text' or
                             not isinstance(config.get('vision_config'), dict)):
         raise LabError('full Qwen3.5 multimodal config required; text-only export is a different architecture')
     return spec

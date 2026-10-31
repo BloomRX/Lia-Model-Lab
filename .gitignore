@@ -84,3 +84,7 @@ CLAUDE.local.md
 
 # Local Python package metadata
 *.egg-info/
+
+# Local wheel/sdist build outputs
+build/
+dist/

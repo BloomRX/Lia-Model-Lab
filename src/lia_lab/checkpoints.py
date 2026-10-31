@@ -26,6 +26,8 @@ def files_at(root):
     for p in sorted(root.rglob('*')):
         if p.is_symlink():
             raise LabError('snapshot symlinks forbidden; materialize an authorized standalone snapshot')
+        if not p.is_file() and not p.is_dir():
+            raise LabError('snapshot special files forbidden: ' + p.name)
         if p.is_file():
             if p.suffix not in SAFE_SUFFIXES and p.name not in {'LICENSE', 'NOTICE'}:
                 raise LabError('snapshot contains unsupported file: ' + p.name)
@@ -36,6 +38,8 @@ def files_at(root):
     if not weights:
         raise LabError('local safetensors weights required; pickle/GGUF not this backend')
     config = load(root / 'config.json')
+    if not isinstance(config, dict):
+        raise LabError('invalid model config')
     if config.get('quantization_config'):
         raise LabError('prequantized safetensors require a separate reviewed loader; reference path is unquantized')
     select_backend(config)
@@ -59,8 +63,13 @@ def files_at(root):
                 for size in shape:
                     count *= size
                 params += count
+    if len(weights) > 1 and 'model.safetensors.index.json' not in files:
+        raise LabError('multiple weight files require an explicit shard index')
     if 'model.safetensors.index.json' in files:
-        weight_map = load(root / 'model.safetensors.index.json')['weight_map']
+        index = load(root / 'model.safetensors.index.json')
+        if not isinstance(index, dict) or not isinstance(index.get('weight_map'), dict):
+            raise LabError('invalid shard index mapping')
+        weight_map = index['weight_map']
         if weight_map != tensor_shards or set(weight_map.values()) != set(weights):
             raise LabError('shard index coverage mismatch')
         for name in weight_map.values():
@@ -89,7 +98,7 @@ def seal_snapshot(directory, output, model_id, revision, license_id, license_fil
               'evidence': 'local-integrity-and-operator-attestation-not-upstream-authenticity',
               'release_approved': False}
     validate_snapshot_manifest(result)
-    atomic_json(output, result)
+    atomic_json(output, result, overwrite=False)
     return result
 
 

@@ -4,6 +4,39 @@ from jsonschema import Draft202012Validator
 from .io import LabError
 
 
+
+def validate_tool_schema(schema):
+    """Only in-document references: schema validation must never fetch files/URLs."""
+    if not isinstance(schema, dict):
+        raise LabError('explicit object tool schema required')
+    def walk(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in {'$ref', '$dynamicRef', '$recursiveRef'} and (not isinstance(child, str) or not child.startswith('#')):
+                    raise LabError('external tool schema references forbidden')
+                walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+    walk(schema)
+    from jsonschema.exceptions import SchemaError
+    try:
+        Draft202012Validator.check_schema(schema)
+    except SchemaError as exc:
+        raise LabError('invalid tool parameter schema') from exc
+
+
+def validate_tool_arguments(schema, arguments):
+    validate_tool_schema(schema)
+    from referencing.exceptions import Unresolvable
+    try:
+        errors = list(Draft202012Validator(schema).iter_errors(arguments))
+    except Unresolvable as exc:
+        raise LabError('unresolvable local tool schema reference') from exc
+    if errors:
+        raise LabError('tool arguments do not match schema')
+
+
 def hf_messages(example, tools=None):
     messages = deepcopy(example['messages'])
     if not messages or len(messages) > 64:
@@ -16,7 +49,7 @@ def hf_messages(example, tools=None):
         name, schema = function['name'], function.get('parameters')
         if name in schemas or not isinstance(schema, dict):
             raise LabError('unique explicit tool schemas required')
-        Draft202012Validator.check_schema(schema)
+        validate_tool_schema(schema)
         schemas[name] = schema
     calls, pending = {}, set()
     for message in messages:
@@ -37,9 +70,7 @@ def hf_messages(example, tools=None):
                     raise LabError('training tool call requires matching explicit tool schema')
                 if call_id in calls or not isinstance(call['arguments'], dict):
                     raise LabError('duplicate tool call ID/invalid arguments')
-                errors = list(Draft202012Validator(schemas[name]).iter_errors(call['arguments']))
-                if errors:
-                    raise LabError('tool arguments do not match schema')
+                validate_tool_arguments(schemas[name], call['arguments'])
                 calls[call_id] = name
                 pending.add(call_id)
                 converted.append({'id': call_id, 'type': 'function',

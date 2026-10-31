@@ -32,3 +32,10 @@ def test_manifest_rejects_symlinks(tmp_path):
 def test_broken_link_detection(tmp_path):
     (tmp_path/'README.md').write_text('[bad](missing.md)')
     with pytest.raises(ValueError,match='broken link'):verify.validate(tmp_path,check_manifest=False)
+
+
+@pytest.mark.parametrize('directory',[False,True])
+def test_manifest_rejects_previously_unlisted_symlink(tmp_path,directory):
+    (tmp_path/'docs').mkdir()
+    (tmp_path/'docs/link').symlink_to(tmp_path/'missing',target_is_directory=directory)
+    with pytest.raises(ValueError,match='symlink'):verify.manifest(tmp_path)

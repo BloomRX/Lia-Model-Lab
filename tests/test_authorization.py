@@ -123,3 +123,20 @@ def test_blocked_grant_finalized_even_without_worker(operation,tmp_path):
     store,grant=fixture_grant(tmp_path/'operator/grants.db',operation)
     consume_grant(store,grant,operation);finalize_grant(store,grant,operation)
     with pytest.raises(LabError):claim_worker(store,grant,operation)
+
+
+def test_finalization_bound_to_consumed_operation_and_idempotent(operation,tmp_path):
+    import sqlite3
+    import copy
+    from lia_lab.authorization import finalize_grant
+    store,grant=fixture_grant(tmp_path/'operator/finalize.db',operation)
+    with pytest.raises(LabError):finalize_grant(store,grant,operation)
+    consume_grant(store,grant,operation)
+    altered=copy.deepcopy(operation);altered['revision']='f'*40
+    with pytest.raises(LabError):finalize_grant(store,grant,altered)
+    finalize_grant(store,grant,operation)
+    with sqlite3.connect(store) as db:
+        first=db.execute('SELECT finished FROM grants WHERE id=?',(grant,)).fetchone()[0]
+    finalize_grant(store,grant,operation)
+    with sqlite3.connect(store) as db:
+        assert db.execute('SELECT finished FROM grants WHERE id=?',(grant,)).fetchone()[0]==first
