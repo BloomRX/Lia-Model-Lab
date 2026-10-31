@@ -1,14 +1,46 @@
 # 18 — Auditoria final da PR #1
 
-Data: **2026-10-31**. Parecer: **pronta para revisão humana da infraestrutura/pesquisa após as correções abaixo; não aprovação de pesos, execução, licença ou release**. Não constitui certificação de segurança. Sem merge, fechamento ou aprovação de inferência real.
+Data: **2026-10-31**. Parecer: **aguarda revisão humana; revisão independente NOT PERFORMED. As correções abaixo não constituem aprovação de integração, pesos, execução, licença ou release**. Não constitui certificação de segurança. Sem merge, fechamento ou aprovação de inferência real.
 
 ## Estado inicial e método
 
-GitHub consultado antes de editar: PR1 OPEN/mergedAt=null, MERGEABLE, HEAD `4eadfa39860914ea1c84e19e0bc246933a44ae62`; main `20f1883ad1671139d7c023eff42b72c6bca96525`. Main é ancestral da branch; divergência main...branch **0/19**. Nenhum comentário/review/thread. Os quatro checks iniciais (verify/lightweight-api, eventos push/PR) tinham SUCCESS. Há um workflow ativo; `main.protected=false`, rulesets visíveis vazios: CI aprovado não significa política de proteção de branch obrigatória configurada.
+GitHub consultado antes de editar: PR1 OPEN/mergedAt=null, MERGEABLE, HEAD `4eadfa39860914ea1c84e19e0bc246933a44ae62`; main `20f1883ad1671139d7c023eff42b72c6bca96525`. Main é ancestral da branch; divergência main...branch **0/17**, recalculada com histórico completo e confirmada pela API GitHub. Nenhum comentário/review/thread. Os quatro checks iniciais (verify/lightweight-api, eventos push/PR) tinham SUCCESS. Há um workflow ativo; `main.protected=false`, rulesets visíveis vazios: CI aprovado não significa política de proteção de branch obrigatória configurada.
 
 Snapshot restaurado tinha HEAD/index182f1a1, mas **zero diferenças byte a byte** para todos os arquivos do HEAD remoto. Fetch e comparação precederam reset mixed, sem substituir bytes, trocar branch ou force push. A baseline foi executada antes das correções: **157 passed, 1 skipped**. Novos commits remotos devem sempre ser rechecados antes do envio.
 
 Revisão sequencial pelo principal: módulos Python executáveis, CLI, schemas, scripts, configs/locks/workflow; testes e fixtures; documentação numerada/ADRs/fontes; nove skills e sete perfis. Não houve ferramenta de subagentes ou revisão independente. Evidência de revisão de código não é teste com checkpoint. Não reconsultamos todos os links/cards externos nem fizemos análise jurídica de LICENSE ausentes.
+
+## Retificação do histórico e revisão independente
+
+A base de todas as comparações abaixo é `20f1883ad1671139d7c023eff42b72c6bca96525`. Valores são commits exclusivos **main/branch**, não quantidade de commits criados pela missão.
+
+| Marco imutável | HEAD | Git completo | API compare (behind_by/ahead_by) |
+|---|---|---|---|
+| Início da auditoria anterior | `4eadfa39860914ea1c84e19e0bc246933a44ae62` | 0/17 | 0/17 |
+| Após correções da auditoria anterior | `9db718caadb0d0cc255c3972608ba3059650816a` | 0/19 | 0/19 |
+| Remoto observado no início desta retificação | `9db718caadb0d0cc255c3972608ba3059650816a` | 0/19 | 0/19 |
+
+**Causa confirmada:** o checkout era shallow (`git rev-parse --is-shallow-repository=true`), com fronteiras em182f1a1 e20f1883. O Git local tratava a main como raiz e contava indevidamente182f1a1edd08e7197b8ea62c9932e9778bc2af9a e311eb4a7f0200ae11ecf433876c5a5ac051df6dc como exclusivos da branch. A API de commit confirma que o pai de20f1883 é311eb4a. `git fetch --unshallow origin` completou a ancestralidade; as duas comparações passaram a concordar com a API. Os valores antigos 19 no início e21 no fim eram contagens locais truncadas, **não números corretos do histórico completo**. A diferença de2 não deve ser atribuída a merges nem corrigida subtraindo um valor constante em futuras consultas.
+
+Reprodução, após fetch de histórico completo:
+
+```sh
+git rev-parse --is-shallow-repository
+git rev-list --left-right --count 20f1883ad1671139d7c023eff42b72c6bca96525...4eadfa39860914ea1c84e19e0bc246933a44ae62
+git rev-list --left-right --count 20f1883ad1671139d7c023eff42b72c6bca96525...9db718caadb0d0cc255c3972608ba3059650816a
+gh api repos/BloomRX/Lia-Model-Lab/compare/20f1883ad1671139d7c023eff42b72c6bca96525...9db718caadb0d0cc255c3972608ba3059650816a --jq '{ahead_by,behind_by,total_commits}'
+```
+
+O novo HEAD e a contagem remota **após esta retificação** são conferidos novamente por Git completo e API após push e registrados na descrição da PR junto aos runs CI. Não chamar9db718c de HEAD remoto atual depois de novos commits. Este arquivo fixa marcos já observados, não tenta embutir o SHA do commit que contém a si próprio.
+
+### Estado da revisão independente
+
+**NOT PERFORMED**: esta sessão não expõe ferramenta real de spawn/delegação/retorno de segundo agente. Não houve solicitação executável a um revisor, subagente, parecer independente ou aprovação fabricada. Os achados F01–F12 abaixo continuam sendo a revisão sequencial do agente principal; testes e CI não substituem um segundo revisor. O proprietário deve obter revisão humana/independente antes de decidir integrar.
+
+| Registro desta retificação | Classe | Local/evidência | Recomendação/estado |
+|---|---|---|---|
+| DOC01 | P2 — defeito documental confirmado | Estado inicial deste documento e branch_exclusive_commits_at_start do JSON diziam19; PR dizia21 no final. Git completo/API comprovam17/19 | Corrigido neste documento, JSON e descrição da PR; SHA de cada marco explícito |
+| REVIEW01 | Pendência de processo, não defeito de código confirmado | Ausência de mecanismo real de segundo agente; F01–F12 não receberam revisão independente | NOT PERFORMED; manter PR aberta para revisão humana, sem recomendação que pressuponha segunda revisão |
 
 ## Achados e correções
 

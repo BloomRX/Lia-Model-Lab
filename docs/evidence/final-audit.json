@@ -5,14 +5,29 @@
   "initial_head": "4eadfa39860914ea1c84e19e0bc246933a44ae62",
   "main_at_start": "20f1883ad1671139d7c023eff42b72c6bca96525",
   "main_exclusive_commits_at_start": 0,
-  "branch_exclusive_commits_at_start": 19,
+  "branch_exclusive_commits_at_start": 17,
   "initial_pr_state": "OPEN-not-merged",
   "initial_comments_reviews_threads": 0,
   "snapshot_byte_differences_from_remote": 0,
-  "baseline": {"passed": 157, "skipped": 1},
-  "base_final": {"passed": 197, "skipped_optional_api_module": 1},
-  "lightweight_api_final": {"passed": 205, "transformers": "5.22.1", "torch_installed": false},
-  "findings": {"P0_identified": 0, "P1_fixed": 6, "P2_fixed": 6, "P3": "documented future improvements, not quantified claims of completion"},
+  "baseline": {
+    "passed": 157,
+    "skipped": 1
+  },
+  "base_final": {
+    "passed": 197,
+    "skipped_optional_api_module": 1
+  },
+  "lightweight_api_final": {
+    "passed": 205,
+    "transformers": "5.22.1",
+    "torch_installed": false
+  },
+  "findings": {
+    "P0_identified": 0,
+    "P1_fixed": 6,
+    "P2_fixed": 6,
+    "P3": "documented future improvements, not quantified claims of completion"
+  },
   "clean_wheel_test": "Linux Python3.11; separate venv; imports/resources/doctor/fixture-validation outside source root",
   "pip_check_environments": 3,
   "new_ml_dependencies": false,
@@ -25,6 +40,47 @@
   "paid_resources_or_license_acceptance": false,
   "independent_subagent_review": false,
   "merge_performed": false,
-  "limitations": ["not a formal security or dependency vulnerability audit", "not a legal opinion or checkpoint license approval", "same-UID trusted host threat boundary remains", "model/hardware compatibility NOT-TESTED"],
-  "final_remote_ci": "consult and record exact SHA/run IDs in PR after final push; not inferred from local tests"
+  "limitations": [
+    "not a formal security or dependency vulnerability audit",
+    "not a legal opinion or checkpoint license approval",
+    "same-UID trusted host threat boundary remains",
+    "model/hardware compatibility NOT-TESTED"
+  ],
+  "final_remote_ci": "consult and record exact SHA/run IDs in PR after final push; not inferred from local tests",
+  "history_verification": {
+    "base": "20f1883ad1671139d7c023eff42b72c6bca96525",
+    "method": "complete Git ancestry after git fetch --unshallow origin, cross-checked with GitHub compare API",
+    "initial": {
+      "head": "4eadfa39860914ea1c84e19e0bc246933a44ae62",
+      "behind_by": 0,
+      "ahead_by": 17
+    },
+    "after_previous_audit": {
+      "head": "9db718caadb0d0cc255c3972608ba3059650816a",
+      "behind_by": 0,
+      "ahead_by": 19
+    },
+    "remote_observed_at_start_of_documentary_correction": {
+      "head": "9db718caadb0d0cc255c3972608ba3059650816a",
+      "behind_by": 0,
+      "ahead_by": 19
+    },
+    "previous_incorrect_shallow_counts": {
+      "initial": 19,
+      "after_previous_audit": 21
+    },
+    "cause": "shallow boundary at main omitted ancestry; two base ancestors incorrectly counted as branch-exclusive",
+    "incorrectly_counted_ancestors": [
+      "182f1a1edd08e7197b8ea62c9932e9778bc2af9a",
+      "311eb4a7f0200ae11ecf433876c5a5ac051df6dc"
+    ],
+    "new_remote_tip_after_correction": "exact SHA/count verified after push and recorded in PR; not self-referential in this artifact"
+  },
+  "independent_review": {
+    "status": "NOT PERFORMED",
+    "reason": "No real second-agent delegation/return tool exposed in this session",
+    "reviewer": null,
+    "F01_F12_independently_reviewed": false,
+    "integration_recommendation": "pending human review; no independent approval claimed"
+  }
 }

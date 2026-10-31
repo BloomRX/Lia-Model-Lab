@@ -241,8 +241,8 @@
     },
     {
       "path": "docs/18-FINAL-AUDIT.md",
-      "bytes": 11288,
-      "sha256": "9ac100f3435f179518fe749a3f97e20a91e164798c2bb78056c5a30fbb68605c"
+      "bytes": 14714,
+      "sha256": "f566ede0d5884994f0ad498ba914467e89b8848037fd37a651707b52688763bb"
     },
     {
       "path": "docs/BRAND-STANDARDS.md",
@@ -261,8 +261,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 9161,
-      "sha256": "97322da541c4cab3ef59f93dee0e5b330bdfcce359a6e6f4aec9aa142c8191c2"
+      "bytes": 9558,
+      "sha256": "97d11e59ddfcdcda0a93cd39b1fe2b1e380cffed94ca5d6bd3814ab7e8d04174"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -286,8 +286,8 @@
     },
     {
       "path": "docs/evidence/final-audit.json",
-      "bytes": 1640,
-      "sha256": "97f946f4448b1013ebca3fb2e8f8d2681ee2abaafbb937fc6498745a61fb581e"
+      "bytes": 3159,
+      "sha256": "477c48d1034c0748961815b9e227b779c6aac9a7f4cb804a34243a6da274b18e"
     },
     {
       "path": "docs/evidence/hardening-validation.json",

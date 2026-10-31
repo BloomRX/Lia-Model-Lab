@@ -1,6 +1,8 @@
-# Validação atual — auditoria final (2026-10-31)
+# Validação atual — auditoria final e retificação documental (2026-10-31)
 
-Partida `4eadfa39860914ea1c84e19e0bc246933a44ae62`; baseline reproduzida **157 passed, 1 skipped**. Após correções: **197 passed, 1 skipped** na base e **205 passed** no ambiente API TF5.22.1 sem Torch. Os 40 casos adicionais cobrem lacunas descritas no [relatório de auditoria](18-FINAL-AUDIT.md); não são validação de modelo.
+Retificação: histórico completo/API confirmam17 commits exclusivos em4eadfa3 e19 em9db718c; números antigos19/21 vieram de checkout shallow. Revisão independente **NOT PERFORMED**, sem mecanismo real de delegação. SHA/contagem/CI após a retificação são registrados na PR. Não houve alteração de código executável nesta correção.
+
+Partida da auditoria anterior `4eadfa39860914ea1c84e19e0bc246933a44ae62`; baseline reproduzida **157 passed, 1 skipped**. Após correções: **197 passed, 1 skipped** na base e **205 passed** no ambiente API TF5.22.1 sem Torch. Os 40 casos adicionais cobrem lacunas descritas no [relatório de auditoria](18-FINAL-AUDIT.md); não são validação de modelo.
 
 Instalação limpa adicional: wheel em terceiro venv, import de todos os módulos fora da árvore fonte, schemas empacotados, doctor/validate-data e ausência de Torch verificados. pip check em três ambientes, compileall e diff --check PASS. Manifesto regenerado/verificado após edições; parsers, links e hashes abrangem fontes mantidas, não arquivos de checkpoint. Estado remoto final é registrado na PR após push.
 
