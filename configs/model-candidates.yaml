@@ -76,7 +76,12 @@ candidates:
     risks:
       - "measure against Qwen3.8 rather than assume older model is inferior"
   - id: "gemma4"
-    model_id: "Google Gemma 4 (select exact variant after review)"
+    model_id: null
+    record_kind: "family-placeholder-not-an-exact-checkpoint"
+    revision: null
+    license_review: "exact-artifact-review-required"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
     family: "Gemma 4"
     parameter_scale: "E2B / E4B / 12B Unified / 26B A4B / 31B"
     license_declared: "Apache-2.0 — official Gemma 4 card checked 2026-10-30; exact artifact review pending"

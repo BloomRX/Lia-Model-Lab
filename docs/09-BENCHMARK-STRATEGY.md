@@ -52,4 +52,4 @@ Discord: participantes fictícios ou consentidos; mistura de menções, DM/canal
 
 Medir BF16 master (FP16 apenas se validado), 8/6/5/4-bit com curvas de qualidade×RAM/VRAM×latência. Checar persona, pt-BR, schemas/argumentos, reasoning, visual grounding e memória em todas as variantes. Retirar variante que falha gate crítico, mesmo que menor/rápida. Quantização não suportada = N/A justificado, não PASS.
 
-Relatório usa template AVALIACAO: métricas brutas/agregadas, IC, exemplos redigidos, falhas, hardware/runtime e hashes dos artefatos. Gates v1.0 A–E continuam: licença/base, dados, reprodutibilidade, qualidade, distribuição. Releases só no alcance testado.
+Relatório usa template AVALIACAO: métricas brutas/agregadas, IC, exemplos redigidos, falhas, hardware/runtime e hashes dos artefatos. Gates atuais: licença/base, dados, reprodutibilidade, qualidade e distribuição, conforme [governança](13-GOVERNANCA-DE-EXPERIMENTOS.md). Releases só no alcance testado.

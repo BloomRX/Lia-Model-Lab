@@ -4,7 +4,7 @@
 
 ## Método e alcance
 
-Todas as consultas abaixo ocorreram em **2026-10-30 UTC**. Código por git/gh; cards/páginas oficiais por fetch de texto. Links de código fixam SHA; páginas/cards em main/latest são **mutáveis** e precisam de revision e hash antes de treinamento. Não são resultados de benchmark Lia. Leitura parcial de cards extensos limitou-se às seções de arquitetura/licença/capacidades e exemplos relevantes; tabelas inteiras de benchmarks não foram usadas para ranquear por pontuação.
+O registro histórico das seções iniciais corresponde a **2026-10-30 UTC**; seções posteriores têm datas e alcance próprios. A auditoria de 2026-10-31 revisou a coerência desses registros, não reconsultou todos os cards externos. Código por git/gh; cards/páginas oficiais por fetch de texto. Links de código fixam SHA; páginas/cards em main/latest são **mutáveis** e precisam de revision e hash antes de treinamento. Não são resultados de benchmark Lia. Leitura parcial de cards extensos limitou-se às seções de arquitetura/licença/capacidades e exemplos relevantes; tabelas inteiras de benchmarks não foram usadas para ranquear por pontuação.
 
 ## Fontes AIRI e Lia
 

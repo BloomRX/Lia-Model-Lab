@@ -2,13 +2,15 @@
 
 Laboratório independente para construir e avaliar os primeiros pesos/adapters **Lia Core**, com evolução progressiva para percepção, fala, agentes e jogos. Não é um chatbot renomeado nem o runtime da aplicação Lia.
 
-## Estado — fundação e piloto de inferência, 30/10/2026
+## Estado — fundação, pesquisa e auditoria, 31/10/2026
 
 Pesquisa e skills integradas em uma única documentação oficial; marca e governança preservadas. Já há **código offline funcional e testes** para Dataset Factory texto/tools, splits/dedup, integridade, planos reproduzíveis, avaliação de predições e exportação estrutural local de adapters.
 
 **Hardening v0.4:** autorização operacional externa/temporária/uso único, classes Qwen explícitas, processor VLM, métricas v2 e máscaras validadas por turno. API real TF5.22.1 executada apenas com tokenizer original de teste e sem Torch. Perfis Linux de recursos/namespace não são sandbox completo. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 continua aberta; este trabalho não está presumido integrado à main.
 
 **Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
+
+Auditoria final: [achados, correções e limites para integração](docs/18-FINAL-AUDIT.md). Prontidão de revisão do código não é aprovação de modelos, licença ou execução.
 
 ## Começar
 

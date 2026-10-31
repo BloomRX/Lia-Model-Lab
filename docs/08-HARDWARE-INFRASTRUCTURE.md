@@ -5,7 +5,7 @@
 ## Três ambientes que não devem ser confundidos
 
 1. **PC do proprietário:** Ryzen 5 5500, ~16 GB RAM, RX 580 2048SP ~4 GB aparecem no contexto e na v1.0, que atribui esses números a benchmark histórico não recuperado nesta missão; documentos arquiteturais Lia falam RX 580 8 GB. Não houve acesso ao PC: **configuração atual não confirmada**.
-2. **Sandbox desta missão:** Linux x86_64 6.1.158+, Python 3.11.2, 2 CPUs visíveis, MemTotal 4.034.452 kB (~3,85 GiB), disco ~21,8 GB total/~20,7 GB livres antes das cópias. Sem `/dev/dri`, `/dev/kfd`, `/dev/nvidia0`; nvidia-smi/rocminfo/vulkaninfo ausentes. **Nenhuma GPU utilizável evidenciada**. São observações da sessão, não limites garantidos Arena.
+2. **Sandbox observado historicamente em 2026-10-30:** Linux x86_64 6.1.158+, Python 3.11.2, 2 CPUs visíveis, MemTotal 4.034.452 kB (~3,85 GiB), disco ~21,8 GB total/~20,7 GB livres antes das cópias. Sem `/dev/dri`, `/dev/kfd`, `/dev/nvidia0`; nvidia-smi/rocminfo/vulkaninfo ausentes. **Nenhuma GPU utilizável evidenciada**. São observações da sessão, não limites garantidos Arena.
 3. **Treino remoto:** ainda não escolhido/aprovado. Precisa de GPU/VRAM, região, privacidade, quotas, armazenamento, custo máximo, duração e desligamento definidos antes de execução.
 
 ## Compatibilidade real versus anunciada
@@ -25,7 +25,7 @@ Fontes: framework snapshots e matriz AMD em [SOURCES](SOURCES.md). Não instalar
 
 ## Plano operacional sem depender só de CUDA
 
-- Local: editor/Git, schema/dedup em streaming, manifests, testes mocks/replay, modelos pequenos autorizados em CPU; depois Vulkan opcional. Com ~16 GB RAM evitar carregar corpora/mídia inteiros.
+- Local: editor/Git, schema/dedup do piloto em memória limitada (16 MiB/10.000 linhas; streaming futuro), manifests, testes mocks/replay, modelos pequenos autorizados em CPU; depois Vulkan opcional. Com ~16 GB RAM evitar carregar corpora/mídia inteiros.
 - Remoto: container/env lock com backend apropriado, smoke test e medição pico antes do job; checkpoints periódicos e recuperação por hash. NVIDIA ou AMD suportada são alternativas, sem impor dependência arquitetural de CUDA ao produto.
 - Avaliação: mesma suíte/config por variante; hardware distinto implica resultados de performance separados, não comparação direta enganosa.
 - Conversão/quantização: processo offline por architecture/converter suportados; ter RAM/disco para base+merge+quant+temporários simultâneos; validar round trip e modalidade visual/áudio.
@@ -44,3 +44,5 @@ Diagnóstico futuro no PC: SO, CPU/RAM, PCI ID/modelo real/VRAM, driver, Vulkan 
 [Análise GGUF/llama.cpp](17-LFM3-RESEARCH.md): tag b11960 fixado em8642541b255bfb5dc39cd351a178be09013a55d6 contém código LFM3/mtmd/d1; não foi compilado nem executado. Documentação Audio/d1-Omni pede v0.8.0/b11960+, mas mínimo Omni do card GGUF ainda não pôde ser reconsultado. Não usar tabela antiga b7075/LFM2 como prova de suporte LFM3.
 
 Ryzen5 5500/16GB/RX5802048SP ~4GB é referência histórica, não telemetria. CPU é candidato a probe portável, sem promessa de velocidade. Vulkan AMD depende de driver, operações, offload de encoder/codec e build exatos; ROCm/RX580 não aprovado. Quantização nominal não inclui KV/cache/buffers/mmproj/codec/contexto/OS. Windows documentado não significa contenção equivalente ao Linux. Sem downloads/builds/pesos/stack GPU nesta missão.
+
+Na auditoria de 2026-10-31, o sizing do doctor retorna RAM null quando não encontra layout cgroup v2 reconhecido. Não substitui esse desconhecido pela RAM do host: inferência bloqueia no preflight. cgroup v1/Windows/macOS ou hierarquias não cobertas exigem implementação/probe específico. A observação histórica acima não é telemetria atual.

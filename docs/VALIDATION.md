@@ -1,4 +1,14 @@
-# Validação atual — pesquisa LFM3 (2026-10-31)
+# Validação atual — auditoria final (2026-10-31)
+
+Partida `4eadfa39860914ea1c84e19e0bc246933a44ae62`; baseline reproduzida **157 passed, 1 skipped**. Após correções: **197 passed, 1 skipped** na base e **205 passed** no ambiente API TF5.22.1 sem Torch. Os 40 casos adicionais cobrem lacunas descritas no [relatório de auditoria](18-FINAL-AUDIT.md); não são validação de modelo.
+
+Instalação limpa adicional: wheel em terceiro venv, import de todos os módulos fora da árvore fonte, schemas empacotados, doctor/validate-data e ausência de Torch verificados. pip check em três ambientes, compileall e diff --check PASS. Manifesto regenerado/verificado após edições; parsers, links e hashes abrangem fontes mantidas, não arquivos de checkpoint. Estado remoto final é registrado na PR após push.
+
+[Evidência estruturada](evidence/final-audit.json). Revisão sequencial, sem subagentes/revisão independente simulada. Licenças/código LFM3, pesos/tokenizers reais, treino e hardware continuam NOT-TESTED/BLOCKED; não houve autorização real ou merge. Relatórios abaixo são históricos, com contagens e alcance das respectivas missões, não estado final de testes.
+
+---
+
+# Relatório anterior — pesquisa LFM3 (2026-10-31)
 
 Partida `d535f92845180f81af5acc5501481fe8319b4377`. Snapshot restaurado comparado byte a byte com remoto: **zero diferenças**, antes de alinhar HEAD/index sem modificar arquivos. A mesma PR permanece aberta, sem merge. Relatório anterior abaixo preserva o alcance específico do hardening.
 

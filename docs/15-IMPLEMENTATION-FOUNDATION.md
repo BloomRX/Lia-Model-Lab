@@ -64,8 +64,12 @@ Não foram produzidos/exportados adapters treinados; os testes criam matrizes mi
 
 Templates [dataset card](../templates/DATASET-CARD.md), [model card](../templates/MODEL-CARD.md), [experimento](../templates/EXPERIMENTO.md) e [avaliação](../templates/AVALIACAO.md) continuam obrigatórios. Nenhum campo pendente deve receber aprovação falsa. Separar atestação humana, validação estrutural, execução de modelo e aprovação de distribuição.
 
-Incremento implementado em [16](16-REAL-INFERENCE-PILOT.md): renderer com gate de generation spans e supervisor/worker de inferência local; ambos ainda sem tokenizer/checkpoint real testado. Próximos gates: probe LoRA/QLoRA save/reload; treinador SFT específico para arquitetura/processor; near-dedup auditável e mídia. Cada incremento tem orçamento/gate próprio, sem bloquear manutenção local do laboratório.
+Incremento implementado em [16](16-REAL-INFERENCE-PILOT.md): renderer com gate de generation spans e supervisor/worker de inferência local; ambos ainda sem tokenizer/checkpoint original de modelo testado (API HF com tokenizer WordLevel próprio já validada). Próximos gates: probe LoRA/QLoRA save/reload; treinador SFT específico para arquitetura/processor; near-dedup auditável e mídia. Cada incremento tem orçamento/gate próprio, sem bloquear manutenção local do laboratório.
 
 ## Cards gerados como rascunho
 
 `lia-lab write-card dataset MANIFEST OUTPUT.md` revalida hashes/splits e gera contagens e identidade do dataset. `lia-lab write-card model ADAPTER_DIR OUTPUT.md` inspeciona adapter e gera linhagem/hashes. Ambos usam criação exclusiva, sem sobrescrever card existente, e marcam revisão de direitos, avaliação, consentimento e release como PENDING. Isso complementa os templates, não substitui a revisão humana nem fabrica aprovação.
+
+## Integridade após auditoria final
+
+Planos reservam o ID com criação exclusiva de diretório, inclusive sob concorrência. Hashes de config/manifest/splits são conferidos durante leitura/registro. Publicação de novos manifests/planos/comparações usa arquivo temporário fsync + hard link exclusivo; se o filesystem não suportar a operação, falha sem fallback para overwrite. Atualizações de resultados usam replace atômico. Isso não promete durabilidade contra toda falha de energia/FS nem proteção contra alterações pelo mesmo UID. Ver [auditoria](18-FINAL-AUDIT.md).

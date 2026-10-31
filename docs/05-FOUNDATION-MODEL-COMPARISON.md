@@ -70,7 +70,7 @@ Hipóteses de **envelopes de piloto**, seq 2K, microbatch 1, checkpointing, QLoR
 
 **Core/Deep remoto orientado a qualidade:** (1) Qwen3.8-27B; (2) Qwen3.5-27B como controle histórico; (3) Gemma 4 12B Unified/31B como alternativas multimodais; (4) Qwen3.5-35B-A3B ou Gemma 4 26B A4B se throughput justificar memória total; (5) Qwen3-Omni como trilha de pesquisa áudio end-to-end, não default do primeiro treino.
 
-A ordem 1/2 remota é hipótese informada pelo alinhamento agentic/visão e disponibilidade, não superioridade verificada. Antes de comprar GPU, aplicar os pesos de critérios da v1.0 e gates fatais licença/compatibilidade; medir três finalistas no mesmo budget. Revisitar outros lançamentos oficiais no Gate 0: esta consulta não estabelece vencedor universal.
+A ordem 1/2 remota é hipótese informada pelo alinhamento agentic/visão e disponibilidade, não superioridade verificada. Antes de comprar GPU, congelar critérios e pesos no protocolo de avaliação e aplicar os gates de licença/compatibilidade de [governança](13-GOVERNANCA-DE-EXPERIMENTOS.md); medir três finalistas no mesmo budget. Revisitar outros lançamentos oficiais no Gate 0: esta consulta não estabelece vencedor universal.
 
 ## Especialistas: evitar usar o LLM como tudo
 
