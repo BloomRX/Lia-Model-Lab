@@ -1,4 +1,19 @@
-# Validação atual — hardening v0.4.0
+# Validação atual — pesquisa LFM3 (2026-10-31)
+
+Partida `d535f92845180f81af5acc5501481fe8319b4377`. Snapshot restaurado comparado byte a byte com remoto: **zero diferenças**, antes de alinhar HEAD/index sem modificar arquivos. A mesma PR permanece aberta, sem merge. Relatório anterior abaixo preserva o alcance específico do hardening.
+
+- **157 passed, 1 skipped** na suíte base; **165 passed** no ambiente API Transformers5.22.1 real, sem Torch. Incluem testes anteriores e 14 novos casos de catálogo/gates; nenhum teste carrega LFM3.
+- Novo schema/verificador exige 13 identidades distintas, contratos research-only, licença pendente e ausência de execução; decisão não pode ser rotulada como conversa. Testes confirmam recusa das seis combinações de arquitetura/tipo LFM3/d1 pelo loader atual e recusa da LFM Open License pelo seal.
+- `pip check` em ambos os ambientes, compileall e `git diff --check`: PASS. Ambientes leves recriados a partir dos locks existentes, sem novas dependências ou Torch.
+- Fontes oficiais GitHub, receitas e conversor/template consultados como texto, não executados. Cards HF, LICENSE/NOTICE individuais e texto vinculante completo não foram adquiridos; guia oficial não substitui auditoria jurídica.
+- Nenhum peso/GGUF/tokenizer upstream/dataset, inferência real, treinamento, recurso pago, aceite ou grant operacional real. Compatibilidade LFM3 e hardware permanecem **NOT-TESTED**.
+- Manifesto regenerado e verificado após edições. Estado remoto será verificado no HEAD final e registrado na PR, sem depender de CI histórico.
+
+[Pesquisa e decisão](17-LFM3-RESEARCH.md) · [evidência estruturada](evidence/lfm3-research.json).
+
+---
+
+# Relatório anterior — hardening v0.4.0
 
 Data: 2026-10-30. Partida: `2cb652353e1429ae75dd647e824edc107019babd`, PR #1 OPEN e main não integrada. Antes de editar, comparação byte a byte do snapshot com o remoto, alinhamento do HEAD/index restaurados e execução dos **84 testes anteriores PASS**. Nenhum trabalho recente remoto sobrescrito; sem force push/merge.
 

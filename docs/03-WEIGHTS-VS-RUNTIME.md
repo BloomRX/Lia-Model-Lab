@@ -28,3 +28,7 @@ A [matriz](02-LIA-CAPABILITY-MATRIX.md) atribui classe, dados e teste por capaci
 Segredos, tokens, ACL, dados pessoais mutáveis, relógio, configuração de rede, execução de comandos e garantia de autorização. Recusas aprendidas ajudam, mas não substituem controles determinísticos. Modelo não concede sua própria permissão.
 
 Prompt injection em tela, jogo, página, memória ou tool result é entrada não confiável. Delimitar dados e instruções, aplicar menor privilégio; executar em ambiente isolado. Nenhum plano gerado pode saltar confirmação de ação destrutiva.
+
+## Extensão LFM3 — pesquisa 2026-10-31
+
+[Contratos e bloqueios LFM3](17-LFM3-RESEARCH.md): Core textual, percepção VL/Audio/Omni e decisão d1 são papéis distintos. `system_one` produz respostas tipadas, não conversa nem autorização. Codec, projectors e processors fazem parte do artefato/runtime versionado; memória persistente, árbitro, captura e tool executor continuam externos. LFM3 não entrou no loader: código remoto não auditado e licença individual pendente mantêm os gates atuais.

@@ -45,3 +45,17 @@ lightweight_api_validation:
   qwen3_control_model: AutoModelForCausalLM-Qwen3ForCausalLM
   thinking: forwarded-enable_thinking-false-exact-native-template-NOT-TESTED
   note: No remote kernels or Torch installation in the lightweight API lock.
+
+lfm3_research_routes:
+  status: research-only
+  execution_enabled: false
+  license_allowlist_change: false
+  remote_code_allowed: false
+  transformers_route: blocked-pending-per-checkpoint-code-and-license-audit
+  gguf_route: proposed-optional-backend-not-implemented
+  llama_cpp_source_reviewed: 8642541b255bfb5dc39cd351a178be09013a55d6
+  llama_cpp_tag_reviewed: b11960
+  decision_protocol: proposed-system_one-not-generative-worker
+  audio_protocol: proposed-codec-and-stream-budgets-not-text-only-worker
+  hardware_validation: NOT-TESTED
+  caveat: Source inspection is not a runtime build, model probe, or acquisition authorization.

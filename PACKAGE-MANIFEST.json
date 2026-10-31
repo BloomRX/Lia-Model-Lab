@@ -116,8 +116,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 4348,
-      "sha256": "51057ee19cf1fc9836e8a128a166b55fdbf9d242378322ef33c89e98ee3af2e4"
+      "bytes": 4764,
+      "sha256": "3174de1ab3d706a948d4b54ec55dc65bddf895c3ad3d55430d35120160071c7c"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -131,13 +131,13 @@
     },
     {
       "path": "configs/model-candidates.yaml",
-      "bytes": 4752,
-      "sha256": "3116bbcdd72601e897c128cd7978c322197e8e8349dc620fe5f5d539a4be96e7"
+      "bytes": 33251,
+      "sha256": "ff59dc23b8269c897811cb082a2cc82ba3e6bddbe21abfb968e59b8a7e4984ef"
     },
     {
       "path": "configs/runtime-stack.proposal.yaml",
-      "bytes": 1935,
-      "sha256": "e617bce06de6cbcf3e095164282d949b091a08fa1802c9f596a195948f9bdc4b"
+      "bytes": 2572,
+      "sha256": "df04dee0f8cbbee40d9841b42b5ef4a2dd50e1626579dc6bf9cea95bcdce9ebb"
     },
     {
       "path": "configs/sft-pilot.template.yaml",
@@ -166,23 +166,23 @@
     },
     {
       "path": "docs/03-WEIGHTS-VS-RUNTIME.md",
-      "bytes": 2512,
-      "sha256": "0c528f8413d8da3f37c067dab7d2b26362cf2ac7acc4c09eea7e86d47d86d5b0"
+      "bytes": 3021,
+      "sha256": "8a4b16bd94c5a8a07d4f3c5944ef8796ba2c5d6d16bde2d3805247996bc67184"
     },
     {
       "path": "docs/04-MODEL-FAMILY-ARCHITECTURE.md",
-      "bytes": 5726,
-      "sha256": "83a1fa298dc40a00cdbeb916bc70f21d03cb0c399bc8d8589accb954be7f141f"
+      "bytes": 6756,
+      "sha256": "b5a6e25be09538f729ee5839742d8a1e8905f996788e2f169de885f1a284da76"
     },
     {
       "path": "docs/05-FOUNDATION-MODEL-COMPARISON.md",
-      "bytes": 16194,
-      "sha256": "94f64f21b2d67222318210dfc641a806dbabdf61d59fcebb097306ea2934f05b"
+      "bytes": 17967,
+      "sha256": "9fa3083f2f958e9ada98a61130a7f8f86e6fe9ad3d319914df9a2905149f5457"
     },
     {
       "path": "docs/06-TRAINING-STRATEGY.md",
-      "bytes": 5194,
-      "sha256": "cdff95ee5fbe70499d18f66e5d78cdbb7bd46aaed8b55f99ae581a69028c6ad5"
+      "bytes": 6055,
+      "sha256": "0261db11ea84182a4647cc3efc7dc08325eca6566eedc55853612b381fa2f8e0"
     },
     {
       "path": "docs/07-DATASET-STRATEGY.md",
@@ -191,8 +191,8 @@
     },
     {
       "path": "docs/08-HARDWARE-INFRASTRUCTURE.md",
-      "bytes": 4657,
-      "sha256": "ad6ccb78a7f0234622f9c0083adf94a19c7c3537881269c6d840d4c48f348ee1"
+      "bytes": 5521,
+      "sha256": "f80ad4cbd3ba4e3a62eaa6b6ec84fde29f9a1e9d23efb80832fa87ca0d331ce5"
     },
     {
       "path": "docs/09-BENCHMARK-STRATEGY.md",
@@ -211,8 +211,8 @@
     },
     {
       "path": "docs/12-OPEN-DECISIONS.md",
-      "bytes": 5255,
-      "sha256": "88302acd88097ff8db48fd6c395198821557cd82d17636acc1787dbafd4de692"
+      "bytes": 6154,
+      "sha256": "e7a34760a2e03a4dbab819b31c5ffc2dd5dfaf568708aeff24717a05de4a728f"
     },
     {
       "path": "docs/13-GOVERNANCA-DE-EXPERIMENTOS.md",
@@ -231,8 +231,13 @@
     },
     {
       "path": "docs/16-REAL-INFERENCE-PILOT.md",
-      "bytes": 15370,
-      "sha256": "c913f0bf31132f80b53b2c8c57b1985de86559b74bab50b1e6381876d996fed8"
+      "bytes": 15780,
+      "sha256": "60de34607e933692a5f347a2a5b637f9f4facd3a0d2fb9acecb199bf579e0362"
+    },
+    {
+      "path": "docs/17-LFM3-RESEARCH.md",
+      "bytes": 22560,
+      "sha256": "58cfddd5404d17e8055bbb688bbf29784faaeb29cb9d2a642defa4a2bfa6929c"
     },
     {
       "path": "docs/BRAND-STANDARDS.md",
@@ -241,18 +246,18 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 1868,
-      "sha256": "811f725dfee996b14678b63e267c8e14cdc52a033eba1c1edaf4ce5b734df17b"
+      "bytes": 2103,
+      "sha256": "1714161d0f07d0488518a228f3ffca7725969af680c10f0cfd2a1b8147a29041"
     },
     {
       "path": "docs/SOURCES.md",
-      "bytes": 17544,
-      "sha256": "aaded379ceeeeae813dc8c622eb01e8a14637f9e4a34ecc73d3cba38daa9e33f"
+      "bytes": 21065,
+      "sha256": "221c45d8202f0574f71884344f5f6b30c416aabd1b24171c50187556c5ee88ee"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 6266,
-      "sha256": "12d2a0974c3f22680342420d2df415b8df5dc9692ad2acfd7c122b3d920f90c1"
+      "bytes": 7965,
+      "sha256": "708746d70a03ca2291c3c4b0a8cdf6ec91df0918fffb89fcb927949c9ab545b4"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -285,6 +290,11 @@
       "sha256": "e25c23c8c5446aab3545595b3805e55f63176e5a650907146aa433e53aa13046"
     },
     {
+      "path": "docs/evidence/lfm3-research.json",
+      "bytes": 1455,
+      "sha256": "ae5331da2193572fa01ec979e488cd2918d2506e2781e7f2b7abe1b3d537b80b"
+    },
+    {
       "path": "pyproject.toml",
       "bytes": 812,
       "sha256": "d6da3eff1a0d4c3c83a94902d4df591480c9c170db2ac0f6e104a3ddb60c6553"
@@ -301,8 +311,8 @@
     },
     {
       "path": "scripts/verify_repository.py",
-      "bytes": 5568,
-      "sha256": "ce47cdd400ce67a00246fac10a74e1a2b5b6c393bdda2d13a1c68132965ceca1"
+      "bytes": 6381,
+      "sha256": "393e20a73c31d1bf0ab58bfd6206022bccd004e648e7c1f300625ba230bfebf9"
     },
     {
       "path": "src/lia_lab/__init__.py",
@@ -388,6 +398,11 @@
       "path": "src/lia_lab/schemas/model-snapshot.schema.json",
       "bytes": 1535,
       "sha256": "319d943795befeb3635fb01845979a541396f4bc1ed11b9f3839265243aa0f99"
+    },
+    {
+      "path": "src/lia_lab/schemas/research-candidate.schema.json",
+      "bytes": 6293,
+      "sha256": "708a03a5bb4de5ca9d90258ab22aac8f496a09b3f57edf06924657aef0685f0e"
     },
     {
       "path": "src/lia_lab/training_prep.py",
@@ -483,6 +498,11 @@
       "path": "tests/test_repository.py",
       "bytes": 1365,
       "sha256": "80cbffaa9986932e000280637ec67a6ec72852c608d3d35ef30670091a4e792a"
+    },
+    {
+      "path": "tests/test_research_catalog.py",
+      "bytes": 2562,
+      "sha256": "cd74b6a9c478c84e08ad89947155b49d75086b202b1762b89da9bbb83cc59209"
     },
     {
       "path": "tests/test_supervisor_results.py",

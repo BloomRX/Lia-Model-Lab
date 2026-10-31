@@ -47,3 +47,9 @@ Early stopping por validação, limite de steps/custo aprovado e checkpoint peri
 BF16 é referência quando hardware/arquitetura suportam. FP16 só com checagem de range, loss scaling e equivalência; não converter cegamente bases BF16. 8-bit favorece fidelidade/memória; 6/5-bit equilibram footprint; 4-bit reduz memória com risco de perda em tools, grounding, pt-BR e persona. Avaliar cada um, não assumir monotonicidade da qualidade.
 
 Relatar tamanho real, RAM/VRAM pico, TTFT, tokens/s, contexto e perda por suite para **base original → adaptado → merged opcional → cada quantizado**. Uma variante que falha grounding ou permissões não pode ser liberada por ter conversa melhor. Quantizar após treino não dispensa testar a base quantizada usada em QLoRA como condição de treino separada.
+
+## LFM3: receitas oficiais não equivalem a suporte PEFT validado
+
+A [matriz de treinamento LFM3](17-LFM3-RESEARCH.md) distingue Base/post-trained, VL, Audio e Omni. Notebooks oficiais consultados incluem SFT+LoRA texto, VL, comando falado, TTS e Omni VQA. Nenhum foi executado. Targets abrangem atenção, convoluções e MLP; TTS também pode adaptar depth_decoder. Não copiar os targets Qwen. Base dedicado, QLoRA, reload/merge e retenção multimodal permanecem NOT-TESTED.
+
+Congelar encoders/codec não garante preservar percepção/fala. Exigir hashes/componentes, trainables esperados, masks nativas por turno, labels áudio/mídia, tool roundtrips, EOS e regressão por modalidade. Renderer textual atual não é collator multimodal. Revisão de licença/código e autorização antecedem aquisição/forward/backward; GGUF não é base NF4 de QLoRA.

@@ -98,3 +98,7 @@ Manter Qwen3.5-0.8B para smoke da família, Qwen3.5-4B para capacidade, Qwen3-0.
 [Stack proposta](../configs/runtime-stack.proposal.yaml) não é lock ML validado. [Lock API leve](../requirements-api.lock) serve apenas API sem Torch. Próximo gate: obter metadados exatos em ambiente com acesso autorizado, proposta específica de aquisição/licença/tamanho, aprovação humana fora do agente, ambiente adequado, baseline e revisão. Não houve download de pesos, API/GPU paga, aceitação de termos, dados pessoais ou publicação de adapters/datasets.
 
 Checkpoint-base ≠ Lia Core. Adapter/persona/prompt/template são versionados e aprovados separadamente; memória, ferramentas/permissões, orquestração, percepção, voz e avatar continuam externos, sem acoplamento AIRI.
+
+## Exclusão explícita LFM3
+
+A [pesquisa LFM3](17-LFM3-RESEARCH.md) não altera este piloto. LFM3/d1/custom Python e GGUF continuam sem backend autorizado; LFM Open License v1.0 não está na allowlist Apache. Nenhum registro research-only pode ser convertido em aprovação por string de catálogo. Decisão tipada, geração áudio e auxiliares exigem protocolos específicos antes de suporte executável.

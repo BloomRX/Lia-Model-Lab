@@ -117,3 +117,18 @@ Reconsulta de repositórios e restrições atuais em [16](16-REAL-INFERENCE-PILO
 ## Hardening — evidência do loader (não benchmark)
 
 TF5.22.1 instalado **sem Torch/pesos** confirma registries/configs. Qwen3.5 completo exige o caminho AutoProcessor/Qwen3VLProcessor + AutoModelForImageTextToText/Qwen3_5ForConditionalGeneration no Lab. Controle Qwen3-0.6B exige qwen3/Qwen3ForCausalLM + AutoTokenizer/Qwen2Tokenizer. Config/arquitetura divergente falha; shortlist Gemma/MoE não significa suporte no loader. Testes slow oficiais usam o ID Qwen3.5-0.8B em dois caminhos (texto e VLM); os de Qwen3 consultados usam **0.6B-Base**, não o controle post-trained. Não foram executados aqui. Config/revision/template originais de 0.8B/4B/0.6B ainda não foram adquiridos; não há validação real de pesos/qualidade. Ver [16](16-REAL-INFERENCE-PILOT.md) para matrizes, autorização externa e próximo gate.
+
+## Extensão LFM3 — comparação por trilha, não ranking único
+
+A [avaliação dedicada](17-LFM3-RESEARCH.md) incorpora sete checkpoints e seis GGUF oficialmente referenciados, todos research-only/license-review-required. Qwen e Gemma acima permanecem candidatos; nenhuma recomendação anterior se torna aprovação.
+
+| Trilha | Comparadores | Hipótese e impedimento |
+|---|---|---|
+| Core | Qwen3.5-0.8B/4B, Qwen3.8-27B, Gemma4 variantes relevantes, LFM3-1.7B | LFM3 compacto merece baseline pt-BR/tools; fabricante desaconselha coding agentic/reasoning complexo. Capacidade maior não decorre de novidade |
+| Customização | LFM3-1.7B-Base vs pós-treinado | Base exige alinhamento mais amplo; post-trained reduz trabalho inicial. Comparar dados/custo/regressão, não só loss |
+| Visão | Qwen/Gemma multimodais vs LFM3-VL-2B | OCR/UI/jogo/grounding, pequenos textos e memória; nenhuma medição Lia |
+| Áudio/voz | Gemma com entrada de áudio + TTS separado vs LFM3-Audio-2B | ASR, understanding, TTS e conversa são avaliações distintas; Portuguese declarado não comprova pt-BR |
+| Omni | LFM3-Omni-2B vs composição Core+percepção+TTS | Qualidade/latência/memória/cancelamento; não-reasoning, sem enable_thinking=True |
+| Decisões | d1-2B / d1-Omni-2B vs classificadores/regras/extração generativa | Calibração, cobertura×erro, latência; d1 não é chatbot. d1-Omni somente se áudio trouxer ganho |
+
+Contextos/idiomas/capacidades são declarações oficiais D; recomendações são inferências técnicas. Benchmarks independentes específicos não foram incorporados e resultados de modelos Lia continuam NOT-TESTED. LFM Open License v1.0 não é Apache: risco comercial/downstream impede promoção automática à shortlist executável.

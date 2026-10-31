@@ -38,3 +38,9 @@ Fórmulas e tabela de pesos em [05](05-FOUNDATION-MODEL-COMPARISON.md). Não usa
 Antes de contratar: custo_total = horas_GPU×tarifa + storage×tempo + transferências + margem; definir limite e auto-stop, não orçamento aberto. Fazer download/treino só após aprovação específica de tamanho/custo/dados; nenhuma tarifa inventada nesta missão.
 
 Diagnóstico futuro no PC: SO, CPU/RAM, PCI ID/modelo real/VRAM, driver, Vulkan devices/capabilities, ROCm matrix e logs de inferência pequena autorizada. Reconciliar 4/8 GB por evidência datada, não por suposição da marca RX 580.
+
+## LFM3 local: CPU primeiro como hipótese; Vulkan separado
+
+[Análise GGUF/llama.cpp](17-LFM3-RESEARCH.md): tag b11960 fixado em8642541b255bfb5dc39cd351a178be09013a55d6 contém código LFM3/mtmd/d1; não foi compilado nem executado. Documentação Audio/d1-Omni pede v0.8.0/b11960+, mas mínimo Omni do card GGUF ainda não pôde ser reconsultado. Não usar tabela antiga b7075/LFM2 como prova de suporte LFM3.
+
+Ryzen5 5500/16GB/RX5802048SP ~4GB é referência histórica, não telemetria. CPU é candidato a probe portável, sem promessa de velocidade. Vulkan AMD depende de driver, operações, offload de encoder/codec e build exatos; ROCm/RX580 não aprovado. Quantização nominal não inclui KV/cache/buffers/mmproj/codec/contexto/OS. Windows documentado não significa contenção equivalente ao Linux. Sem downloads/builds/pesos/stack GPU nesta missão.

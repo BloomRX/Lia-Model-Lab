@@ -70,3 +70,9 @@ Fluxo: proposta de escrita → filtro de sensibilidade/consentimento → dedup/c
 6. Só consolidar Omni quando quality/latency/custo superarem composição.
 
 MoE dentro de um modelo **não** equivale ao router entre modelos. Não converter arbitrariamente adapters em experts MoE. Shared representations exigem alinhamento/projeções e treino; compartilhar inicialmente IDs/eventos/schemas, não tensores incompatíveis. Ensemble custa latência e memória; usar para avaliação/desacordo antes de produção. Merge não é substituto de ablação. Distillation pode perder capacidades e reproduzir restrições do teacher.
+
+## Alternativas LFM3 por papel, sem adoção automática
+
+[Pesquisa LFM3](17-LFM3-RESEARCH.md): LFM3-1.7B pós-treinado concorre ao Core compacto; Base é ablação de treinamento, não substituto chat pronto. LFM3-VL-2B concorre a Vision; Audio-2B pode atender Hearing e Speech, avaliados separadamente. Omni-2B é uma hipótese de percepção integrada não-reasoning, não dono de personalidade/planejamento nem substituto obrigatório de todos os especialistas. d1-2B/d1-Omni-2B propõem classificação/extração/grounding tipados, não geram conversa/fala.
+
+Roteamento proposto: evento com mídia e validade → especialista selecionado por necessidade/budget → observação tipada com fonte/tempo/confiança → Core ou árbitro. Confiança d1 exige calibração e abstention; nunca representa permissão. Comparar modelos residentes versus carregados sob demanda: especialistas também têm overhead. A arquitetura preserva troca de fornecedor/licença e fallback; nenhum componente novo foi integrado à aplicação.

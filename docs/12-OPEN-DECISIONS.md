@@ -40,3 +40,11 @@ Revisitar pesquisa upstream no início de Gate 0 e a cada release. Novos lançam
 Supervisor/worker local e contratos de renderização implementados em [16](16-REAL-INFERENCE-PILOT.md). O-01: 0.8B para smoke, 4B para capacidade; sem aprovação de base. O-02: ainda sem revision/bytes exatos dos checkpoints. O-04: ambiente da sessão ~4 GB RAM, sem nós GPU; isso não descreve o PC do proprietário. O-05: runtime Torch/Transformers não instalado/testado, PEFT e QLoRA continuam sem probe. Nenhuma dessas pendências foi encerrada por testes de fixtures.
 
 Hardening atual: registries/AutoConfig/API de máscaras TF5.22.1 testados sem Torch. O-02/O-05 não encerrados: arquivos originais e inferência/PEFT ainda ausentes. String de referência foi removida da execução em favor de grant operacional humano externo, uso único; isso não autentica identidade. Perfis Linux CPU limitam recursos/IP quando explicitamente aplicados; não são proteção equivalente em outros OS/GPU.
+
+## Decisões LFM3 — 2026-10-31
+
+- Adicionar sete originais e seis GGUF como pesquisa; não adicionar backend executável nem mudar allowlist de licença. [Relatório e gates](17-LFM3-RESEARCH.md).
+- Priorizar comparações separadas: Core pós-treinado, Base como ablação, VL, Audio, Omni condicional e decisões d1; nenhuma escolha final.
+- Bloqueios: LICENSE/NOTICE individuais, entidade/Threshold comercial, revisions/config/listing exatos, auditoria de código/deps/codec ou vendorização aprovada, runtime e hardware reais.
+- GGUF/llama.cpp é hipótese inicial de rota local; falta protocolo autorizado por formato/ação/auxiliares. d1 demanda contrato de decisão próprio; não usar worker generativo atual.
+- Adaptação SFT/LoRA documentada pelo fabricante, QLoRA e preservação/reload ainda desconhecidos. Qualquer probe com pesos ou treino requer missão/autorização separada.

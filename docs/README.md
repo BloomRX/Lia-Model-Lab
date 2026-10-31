@@ -42,3 +42,7 @@ Coleção consolidada em 2026-10-30. ADRs registram decisões; pesquisa distingu
 - [DATASET-CARD](../templates/DATASET-CARD.md)
 - [EXPERIMENTO](../templates/EXPERIMENTO.md)
 - [MODEL-CARD](../templates/MODEL-CARD.md)
+
+## Pesquisa LFM3
+
+[17 — Família LFM3: comparação, licença, runtime, GGUF e treinamento](17-LFM3-RESEARCH.md). Sete originais e seis variantes GGUF no catálogo, todos research-only; sem loader nem aprovação de pesos/licença.

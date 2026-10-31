@@ -44,3 +44,7 @@ Core primeiro; Vision, Hearing, Speech, Game, Reflex e Omni são papéis/direç�
 ## Limites
 
 `infer-local` pode carregar somente snapshots locais após grant humano externo vinculado à operação exata, com runtime opcional e limites; nesta entrega não foi executado com checkpoint real. CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).
+
+## Pesquisa Liquid AI LFM3
+
+A [avaliação LFM3](docs/17-LFM3-RESEARCH.md) e o catálogo incluem texto/Base, VL, Audio, Omni, d1 e seis GGUF oficialmente referenciados, sem substituir Qwen/Gemma. São **research-only / license-review-required**: licença comercial condicionada, código customizado não auditado e artefatos exatos pendentes. Nenhum backend LFM3 foi habilitado, peso adquirido ou treino executado.
