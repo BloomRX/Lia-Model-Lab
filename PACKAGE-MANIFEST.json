@@ -1,22 +1,123 @@
 {
-  "package": "Lia Model Lab Documentation",
-  "version": "1.0.0",
-  "created_at": "2026-10-30",
+  "package": "Lia Model Lab",
+  "version": "0.4.0",
+  "status": "inference-infrastructure-not-model-release",
+  "manifest_scope": "All maintained source/documentation/config/fixture/skill/agent files; excludes itself, Git, caches, installed metadata and ML artifacts.",
   "files": [
     {
+      "path": ".agents/skills/README.md",
+      "bytes": 1492,
+      "sha256": "a6d9567ff33c9880353576266c3200f56a1309b1bdde7a7b546bb62391a4544a"
+    },
+    {
+      "path": ".agents/skills/capability-mapping/SKILL.md",
+      "bytes": 1902,
+      "sha256": "aca4735bdb111d32867eb11e4a044f66e989bd2b0e0dad61964c9375d1fe3665"
+    },
+    {
+      "path": ".agents/skills/dataset-governance/SKILL.md",
+      "bytes": 1987,
+      "sha256": "0013310af3d7528ea77852348a50841175621ac3ff8836409f77020f54855bd3"
+    },
+    {
+      "path": ".agents/skills/experiment-reproducibility/SKILL.md",
+      "bytes": 2257,
+      "sha256": "4cb611f117eb07aae82861e8de97e98e27f47c2e5a015b227c3a3d1a3592928e"
+    },
+    {
+      "path": ".agents/skills/finetuning-plan/SKILL.md",
+      "bytes": 2436,
+      "sha256": "8a7de1d20dfedfa2b2e7c18909f397710f9dfe7e23081fcdae97546a25a571ae"
+    },
+    {
+      "path": ".agents/skills/lia-brand-consistency-review/SKILL.md",
+      "bytes": 1844,
+      "sha256": "98b551f6ac32291e933ab1f06a74c1d2113e5486663bc7cb09fb96e5d12bf0ca"
+    },
+    {
+      "path": ".agents/skills/model-candidate-research/SKILL.md",
+      "bytes": 2032,
+      "sha256": "ca088be9c3182c61012db2ebd9fc2730718673c45372df23962ebe7131c8286b"
+    },
+    {
+      "path": ".agents/skills/model-evaluation/SKILL.md",
+      "bytes": 2473,
+      "sha256": "ce3ba4b1e7438c01db7c48531117e5dc86689cb7e29031a0bbbff900dc808aa2"
+    },
+    {
+      "path": ".agents/skills/model-license-release-review/SKILL.md",
+      "bytes": 2044,
+      "sha256": "60ce49b1a6bf9c548adc695f812bd2a7d135bb0bd60eb5822e1a363c48dadbd3"
+    },
+    {
+      "path": ".agents/skills/multi-agent-orchestration/SKILL.md",
+      "bytes": 1957,
+      "sha256": "54fdae94faf4f7365b6cadfe5c6936d665912b3303786c50c6e284591a7ccde5"
+    },
+    {
+      "path": ".codex/README.md",
+      "bytes": 703,
+      "sha256": "1a2c39e6b3a69d108a9033123564d396425bfbd4f483effdb1d24eab5206fd2b"
+    },
+    {
+      "path": ".codex/agents/brand-reviewer.toml",
+      "bytes": 817,
+      "sha256": "2ceaf09972afbb8f95f59fcc2b1ed9466e05e3851f8968554ce7e81d69dcafe5"
+    },
+    {
+      "path": ".codex/agents/capability-architect.toml",
+      "bytes": 829,
+      "sha256": "deb7d0c5e8d3a5d7141aa3eef5ad7bcab32b2ccce9cb978271cd572400a2ac08"
+    },
+    {
+      "path": ".codex/agents/dataset-auditor.toml",
+      "bytes": 866,
+      "sha256": "f09d78f087efc3037fe518e16b7903fc2d1d2bd26e531e4ea2c728006d755a0c"
+    },
+    {
+      "path": ".codex/agents/evaluation-reviewer.toml",
+      "bytes": 834,
+      "sha256": "54f8220a158b143cd06f175e2ab55ed464d403ad7b50eac011be9be6765a1b59"
+    },
+    {
+      "path": ".codex/agents/license-reviewer.toml",
+      "bytes": 829,
+      "sha256": "73cdbcbbe0126d39f239990be34462b77d1622c8033e9d5f553ef8be268d5593"
+    },
+    {
+      "path": ".codex/agents/model-researcher.toml",
+      "bytes": 907,
+      "sha256": "592bb6407cb880b944030b2567d3dab89ffefb447eaf301dc327074320ebe393"
+    },
+    {
+      "path": ".codex/agents/training-planner.toml",
+      "bytes": 890,
+      "sha256": "527406f4cbd5298b33cc35316f458357ea87b1c0fe316a76945bf40e8e0c9333"
+    },
+    {
+      "path": ".codex/config.example.toml",
+      "bytes": 138,
+      "sha256": "68a80881e111eb70f91b9927d2e41a81e7ed6abc7756860feea89f3e12f72e57"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "bytes": 1060,
+      "sha256": "41a9939a7233b52eb70ae583d52621dc9bb9befbe321a4e7f113e257b8e9e57c"
+    },
+    {
       "path": ".gitignore",
-      "bytes": 718,
-      "sha256": "0e53b65605f66aaaeb318363793888a1b3a0973cafa7895292e0a15887d103af"
+      "bytes": 1308,
+      "sha256": "76f5000a7de08f1bf056f20c7cc75542c64d4c9e2243d46b22f6fe0a99db2971"
     },
     {
       "path": "AGENTS.md",
-      "bytes": 5680,
-      "sha256": "29fbb373861027900a833c23ce1d3ae554911cf1b78518f03b15c5075216e0ee"
+      "bytes": 5493,
+      "sha256": "a10aa60131badd91a16cc17e7b39e81145218fa0fb8eb080eb25de1d2d54d0c0"
     },
     {
       "path": "README.md",
-      "bytes": 4857,
-      "sha256": "34ebd5d06fd532610116bf20f8bf2ce07cdeefe0ba28672217386574e3ec98d5"
+      "bytes": 4946,
+      "sha256": "1d9831709a55e467c0cf43ea717886f2280029a71b8b2f62a9f6452c29a0c535"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -24,69 +125,299 @@
       "sha256": "1004de4b99f2975d68f6f43782921e0a51ab837e5b92befa73fa6c08e00af7ad"
     },
     {
+      "path": "configs/inference-suite.json",
+      "bytes": 2036,
+      "sha256": "d5e66f883f169805c25ba47967427ed53d8e3f3f2eac405a5b6c7f2b29d3ba2a"
+    },
+    {
       "path": "configs/model-candidates.yaml",
-      "bytes": 2379,
-      "sha256": "442dee2ccfca7920a9e857fbc6910ba9b5c6dfb61098ec5d4bbbe8114f76bc2f"
+      "bytes": 33412,
+      "sha256": "669ed47b09b334297fbd7f85107b15024a5ffb16bfb48f1c2b8b77e0ff3fc355"
     },
     {
-      "path": "docs/00-VISAO-E-ESCOPO.md",
-      "bytes": 4884,
-      "sha256": "f5faff5140488b582e4202a0c78c4c32043e935ab216b5b05a41365c274d994d"
+      "path": "configs/runtime-stack.proposal.yaml",
+      "bytes": 2572,
+      "sha256": "df04dee0f8cbbee40d9841b42b5ef4a2dd50e1626579dc6bf9cea95bcdce9ebb"
     },
     {
-      "path": "docs/01-CATALOGO-CAPACIDADES-AIRI.md",
-      "bytes": 12606,
-      "sha256": "2c5331b29f8b466cc66ee4ae908697e9565932d65dd0afd5de1f9d28d7ca9d1e"
+      "path": "configs/sft-pilot.template.yaml",
+      "bytes": 1161,
+      "sha256": "648ee4166824ed50bacc6a5c45ef097c2f5071e2f9fb44f40f2b2ae255f6f8fe"
     },
     {
-      "path": "docs/02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md",
-      "bytes": 11717,
-      "sha256": "29ef2d02088fef128970fb17a40696070c19f4c8e09cc70e1401dbe87bc1fee8"
+      "path": "configs/storage.example.yaml",
+      "bytes": 239,
+      "sha256": "ea9efad5ff740ed4ae495516661729169e46c3ba496d0bdde1cc8d0e8328f68b"
     },
     {
-      "path": "docs/03-ARQUITETURA-ALVO.md",
-      "bytes": 6667,
-      "sha256": "eb7731fcd213f7a91e39692228fae68fc44d1135da606f9b93d065d75e155cb6"
+      "path": "docs/00-PROJECT-AUDIT.md",
+      "bytes": 4586,
+      "sha256": "047ea524dfc446677e3fea37e8f1574a31736c6691b7ce8d47a5d2f89e197156"
     },
     {
-      "path": "docs/04-SELECAO-MODELO-BASE.md",
-      "bytes": 6494,
-      "sha256": "cbf57d4ddd0e9fb1b15f976c9999cc129bc52b539a514516dac744adc02df911"
+      "path": "docs/01-AIRI-CAPABILITY-INVENTORY.md",
+      "bytes": 16502,
+      "sha256": "cf48be95b68d62debeea90e36c0668cd3747911d31a9d0f7acd80efecf988ee4"
     },
     {
-      "path": "docs/05-PLANO-DE-TREINAMENTO.md",
-      "bytes": 7765,
-      "sha256": "d1d932972005af894f9ba504ba105c7886bd1cce50027cfce34c1d15091b8bc8"
+      "path": "docs/02-LIA-CAPABILITY-MATRIX.md",
+      "bytes": 9738,
+      "sha256": "d9fa346cef3462837f5560cce01233cd67a95ec043087e6719a9ff634ef4a809"
     },
     {
-      "path": "docs/06-DATASETS-E-GOVERNANCA.md",
-      "bytes": 6720,
-      "sha256": "b9a21ea907510cf196c61f1733a1b7fc45183b1d36107ed16ff2f198b7f82a50"
+      "path": "docs/03-WEIGHTS-VS-RUNTIME.md",
+      "bytes": 3021,
+      "sha256": "8a4b16bd94c5a8a07d4f3c5944ef8796ba2c5d6d16bde2d3805247996bc67184"
     },
     {
-      "path": "docs/07-AVALIACAO-E-GATES.md",
-      "bytes": 4658,
-      "sha256": "74cb050724f946e027c646a53fcc8cfce45d4b9d7066584cac9b1fdaae981ff0"
+      "path": "docs/04-MODEL-FAMILY-ARCHITECTURE.md",
+      "bytes": 6756,
+      "sha256": "b5a6e25be09538f729ee5839742d8a1e8905f996788e2f169de885f1a284da76"
     },
     {
-      "path": "docs/08-INFRAESTRUTURA-E-OPERACAO.md",
-      "bytes": 4778,
-      "sha256": "fa784df56f4c31a6e3d07c827bc697a4b24e2ae5bfd04d0b7ee08dd2f02ebf73"
+      "path": "docs/05-FOUNDATION-MODEL-COMPARISON.md",
+      "bytes": 18042,
+      "sha256": "bfb6200c8af03467ddce0d41558d78c175fa574c410ad9cfa3db7a8fab83a1af"
     },
     {
-      "path": "docs/09-ROADMAP.md",
-      "bytes": 4353,
-      "sha256": "3e13e4d8515e1c20add466cb110239e1807f1b967843822cbd6b8399c26715be"
+      "path": "docs/06-TRAINING-STRATEGY.md",
+      "bytes": 6055,
+      "sha256": "0261db11ea84182a4647cc3efc7dc08325eca6566eedc55853612b381fa2f8e0"
     },
     {
-      "path": "docs/10-DECISOES-REGISTRADAS.md",
-      "bytes": 2499,
-      "sha256": "d9770869346a68c5ff5bb04d806f3f7debc088a5f5c8eb7de5be1266a66f58f5"
+      "path": "docs/07-DATASET-STRATEGY.md",
+      "bytes": 6707,
+      "sha256": "48583b3782c43c424c181da014197813640339eb0e011f22ddd4c809478f8f8c"
     },
     {
-      "path": "docs/11-FONTES-E-EVIDENCIAS.md",
-      "bytes": 4353,
-      "sha256": "c14faef19ef51c97b1d8022f0f419de362e7f97db8aa611dc8ae9b0bc3f03476"
+      "path": "docs/08-HARDWARE-INFRASTRUCTURE.md",
+      "bytes": 5960,
+      "sha256": "a33d9381c0ffbebcc20c90fd55ad59142c42e3841c7b7a721a84ecfb467b3a1f"
+    },
+    {
+      "path": "docs/09-BENCHMARK-STRATEGY.md",
+      "bytes": 7278,
+      "sha256": "775ca22f6d666f05238fbc8ff2d63e8d87fdf0d846db42b08e61893c203d94ee"
+    },
+    {
+      "path": "docs/10-ARENA-AGENT-WORKFLOW.md",
+      "bytes": 3538,
+      "sha256": "62ffb788548311a361d56a67102d9578169b0bc78543e670cf55860e8f43b893"
+    },
+    {
+      "path": "docs/11-ROADMAP.md",
+      "bytes": 4119,
+      "sha256": "f55b5345fba65700211c26b077a253ceef09721e496a5d9d0abb5b776ab3bb76"
+    },
+    {
+      "path": "docs/12-OPEN-DECISIONS.md",
+      "bytes": 6154,
+      "sha256": "e7a34760a2e03a4dbab819b31c5ffc2dd5dfaf568708aeff24717a05de4a728f"
+    },
+    {
+      "path": "docs/13-GOVERNANCA-DE-EXPERIMENTOS.md",
+      "bytes": 5868,
+      "sha256": "5a624b34a80186a7897011f700a4b1f44f2d6f5de2d8245d4f61c1079cba1498"
+    },
+    {
+      "path": "docs/14-ORQUESTRACAO-DE-AGENTES.md",
+      "bytes": 4224,
+      "sha256": "4ec214c53e36676abe999ce7177f73c900cba5f84dbf942791739065d0fd0122"
+    },
+    {
+      "path": "docs/15-IMPLEMENTATION-FOUNDATION.md",
+      "bytes": 8677,
+      "sha256": "9130b86095ffbe3d0b6df2046b4c39845681eba9fba55049c7314da9f3a48cb5"
+    },
+    {
+      "path": "docs/16-REAL-INFERENCE-PILOT.md",
+      "bytes": 16047,
+      "sha256": "a81d259acec1e343f88450031037b5eeb15ab4ad2f66cff9af1c821bc182383e"
+    },
+    {
+      "path": "docs/17-LFM3-RESEARCH.md",
+      "bytes": 22560,
+      "sha256": "58cfddd5404d17e8055bbb688bbf29784faaeb29cb9d2a642defa4a2bfa6929c"
+    },
+    {
+      "path": "docs/18-FINAL-AUDIT.md",
+      "bytes": 11288,
+      "sha256": "9ac100f3435f179518fe749a3f97e20a91e164798c2bb78056c5a30fbb68605c"
+    },
+    {
+      "path": "docs/BRAND-STANDARDS.md",
+      "bytes": 8470,
+      "sha256": "bd6e42e87c941591fd5200a2a2e9447d50a877633fe35621f75f724caa6962b4"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 1948,
+      "sha256": "7cce10f83c0d27821d615c2d64042bf4438757dcf2d677d45471d5dce0b9fabc"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 21244,
+      "sha256": "7d1669c0d059fa8f7260d7b546a8e3db6b48b4d5b931a36a979e9b28dc6a3da4"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 9161,
+      "sha256": "97322da541c4cab3ef59f93dee0e5b330bdfcce359a6e6f4aec9aa142c8191c2"
+    },
+    {
+      "path": "docs/adr/0001-CONSOLIDATION.md",
+      "bytes": 3933,
+      "sha256": "165d2995c845f2f3d9f0595c78612e5a5b065ef906915fbc9f494d34e04aeb5a"
+    },
+    {
+      "path": "docs/adr/0002-LOCAL-INFERENCE.md",
+      "bytes": 4810,
+      "sha256": "a037f094869ce11774b6c5dad2112a45523f5fb3ac29d5ad0b8c254825f18a51"
+    },
+    {
+      "path": "docs/adr/0003-INFERENCE-HARDENING.md",
+      "bytes": 5435,
+      "sha256": "44911ba904b34c33fa43b00e1e21ff6d22cbad98efdb54c100bbf242e8ec3a7f"
+    },
+    {
+      "path": "docs/evidence/airi-evidence.json",
+      "bytes": 27129,
+      "sha256": "bcff59b8cf8aa3e508ccdb24d42e7044b13f8a0378fdab0ea71a9636ade6d9ce"
+    },
+    {
+      "path": "docs/evidence/final-audit.json",
+      "bytes": 1640,
+      "sha256": "97f946f4448b1013ebca3fb2e8f8d2681ee2abaafbb937fc6498745a61fb581e"
+    },
+    {
+      "path": "docs/evidence/hardening-validation.json",
+      "bytes": 1766,
+      "sha256": "dc3ed4fabdb298ab4f22ac55bbfceb8dd6852ffba2d217d35f3071ca8fe1a9b3"
+    },
+    {
+      "path": "docs/evidence/inference-readiness.json",
+      "bytes": 2385,
+      "sha256": "e25c23c8c5446aab3545595b3805e55f63176e5a650907146aa433e53aa13046"
+    },
+    {
+      "path": "docs/evidence/lfm3-research.json",
+      "bytes": 1455,
+      "sha256": "ae5331da2193572fa01ec979e488cd2918d2506e2781e7f2b7abe1b3d537b80b"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 812,
+      "sha256": "d6da3eff1a0d4c3c83a94902d4df591480c9c170db2ac0f6e104a3ddb60c6553"
+    },
+    {
+      "path": "requirements-api.lock",
+      "bytes": 766,
+      "sha256": "9bc60b04cb5df33db3ee0f1bbe2d5c01422ad06bc4e5d41a38a8c13cc2e858a6"
+    },
+    {
+      "path": "requirements.lock",
+      "bytes": 290,
+      "sha256": "e8a9efa626d4b1a7e57b0caaa94abf6480c941d3bdb5bd494f2a157788067594"
+    },
+    {
+      "path": "scripts/verify_repository.py",
+      "bytes": 6747,
+      "sha256": "e499b8580dd59386735734bd00d6c45669bc58296a9c01d60ccbed493f68f8c7"
+    },
+    {
+      "path": "src/lia_lab/__init__.py",
+      "bytes": 91,
+      "sha256": "8f46b609e38d58f63e5ae4633b00aba342adb61485611c3c4677033dbffa0151"
+    },
+    {
+      "path": "src/lia_lab/authorization.py",
+      "bytes": 7072,
+      "sha256": "488d6cfcb9f4068d129bb49ca0ee341a4dd1ffc2b6e0ac9dc446483229389174"
+    },
+    {
+      "path": "src/lia_lab/cards.py",
+      "bytes": 2059,
+      "sha256": "2edfd66a8d2b76ff5c0ce7d257b49fe85fefc0873ecec1f99ef34b3f81c6568e"
+    },
+    {
+      "path": "src/lia_lab/checkpoints.py",
+      "bytes": 6213,
+      "sha256": "a726f17b8273a2a7962c638c53406f813b82294716ad2d07d1acd2f9a0f6f4d5"
+    },
+    {
+      "path": "src/lia_lab/cli.py",
+      "bytes": 6140,
+      "sha256": "a890fe62c130a2c81c30c0fde06e6daad161870ea31349154ee77904fbb398fc"
+    },
+    {
+      "path": "src/lia_lab/containment.py",
+      "bytes": 3768,
+      "sha256": "0f0e3e6a7545d5bf25f6618ef6c6adc9b64a9327a5139f3058960b7532c829a5"
+    },
+    {
+      "path": "src/lia_lab/datasets.py",
+      "bytes": 6902,
+      "sha256": "c2b02ebf2500f42f0e9be4a7d97e9ab033792051632702fa92fe8261c144d695"
+    },
+    {
+      "path": "src/lia_lab/environment.py",
+      "bytes": 2984,
+      "sha256": "068dc830b71925be239ece781262f51e6ba7aec640b1905dd7a9bf94b378851e"
+    },
+    {
+      "path": "src/lia_lab/evaluation.py",
+      "bytes": 3917,
+      "sha256": "9bb3654439ba47578f9920df17e9a22e285b83baf02f04d2e64ff17ca1b6d8b9"
+    },
+    {
+      "path": "src/lia_lab/experiments.py",
+      "bytes": 11788,
+      "sha256": "a3ad53751ed35ef6465fdd610031d648c2349d6d57a6dc3dd9738e3c89794b40"
+    },
+    {
+      "path": "src/lia_lab/inference.py",
+      "bytes": 12566,
+      "sha256": "865c132635950d0c7617362cf4168ae54eb76707a7f2d6bf4838476f787ce49b"
+    },
+    {
+      "path": "src/lia_lab/inference_protocol.py",
+      "bytes": 7833,
+      "sha256": "ff4c67e857211786c5001d2f8c34c65cc13cee0385bc62beaf8d8bec8b603559"
+    },
+    {
+      "path": "src/lia_lab/inference_worker.py",
+      "bytes": 10556,
+      "sha256": "47c19d312db8878f82fe3eb26959ef9e1ec08a9fbe08671520d737170b040fda"
+    },
+    {
+      "path": "src/lia_lab/io.py",
+      "bytes": 3661,
+      "sha256": "e698e1424b0fae951bb332b52ebf56718faf4b7f836923aee4fa570417e6eb23"
+    },
+    {
+      "path": "src/lia_lab/model_backends.py",
+      "bytes": 5323,
+      "sha256": "b2cb99b9f1cf7052e476a0bd93265c2b2157878edd22089788f5b1b17c9fe365"
+    },
+    {
+      "path": "src/lia_lab/schemas/example.schema.json",
+      "bytes": 3217,
+      "sha256": "fc0aeb884a5b72cfa0a70dafc10ce46024c463d644caf0ad7f5639e00c1a5f0d"
+    },
+    {
+      "path": "src/lia_lab/schemas/model-snapshot.schema.json",
+      "bytes": 1535,
+      "sha256": "319d943795befeb3635fb01845979a541396f4bc1ed11b9f3839265243aa0f99"
+    },
+    {
+      "path": "src/lia_lab/schemas/research-candidate.schema.json",
+      "bytes": 6293,
+      "sha256": "708a03a5bb4de5ca9d90258ab22aac8f496a09b3f57edf06924657aef0685f0e"
+    },
+    {
+      "path": "src/lia_lab/training_prep.py",
+      "bytes": 7407,
+      "sha256": "bc9f3c8dd9001284f40db413eab00e74b183d19cda5366ac1f3d030edc7a3e30"
     },
     {
       "path": "templates/ADR.md",
@@ -112,6 +443,91 @@
       "path": "templates/MODEL-CARD.md",
       "bytes": 1100,
       "sha256": "a49f4d3ad8e3ae09a00bfd9cbf255889ea76a2b12fc9d17d502c5ffb5e36ce24"
+    },
+    {
+      "path": "tests/conftest.py",
+      "bytes": 960,
+      "sha256": "8a9d1fc5d34bfa03d8118023a6ab2a62b38c36746be293c6f9319f4c92105c38"
+    },
+    {
+      "path": "tests/fixtures/README.md",
+      "bytes": 903,
+      "sha256": "1c06140954c6e0886963258c9b7b57ca6c3b8a5c44d883d98a3030ff7cfe46aa"
+    },
+    {
+      "path": "tests/fixtures/adapter-quantized.json",
+      "bytes": 1041,
+      "sha256": "6da5b198ca424fabdc07fa4f91a372981b7e2f61c81ffe862a99f2a133939d5b"
+    },
+    {
+      "path": "tests/fixtures/adapter.json",
+      "bytes": 1044,
+      "sha256": "512bf240c6c2d49d0760058d89e0c0e40239a04ae027df63512fe45a398a63d4"
+    },
+    {
+      "path": "tests/fixtures/base.json",
+      "bytes": 1028,
+      "sha256": "e666e6f293be377ea731115c4d5ac99f5c5628ab170f3af79da78a946e9b3ec3"
+    },
+    {
+      "path": "tests/fixtures/pilot.jsonl",
+      "bytes": 4212,
+      "sha256": "a791137eaac8017eea986501738afbb337b82a6a78477690e3a3e78ba96b836a"
+    },
+    {
+      "path": "tests/support_authorization.py",
+      "bytes": 802,
+      "sha256": "18817d103fd8c3527d2c8a1099950e305715ab44c195b909e6aec4fa9cefcf23"
+    },
+    {
+      "path": "tests/test_authorization.py",
+      "bytes": 7173,
+      "sha256": "9b9227ec3d6c3f038e2995ca8bb51b9f7a9346ff85ef22d65d103fac00871d23"
+    },
+    {
+      "path": "tests/test_backend_contracts.py",
+      "bytes": 5967,
+      "sha256": "d09b33fc3a2a91cc72c7b5052e3e16b2f53f7a6b508918561492a7e01c5cc591"
+    },
+    {
+      "path": "tests/test_containment.py",
+      "bytes": 2843,
+      "sha256": "9cf2e38401e6268a4bbeee5ed96e2cf03184f8e513748d5fd79fee56c0a83568"
+    },
+    {
+      "path": "tests/test_final_audit.py",
+      "bytes": 7839,
+      "sha256": "dd8bd17951d7327071418667063f81162a1266f22f2ac7c66e580bf47686706a"
+    },
+    {
+      "path": "tests/test_foundation.py",
+      "bytes": 11902,
+      "sha256": "7ed52b26890d74aca0bdd9b67265075f2981fa46c584839110f9b4f9f3943468"
+    },
+    {
+      "path": "tests/test_inference.py",
+      "bytes": 13791,
+      "sha256": "e056408ef58ee6ece2b48e30dddcc225ff744c81d0b315f29c886c7b530c912f"
+    },
+    {
+      "path": "tests/test_repository.py",
+      "bytes": 1688,
+      "sha256": "a303e2c4641a70762a09260555fb857c6245c7ec40b7ee1ac629001ab88b7ea0"
+    },
+    {
+      "path": "tests/test_research_catalog.py",
+      "bytes": 2562,
+      "sha256": "cd74b6a9c478c84e08ad89947155b49d75086b202b1762b89da9bbb83cc59209"
+    },
+    {
+      "path": "tests/test_supervisor_results.py",
+      "bytes": 4146,
+      "sha256": "f3b5433af24ae0dac18c01d785d31fbe7d9fcafb5da00076ea248773e9eacac5"
+    },
+    {
+      "path": "tests/test_transformers_api.py",
+      "bytes": 5009,
+      "sha256": "71a5d552f7c2f92fc2e6edf6ba9741caf277cfd9d72bd23e261d38b8181f3a8c"
     }
   ]
 }

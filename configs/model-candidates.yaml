@@ -1,9 +1,46 @@
 schema_version: 1
-updated_at: "2026-10-30"
+updated_at: "2026-10-31"
 project: "Lia Model Lab"
 status: "shortlist-only"
 selection_policy: "No base model is approved until Gate 0 and comparative evaluation pass."
 candidates:
+  - id: "qwen3.5-4b"
+    model_id: "Qwen/Qwen3.5-4B"
+    revision: null
+    status: "recommended-pilot-candidate-not-approved"
+    license_declared: "Apache-2.0"
+    role: "first economical useful Core pilot after Gate 0"
+    source: "https://huggingface.co/Qwen/Qwen3.5-4B/raw/main/README.md"
+    consulted_at: "2026-10-30"
+    loader_contract: "qwen3_5 + Qwen3_5ForConditionalGeneration + AutoProcessor/Qwen3VLProcessor"
+    api_registry_validation: "executed-transformers-5.22.1-without-Torch"
+    exact_checkpoint_config_validation: "NOT-TESTED-host-not-allowlisted"
+    native_template_and_generation_validation: "NOT-TESTED"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
+  - id: "qwen3.5-0.8b"
+    model_id: "Qwen/Qwen3.5-0.8B"
+    revision: null
+    status: "conformance-probe-not-approved"
+    license_declared: "Apache-2.0"
+    role: "small pipeline probe, not final quality target"
+    source: "https://huggingface.co/Qwen/Qwen3.5-0.8B/raw/main/README.md"
+    consulted_at: "2026-10-30"
+    loader_contract: "qwen3_5 + Qwen3_5ForConditionalGeneration + AutoProcessor/Qwen3VLProcessor"
+    api_registry_validation: "executed-transformers-5.22.1-without-Torch"
+    exact_checkpoint_config_validation: "NOT-TESTED-host-not-allowlisted"
+    native_template_and_generation_validation: "NOT-TESTED"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
+  - id: "qwen3-0.6b"
+    model_id: "Qwen/Qwen3-0.6B"
+    revision: null
+    status: "textual-control-not-approved-not-Base"
+    loader_contract: "qwen3 + Qwen3ForCausalLM + AutoTokenizer/Qwen2Tokenizer"
+    api_registry_validation: "executed-transformers-5.22.1-without-Torch"
+    exact_checkpoint_config_validation: "NOT-TESTED"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
   - id: "qwen3.8-27b"
     model_id: "Qwen/Qwen3.8-27B"
     family: "Qwen3.8"
@@ -17,7 +54,7 @@ candidates:
       audio_input: "not declared as native capability in reviewed card"
       audio_output: false
     status: "candidate-added-2026-10-30"
-    role: "first model for comparative evaluation"
+    role: "remote quality comparator; not economical first training default"
     risks:
       - "must validate PEFT/LoRA/QLoRA support on exact revision"
       - "must validate AMD/Vulkan/ROCm inference and training separately"
@@ -31,32 +68,696 @@ candidates:
       text_input: true
       text_output: true
       image_input: true
-      video_input: "verify exact card/revision"
-      audio_input: "verify exact card/revision"
+      video_input: true
+      audio_input: false
       audio_output: false
     status: "historical-priority-baseline"
     role: "comparison against original model selection"
     risks:
       - "measure against Qwen3.8 rather than assume older model is inferior"
   - id: "gemma4"
-    model_id: "Google Gemma 4 (select exact variant after review)"
+    model_id: null
+    record_kind: "family-placeholder-not-an-exact-checkpoint"
+    revision: null
+    license_review: "exact-artifact-review-required"
+    runtime_validation: "NOT-TESTED"
+    training_validation: "NOT-TESTED"
     family: "Gemma 4"
-    parameter_scale: "E2B / E4B / 26B A4B / 31B and other published variants"
-    license_declared: "Gemma 4 terms — legal review required"
+    parameter_scale: "E2B / E4B / 12B Unified / 26B A4B / 31B"
+    license_declared: "Apache-2.0 — official Gemma 4 card checked 2026-10-30; exact artifact review pending"
     modalities_documented:
       text_input: true
       text_output: true
       image_input: true
-      audio_input: true
-      audio_output: "verify exact variant/card"
+      audio_input: "E2B/E4B/12B only; absent on 26B A4B/31B"
+      audio_output: false
       video_input: "verify exact variant/card"
     status: "historical-alternative"
     role: "multimodal alternative, especially for audio-input investigation"
     risks:
-      - "Gemma terms and model-derivative distribution obligations"
+      - "Verify Apache-2.0 LICENSE/NOTICE of exact artifact and independent data/voice rights"
       - "exact variant architecture and tuning support must be audited"
+  - id: lfm3-1.7b
+    model_id: LiquidAI/LFM3-1.7B
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: Core compacto
+    research_contract:
+      kind: post-trained
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 1.73
+      components_declared: backbone tri-hybrid 24 layers
+      input_modalities: &id001
+      - text
+      output_modalities: &id002
+      - text
+      context_tokens_declared: 262144
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: &id003
+        - English
+        - Arabic
+        - Chinese
+        - French
+        - German
+        - Italian
+        - Japanese
+        - Korean
+        - Portuguese
+        - Spanish
+        - Vietnamese
+        - Thai
+        - Indonesian
+        - Hindi
+        - Russian
+        - Polish
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModelForCausalLM
+      concrete_architecture_evidence: Lfm3ForCausalLM (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: AutoTokenizer
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-1.7b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-1.7B
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-1.7b-gguf
+    model_id: LiquidAI/LFM3-1.7B-GGUF
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: Core compacto
+    research_contract:
+      kind: post-trained
+      format: GGUF
+      parent_model_id: LiquidAI/LFM3-1.7B
+      parameters_billions_declared: 1.73
+      components_declared: backbone tri-hybrid 24 layers
+      input_modalities: *id001
+      output_modalities: *id002
+      context_tokens_declared: 262144
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: llama.cpp b11960 source inspected; not executed
+      concrete_architecture_evidence: Lfm3ForCausalLM (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: runtime GGUF template + modality projectors
+      custom_code: compiled runtime source; build and dependencies unaudited
+      files_inventory: null
+      quantizations_documented:
+      - Q4_K_M
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-1.7b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-1.7B-GGUF
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-1.7b-base
+    model_id: LiquidAI/LFM3-1.7B-Base
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: customização profunda; não chat pronto
+    research_contract:
+      kind: base
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 1.73
+      components_declared: backbone; exact Base config unverified
+      input_modalities:
+      - text
+      output_modalities:
+      - text
+      context_tokens_declared: 262144
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModelForCausalLM
+      concrete_architecture_evidence: Lfm3ForCausalLM (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: AutoTokenizer
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-1.7b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-1.7B-Base
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-vl-2b
+    model_id: LiquidAI/LFM3-VL-2B
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: Lia Vision
+    research_contract:
+      kind: vision
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 1.92
+      components_declared: 1.73B LM + 164M vision + 25M projector
+      input_modalities: &id004
+      - text
+      - image
+      - video
+      output_modalities: &id005
+      - text
+      context_tokens_declared: 131072
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModelForImageTextToText
+      concrete_architecture_evidence: Lfm3VlForConditionalGeneration (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: AutoProcessor
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-vl-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-VL-2B
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-vl-2b-gguf
+    model_id: LiquidAI/LFM3-VL-2B-GGUF
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: Lia Vision
+    research_contract:
+      kind: vision
+      format: GGUF
+      parent_model_id: LiquidAI/LFM3-VL-2B
+      parameters_billions_declared: 1.92
+      components_declared: 1.73B LM + 164M vision + 25M projector
+      input_modalities: *id004
+      output_modalities: *id005
+      context_tokens_declared: 131072
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: llama.cpp b11960 source inspected; not executed
+      concrete_architecture_evidence: Lfm3VlForConditionalGeneration (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: runtime GGUF template + modality projectors
+      custom_code: compiled runtime source; build and dependencies unaudited
+      files_inventory: null
+      quantizations_documented:
+      - Q4_0
+      auxiliary_files_required: matching mmproj; codec/audio-output components for audio/Omni; exact inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-vl-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-VL-2B-GGUF
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-audio-2b
+    model_id: LiquidAI/LFM3-Audio-2B
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: Lia Hearing / Speech
+    research_contract:
+      kind: audio
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 2
+      components_declared: causal audio encoder + LiquidCodec + depth decoder
+      input_modalities: &id006
+      - text
+      - audio
+      output_modalities: &id007
+      - text
+      - speech
+      - interleaved
+      context_tokens_declared: 32768
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: &id008
+        - Arabic
+        - Danish
+        - German
+        - Greek
+        - British English
+        - American English
+        - Finnish
+        - French
+        - Hebrew
+        - Italian
+        - Japanese
+        - Korean
+        - Dutch
+        - Polish
+        - Portuguese
+        - Spanish
+        - Swedish
+        - Turkish
+        - Chinese
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModelForMultimodalLM
+      concrete_architecture_evidence: Lfm3AudioForConditionalGeneration (llama.cpp converter; not exact checkpoint
+        config)
+      frontend_documented: AutoProcessor
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-audio-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-Audio-2B
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-audio-2b-gguf
+    model_id: LiquidAI/LFM3-Audio-2B-GGUF
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: Lia Hearing / Speech
+    research_contract:
+      kind: audio
+      format: GGUF
+      parent_model_id: LiquidAI/LFM3-Audio-2B
+      parameters_billions_declared: 2
+      components_declared: causal audio encoder + LiquidCodec + depth decoder
+      input_modalities: *id006
+      output_modalities: *id007
+      context_tokens_declared: 32768
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: *id008
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: llama.cpp b11960 source inspected; not executed
+      concrete_architecture_evidence: Lfm3AudioForConditionalGeneration (llama.cpp converter; not exact checkpoint
+        config)
+      frontend_documented: runtime GGUF template + modality projectors
+      custom_code: compiled runtime source; build and dependencies unaudited
+      files_inventory: null
+      quantizations_documented:
+      - Q4_K_M
+      auxiliary_files_required: matching mmproj; codec/audio-output components for audio/Omni; exact inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-audio-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-Audio-2B-GGUF
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-omni-2b
+    model_id: LiquidAI/LFM3-Omni-2B
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: percepção integrada opcional; não Core reasoning
+    research_contract:
+      kind: omni
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 2.17
+      components_declared: vision + audio encoders + projectors + LiquidCodec
+      input_modalities: &id009
+      - text
+      - image
+      - video
+      - audio
+      output_modalities: &id010
+      - text
+      - speech
+      - interleaved
+      context_tokens_declared: 32768
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: *id008
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModelForMultimodalLM
+      concrete_architecture_evidence: Lfm3OmniForConditionalGeneration (llama.cpp converter; not exact checkpoint
+        config)
+      frontend_documented: AutoProcessor
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-omni-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-Omni-2B
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: lfm3-omni-2b-gguf
+    model_id: LiquidAI/LFM3-Omni-2B-GGUF
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: percepção integrada opcional; não Core reasoning
+    research_contract:
+      kind: omni
+      format: GGUF
+      parent_model_id: LiquidAI/LFM3-Omni-2B
+      parameters_billions_declared: 2.17
+      components_declared: vision + audio encoders + projectors + LiquidCodec
+      input_modalities: *id009
+      output_modalities: *id010
+      context_tokens_declared: 32768
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: *id008
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: llama.cpp b11960 source inspected; not executed
+      concrete_architecture_evidence: Lfm3OmniForConditionalGeneration (llama.cpp converter; not exact checkpoint
+        config)
+      frontend_documented: runtime GGUF template + modality projectors
+      custom_code: compiled runtime source; build and dependencies unaudited
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: matching mmproj; codec/audio-output components for audio/Omni; exact inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/lfm3-omni-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/LFM3-Omni-2B-GGUF
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: d1-2b
+    model_id: LiquidAI/d1-2B
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: classificação / extração / grounding
+    research_contract:
+      kind: decision
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 1.92
+      components_declared: LFM3-VL + decision heads
+      input_modalities: &id011
+      - text
+      - image
+      - video
+      output_modalities: &id012
+      - typed-decision
+      context_tokens_declared: 131072
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModel
+      concrete_architecture_evidence: D1Model (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: custom system_one internal frontend; exact class unknown
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/d1-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/d1-2B
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: d1-2b-gguf
+    model_id: LiquidAI/d1-2B-GGUF
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: classificação / extração / grounding
+    research_contract:
+      kind: decision
+      format: GGUF
+      parent_model_id: LiquidAI/d1-2B
+      parameters_billions_declared: 1.92
+      components_declared: LFM3-VL + decision heads
+      input_modalities: *id011
+      output_modalities: *id012
+      context_tokens_declared: 131072
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech: []
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: llama.cpp b11960 source inspected; not executed
+      concrete_architecture_evidence: D1Model (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: runtime GGUF template + modality projectors
+      custom_code: compiled runtime source; build and dependencies unaudited
+      files_inventory: null
+      quantizations_documented:
+      - Q8_0
+      auxiliary_files_required: matching mmproj; codec/audio-output components for audio/Omni; exact inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/d1-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/d1-2B-GGUF
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: d1-omni-2b
+    model_id: LiquidAI/d1-Omni-2B
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: roteamento / decisões com áudio; não fala
+    research_contract:
+      kind: decision
+      format: safetensors
+      parent_model_id: null
+      parameters_billions_declared: 2.17
+      components_declared: LFM3-Omni + decision heads
+      input_modalities: &id013
+      - text
+      - image
+      - audio
+      output_modalities: &id014
+      - typed-decision
+      context_tokens_declared: 131072
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech:
+        - English
+        - Arabic
+        - Chinese
+        - French
+        - German
+        - Italian
+        - Japanese
+        - Korean
+        - Portuguese
+        - Spanish
+        - Russian
+        - Polish
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: AutoModel
+      concrete_architecture_evidence: D1Model (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: custom system_one internal frontend; exact class unknown
+      custom_code: upstream checkpoint Python required; unaudited, forbidden
+      files_inventory: null
+      quantizations_documented: []
+      auxiliary_files_required: config/tokenizer/template/LICENSE/NOTICE plus model-specific encoders/codec; exact
+        inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/d1-omni-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/d1-Omni-2B
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
+  - id: d1-omni-2b-gguf
+    model_id: LiquidAI/d1-Omni-2B-GGUF
+    family: LFM3
+    revision: null
+    status: research-only
+    license_declared: LFM Open License v1.0
+    role: roteamento / decisões com áudio; não fala
+    research_contract:
+      kind: decision
+      format: GGUF
+      parent_model_id: LiquidAI/d1-Omni-2B
+      parameters_billions_declared: 2.17
+      components_declared: LFM3-Omni + decision heads
+      input_modalities: *id013
+      output_modalities: *id014
+      context_tokens_declared: 131072
+      context_evidence: family documentation; exact artifact/config and usable memory NOT-TESTED
+      languages_declared:
+        text: *id003
+        speech:
+        - English
+        - Arabic
+        - Chinese
+        - French
+        - German
+        - Italian
+        - Japanese
+        - Korean
+        - Portuguese
+        - Spanish
+        - Russian
+        - Polish
+        pt_BR_validation: NOT-TESTED; Portuguese declaration is not Brazilian quality evidence
+      license_review: license-review-required
+      individual_license_inspected: false
+      runtime_validation: NOT-TESTED
+      training_validation: NOT-TESTED
+      execution_allowed: false
+      backend_documented: llama.cpp b11960 source inspected; not executed
+      concrete_architecture_evidence: D1Model (llama.cpp converter; not exact checkpoint config)
+      frontend_documented: runtime GGUF template + modality projectors
+      custom_code: compiled runtime source; build and dependencies unaudited
+      files_inventory: null
+      quantizations_documented:
+      - Q8_0
+      auxiliary_files_required: matching mmproj; codec/audio-output components for audio/Omni; exact inventory blocked
+      source: https://github.com/Liquid4All/docs/blob/4a4f438d736ff85f35d9ac128901cbb646d305d3/lfm/models/d1-omni-2b.mdx
+      consulted_at: '2026-10-31'
+      existence_evidence: official-documentation-link; HF repository listing not independently accessed
+      checkpoint_card_url: https://huggingface.co/LiquidAI/d1-Omni-2B-GGUF
+      blockers:
+      - individual LICENSE/NOTICE and immutable checkpoint revision
+      - exact files hashes/config/template and custom code audit
+      - legal approval and separate operational authorization
+      - hardware/runtime/quality probes with authorized weights
 open_questions:
+  - "A shortlist entry is not executable loader support; Gemma/qwen2/MoE/text exports currently fail closed. Changing commercial family names is not selecting a revision."
   - "Which exact checkpoint and revision is selected?"
   - "Which training framework and target modules support it?"
   - "Which GPU backend is validated for training?"
   - "Which runtime/quantization formats are releasable?"
+
+research_mission_001:
+  status: "proposed-not-approved"
+  comparison: "docs/05-FOUNDATION-MODEL-COMPARISON.md"
+  economical_probe: "Qwen/Qwen3.5-0.8B"
+  economical_core_candidate: "Qwen/Qwen3.5-4B"
+  remote_quality_candidate: "Qwen/Qwen3.8-27B"
+  caveat: "No checkpoint downloaded, benchmark run, or training compatibility validated."

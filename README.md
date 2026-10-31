@@ -1,91 +1,52 @@
 # Lia Model Lab
 
-**Documentação fundadora — v1.0 — 30 de outubro de 2026**  
-**Idioma:** português brasileiro  
-**Objetivo:** criar e evoluir modelos/pesos próprios para o ecossistema Lia.
+Laboratório independente para construir e avaliar os primeiros pesos/adapters **Lia Core**, com evolução progressiva para percepção, fala, agentes e jogos. Não é um chatbot renomeado nem o runtime da aplicação Lia.
 
-> **Em uma frase:** o Lia Model Lab é o laboratório independente responsável por pesquisar, adaptar, treinar, avaliar, versionar e empacotar a família de modelos da Lia — começando pelo **Lia Core** e evoluindo, com evidência, para capacidades multimodais, agentes e especializações.
+## Estado — fundação, pesquisa e auditoria, 31/10/2026
 
-## Estado desta documentação
+Pesquisa e skills integradas em uma única documentação oficial; marca e governança preservadas. Já há **código offline funcional e testes** para Dataset Factory texto/tools, splits/dedup, integridade, planos reproduzíveis, avaliação de predições e exportação estrutural local de adapters.
 
-- Visão e arquitetura: **documentadas**.
-- Padrão comum de marca e vocabulário: `docs/BRAND-STANDARDS.md`.
-- Governança de experimentos e artefatos: `docs/13-GOVERNANCA-DE-EXPERIMENTOS.md`.
-- Catálogo de capacidades AIRI: **levantamento documental** baseado no manual oficial AIRI 0.13.0 e na estrutura do fork existente dentro de `Lia-Project`.
-- Capacidades/modelos que precisam de pesos: **mapeadas** na matriz.
-- Modelo-base: **não escolhido definitivamente**.
-- Treinamento: **plano aprovado conceitualmente**; nenhum treinamento foi executado por este pacote.
-- Datasets: **a construir e licenciar**.
-- Infraestrutura de treinamento: **a validar**.
-- Pesos próprios: **ainda não existem neste pacote**.
+**Hardening v0.4:** autorização operacional externa/temporária/uso único, classes Qwen explícitas, processor VLM, métricas v2 e máscaras validadas por turno. API real TF5.22.1 executada apenas com tokenizer original de teste e sem Torch. Perfis Linux de recursos/namespace não são sandbox completo. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 continua aberta; este trabalho não está presumido integrado à main.
 
-Este repositório contém documentação, políticas e templates. Não contém datasets privados, checkpoints ou pesos de modelos.
+**Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
-## Comece por aqui
+Auditoria final: [achados, correções e limites para integração](docs/18-FINAL-AUDIT.md). Prontidão de revisão do código não é aprovação de modelos, licença ou execução.
 
-1. `AGENTS.md` — regras para Arena.ai Agent Mode e outros agentes.
-2. `docs/BRAND-STANDARDS.md` — identidade, linguagem, limites entre produtos e vocabulário comum.
-3. `docs/00-VISAO-E-ESCOPO.md` — missão, limites e princípio de arquitetura.
-4. `docs/01-CATALOGO-CAPACIDADES-AIRI.md` — inventário das funções AIRI que servem como referência.
-5. `docs/02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md` — o que deve ser aprendido nos pesos e o que precisa existir fora deles.
-6. `docs/03-ARQUITETURA-ALVO.md` — família de modelos e runtime ao redor.
-7. `docs/04-SELECAO-MODELO-BASE.md` — shortlist e gates de decisão.
-8. `docs/05-PLANO-DE-TREINAMENTO.md` — LoRA, QLoRA, SFT, avaliações e exportação.
-9. `docs/06-DATASETS-E-GOVERNANCA.md` — dados, consentimento, licenças e privacidade.
-10. `docs/07-AVALIACAO-E-GATES.md` — como provar que um modelo melhorou.
-11. `docs/08-INFRAESTRUTURA-E-OPERACAO.md` — hardware, execução remota, Arena e artefatos.
-12. `docs/09-ROADMAP.md` — fases de implementação.
-13. `docs/10-DECISOES-REGISTRADAS.md` — decisões iniciais e pontos ainda abertos.
-14. `docs/13-GOVERNANCA-DE-EXPERIMENTOS.md` — proveniência, custo, reprodutibilidade e ciclo de promoção de artefatos.
+## Começar
 
-## Relação com os repositórios existentes
-
-- `BloomRX/Lia-Project` é a aplicação principal/companheira virtual e está em processo de desacoplamento. AIRI é uma referência técnica e fonte de comparação, não uma dependência arquitetural permanente desejada.
-- `BloomRX/Lia-Model-Lab` é o laboratório independente de pesos, datasets, treinamento e avaliação. Ele produz artefatos que podem ser integrados à aplicação por contratos documentados; não assume memória, ferramentas, permissões ou UI.
-- `BloomRX/LiaVoiceStudio`, `BloomRX/Lia-Studio`, `BloomRX/Lia-Go` e `BloomRX/Lia-Forge` são projetos relacionados, mas mantêm escopos e ciclos próprios. Consulte seus repositórios para estado real e não presuma integração só por compartilharem a marca.
-
-O blueprint original `docs/Lia_Model_Blueprint.md` foi preservado como referência e complementa a documentação numerada.
-
-## Estrutura
-
-```text
-Lia-Model-Lab/
-├── README.md
-├── AGENTS.md
-├── .gitignore
-├── configs/
-│   ├── model-candidates.yaml
-│   └── capability-requirements.yaml
-├── docs/
-│   ├── 00-VISAO-E-ESCOPO.md
-│   ├── 01-CATALOGO-CAPACIDADES-AIRI.md
-│   ├── 02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md
-│   ├── 03-ARQUITETURA-ALVO.md
-│   ├── 04-SELECAO-MODELO-BASE.md
-│   ├── 05-PLANO-DE-TREINAMENTO.md
-│   ├── 06-DATASETS-E-GOVERNANCA.md
-│   ├── 07-AVALIACAO-E-GATES.md
-│   ├── 08-INFRAESTRUTURA-E-OPERACAO.md
-│   ├── 09-ROADMAP.md
-│   ├── 10-DECISOES-REGISTRADAS.md
-│   ├── 11-FONTES-E-EVIDENCIAS.md
-│   ├── BRAND-STANDARDS.md
-│   └── 13-GOVERNANCA-DE-EXPERIMENTOS.md
-└── templates/
-    ├── ADR.md
-    ├── DATASET-CARD.md
-    ├── EXPERIMENTO.md
-    ├── MODEL-CARD.md
-    └── AVALIACAO.md
+```sh
+python -m venv .venv
+.venv/bin/pip install -r requirements.lock
+.venv/bin/pip install --no-build-isolation --no-deps -e .
+.venv/bin/python -m pytest -q
+.venv/bin/python scripts/verify_repository.py
+.venv/bin/lia-lab validate-data tests/fixtures/pilot.jsonl
+.venv/bin/lia-lab doctor
 ```
 
-## Princípios inegociáveis
+Windows: usar executáveis em `.venv\Scripts\`; essa plataforma ainda não foi testada. [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Dependências pequenas de ferramentas foram instaladas para validar software; não uma stack de ML com modelos.
 
-- Não treinar um foundation model do zero na primeira geração.
-- Não escolher o modelo-base apenas por número de parâmetros ou benchmark público.
-- Não colocar memória pessoal, segredos, ferramentas ou estado mutável dentro dos pesos.
-- Não confundir “o modelo sabe solicitar uma ação” com “a aplicação executou a ação com segurança”.
-- Não declarar uma capacidade concluída sem teste direcionado e evidência reproduzível.
-- Não publicar pesos/adapters derivados de modelos sem revisar a licença da base e dos dados.
-- Não iniciar download grande, treinamento pago, inferência paga, upload público ou uso de credenciais sem autorização explícita.
-- Preservar uma referência reproduzível para cada experimento: base, commit, dados, configuração, seed, métricas e hashes.
+## Documentação oficial
+
+- [Índice único](docs/README.md), [AGENTS](AGENTS.md) e [marca](docs/BRAND-STANDARDS.md).
+- [Auditoria e comparação das branches](docs/00-PROJECT-AUDIT.md), [ADR de consolidação](docs/adr/0001-CONSOLIDATION.md).
+- [Inventário AIRI](docs/01-AIRI-CAPABILITY-INVENTORY.md), [matriz de capacidades](docs/02-LIA-CAPABILITY-MATRIX.md).
+- [Pesos versus runtime](docs/03-WEIGHTS-VS-RUNTIME.md), [família Lia](docs/04-MODEL-FAMILY-ARCHITECTURE.md).
+- [Comparação e recomendação de bases](docs/05-FOUNDATION-MODEL-COMPARISON.md).
+- [Treino](docs/06-TRAINING-STRATEGY.md), [dados](docs/07-DATASET-STRATEGY.md), [hardware](docs/08-HARDWARE-INFRASTRUCTURE.md), [benchmarks](docs/09-BENCHMARK-STRATEGY.md).
+- [Governança](docs/13-GOVERNANCA-DE-EXPERIMENTOS.md), [skills/subagentes](docs/14-ORQUESTRACAO-DE-AGENTES.md), [fundação implementada](docs/15-IMPLEMENTATION-FOUNDATION.md).
+- [Fontes](docs/SOURCES.md), [validação executada](docs/VALIDATION.md), [roadmap](docs/11-ROADMAP.md) e [decisões abertas](docs/12-OPEN-DECISIONS.md).
+
+## Direção técnica
+
+**Recomendação de candidato, não adoção aprovada:** Qwen3.5-4B para primeiro piloto útil; 0.8B para conformance econômica; Qwen3.8-27B para comparação remota de qualidade. Qwen3.5-27B é controle histórico; Gemma 4 é alternativa por variante. Português, persona, tools, treinamento/export e custo real ainda exigem medições pareadas. Uma base aberta não é um modelo Lia adaptado.
+
+Core primeiro; Vision, Hearing, Speech, Game, Reflex e Omni são papéis/direções, não obrigação de sete treinos. Agent/Memory são comportamentos/contratos e serviços externos quando necessário. AIRI é referência técnica. Memória mutável, permissões e execução de ferramentas nunca são substituídas por fine-tuning.
+
+## Limites
+
+`infer-local` pode carregar somente snapshots locais após grant humano externo vinculado à operação exata, com runtime opcional e limites; nesta entrega não foi executado com checkpoint real. CLI não inicia treino, não baixa pesos, não faz upload e não promove artefatos à aplicação. `register-plan` exige paths explícitos de pesquisa e modelos aprovados, disjuntos; template PENDING deve falhar. `compare` pontua predições existentes, não executa inferência. `export-adapter` verifica/copia artefatos locais, não faz merge nem aprova release. Fixtures são fictícias, não dados de produção. Ver [testes e NOT-TESTED](docs/VALIDATION.md).
+
+## Pesquisa Liquid AI LFM3
+
+A [avaliação LFM3](docs/17-LFM3-RESEARCH.md) e o catálogo incluem texto/Base, VL, Audio, Omni, d1 e seis GGUF oficialmente referenciados, sem substituir Qwen/Gemma. São **research-only / license-review-required**: licença comercial condicionada, código customizado não auditado e artefatos exatos pendentes. Nenhum backend LFM3 foi habilitado, peso adquirido ou treino executado.

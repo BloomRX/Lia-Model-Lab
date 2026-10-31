@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lia-model-lab"
+version = "0.4.0"
+description = "Offline dataset and experiment foundations for Lia Model Lab"
+requires-python = ">=3.11"
+dependencies = ["PyYAML==6.0.3", "jsonschema==4.25.1", "safetensors==0.8.0", "numpy==2.3.4"]
+
+[project.optional-dependencies]
+test = ["pytest==8.4.2"]
+# Torch wheels are selected separately per hardware/provider; never silently install a CUDA stack.
+inference = ["transformers==5.22.1", "jinja2==3.1.6", "Pillow==12.0.0"]
+
+[project.scripts]
+lia-lab = "lia_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+lia_lab = ["schemas/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
