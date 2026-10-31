@@ -85,6 +85,18 @@ def validate(root=ROOT, check_manifest=True):
             for ref in references:
                 if not (root / ref).is_file(): raise LabError(f"missing profile skill: {ref}")
             counts["agents"] += 1
+    catalog = load(root / "configs/model-candidates.yaml")
+    lfm = [c for c in catalog["candidates"] if c.get("family") == "LFM3"]
+    schema = load(root / "src/lia_lab/schemas/research-candidate.schema.json")
+    expected = {"LiquidAI/" + name for name in (
+        "LFM3-1.7B", "LFM3-1.7B-Base", "LFM3-VL-2B", "LFM3-Audio-2B", "LFM3-Omni-2B", "d1-2B", "d1-Omni-2B")}
+    expected |= {name + "-GGUF" for name in expected if not name.endswith("-Base")}
+    if len(lfm) != 13 or {c["model_id"] for c in lfm} != expected:
+        raise LabError("LFM3 research registry missing/duplicate/unconfirmed identity")
+    for candidate in lfm:
+        errors = list(Draft202012Validator(schema).iter_errors(candidate))
+        if errors:
+            raise LabError("invalid LFM3 research contract: " + errors[0].message)
     if counts["skills"] != 9 or counts["agents"] != 7:
         raise LabError("unexpected skills/agents registry; update ownership contract deliberately")
     if check_manifest and load(root / "PACKAGE-MANIFEST.json") != manifest(root):
