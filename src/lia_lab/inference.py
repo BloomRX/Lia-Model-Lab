@@ -7,7 +7,7 @@ import sys
 import time
 import hashlib
 from .authorization import consume_grant, finalize_grant
-from .checkpoints import verify_snapshot
+from .checkpoints import verify_snapshot, checkpoint_capacity
 from .containment import policy, supervise, launch_command
 from .environment import doctor
 from .experiments import ID
@@ -118,12 +118,15 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
         finalize_grant(approval_store, approval_id, operation)
         raise
     try:
-        resident = manifest['stored_tensor_elements'] * (4 if dtype == 'float32' else 2)
-        required = int(resident * 1.5) + 1024**3
+        elements = checkpoint_capacity(snapshot)
+        resident = None if elements is None else elements * (4 if dtype == 'float32' else 2)
+        required = None if resident is None else int(resident * 1.5) + manifest['total_bytes'] + 1024**3
         record['estimated_host_ram_bytes'] = required
         available = environment['ram']['available_bytes']
         blockers = []
-        if available is None or available < required:
+        if required is None:
+            blockers.append('architecture parameter capacity unknown; no stored-elements fallback')
+        if available is None or required is None or available < required:
             blockers.append('host RAM unknown or below conservative loading envelope')
         if any(environment['dependencies'][n] is None for n in ('torch', 'transformers')):
             blockers.append('optional torch/transformers runtime is not installed')

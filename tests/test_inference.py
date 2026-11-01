@@ -27,7 +27,9 @@ def test_environment_is_weight_free():
 def test_snapshot_inventory(snapshot):
     directory, manifest = snapshot
     result = verify_snapshot(directory, manifest)
-    assert result['stored_tensor_elements'] == 6
+    from support_checkpoint import SHAPES
+    import math
+    assert result['stored_tensor_elements'] == sum(math.prod(shape) for shape in SHAPES.values())
     assert result['release_approved'] is False
     assert 'attestation' in result['evidence']
 

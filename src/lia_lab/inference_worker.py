@@ -5,7 +5,7 @@ import sys
 import hashlib
 import threading
 import time
-from .checkpoints import verify_snapshot
+from .checkpoints import verify_snapshot, checkpoint_capacity
 from .environment import dependencies, rss
 from .containment import apply_limits
 from .authorization import claim_worker
@@ -86,7 +86,10 @@ def execute(request, output):
     if transformers.__version__ != '5.22.1':
         raise LabError('reference API requires Transformers 5.22.1')
     runtime_import_seconds = time.perf_counter() - import_started
-    device, hardware = torch_device(torch, request['device'], manifest['stored_tensor_elements'] * (4 if request['dtype'] == 'float32' else 2))
+    elements = checkpoint_capacity(request['snapshot'])
+    if elements is None:
+        raise LabError('architecture parameter capacity unknown')
+    device, hardware = torch_device(torch, request['device'], elements * (4 if request['dtype'] == 'float32' else 2))
     dtype = select_dtype(torch, device, request['dtype'])
     torch.manual_seed(request['seed'])
     if device.startswith('cuda'):

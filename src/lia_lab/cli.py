@@ -90,7 +90,7 @@ def main(argv=None):
             result = export_adapter(args.source, args.destination)
         print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
         return 0
-    except (ValueError, KeyError, TypeError, OSError) as exc:
+    except (ValueError, KeyError, TypeError, OSError, RecursionError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 

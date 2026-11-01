@@ -19,6 +19,15 @@ EXTENSIONS = {".md", ".json", ".jsonl", ".yaml", ".yml", ".toml", ".py", ".txt"}
 
 
 def package_paths(root=ROOT):
+    root = Path(root).absolute()
+    def reject_links(path):
+        current = root
+        if current.is_symlink():
+            raise LabError(f'package symlink: {current}')
+        for part in path.relative_to(root).parts:
+            current = current / part
+            if current.is_symlink():
+                raise LabError(f'package symlink: {current}')
     paths = []
     for p in [root / n for n in ROOT_FILES]:
         if p.is_symlink():
@@ -26,7 +35,10 @@ def package_paths(root=ROOT):
         if p.is_file():
             paths.append(p)
     for tree in TREES:
-        for p in (root / tree).rglob("*"):
+        tree_root = root / tree
+        reject_links(tree_root)
+        for p in tree_root.rglob("*"):
+            reject_links(p)
             if any(x == "__pycache__" or x.endswith(".egg-info") for x in p.parts):
                 continue
             if p.relative_to(root).as_posix() in {".codex/config.toml", ".codex/config.local.toml"}:

@@ -41,12 +41,77 @@ def load_frontend(transformers, snapshot, spec):
     return frontend
 
 
+def qwen3_shapes(config):
+    """Narrow explicit dense-Qwen3 layout; missing/other variants -> unknown.
+
+    No default dimensions inferred from a library that might change. Qwen3.5
+    sizing is NOT implemented: its preflight must remain blocked, not file-sized.
+    """
+    if not isinstance(config, dict) or config.get('model_type') != 'qwen3' or config.get('architectures') != ['Qwen3ForCausalLM']:
+        return None
+    fields = ('hidden_size', 'vocab_size', 'intermediate_size', 'num_hidden_layers',
+              'num_attention_heads', 'num_key_value_heads', 'head_dim')
+    if any(type(config.get(k)) is not int or not 0 < config[k] <= 10000000 for k in fields):
+        return None
+    if (config['num_hidden_layers'] > 256 or config['num_key_value_heads'] > config['num_attention_heads'] or
+        config['num_attention_heads'] % config['num_key_value_heads'] or
+        config.get('attention_bias') is not False or config.get('mlp_bias', False) is not False or
+        type(config.get('tie_word_embeddings')) is not bool):
+        return None
+    h, v, mid, layers, heads, kv, d = (config[k] for k in fields)
+    shapes = {'model.embed_tokens.weight': (v, h), 'model.norm.weight': (h,)}
+    if not config['tie_word_embeddings']:
+        shapes['lm_head.weight'] = (v, h)
+    for i in range(layers):
+        prefix = f'model.layers.{i}.'
+        shapes.update({prefix + key: shape for key, shape in {
+            'self_attn.q_proj.weight': (heads * d, h),
+            'self_attn.k_proj.weight': (kv * d, h), 'self_attn.v_proj.weight': (kv * d, h),
+            'self_attn.o_proj.weight': (h, heads * d),
+            'self_attn.q_norm.weight': (d,), 'self_attn.k_norm.weight': (d,),
+            'input_layernorm.weight': (h,), 'post_attention_layernorm.weight': (h,),
+            'mlp.gate_proj.weight': (mid, h), 'mlp.up_proj.weight': (mid, h),
+            'mlp.down_proj.weight': (h, mid)}.items()})
+    return shapes
+
+
 def load_model(transformers, snapshot, spec, dtype):
-    model = getattr(transformers, spec.model_auto).from_pretrained(snapshot, dtype=dtype,
+    loaded = getattr(transformers, spec.model_auto).from_pretrained(snapshot, dtype=dtype,
         local_files_only=True, trust_remote_code=False, use_safetensors=True,
-        attn_implementation='eager', use_kernels=False)
-    if type(model).__name__ != spec.architecture:
-        raise LabError('AutoModel registry returned an unexpected concrete architecture')
+        attn_implementation='eager', use_kernels=False, output_loading_info=True)
+    if not isinstance(loaded, tuple) or len(loaded) != 2:
+        raise LabError('backend did not return model and loading report')
+    model, report = loaded
+    if type(model).__name__ != spec.architecture or not isinstance(report, dict):
+        raise LabError('unexpected concrete architecture or missing loading report')
+    # No blanket ignored keys. Only a proven, canonical Qwen3 tied output alias
+    # may be absent from serialization/report; no naming conversions are allowed.
+    from .checkpoints import tensor_shapes
+    shapes = tensor_shapes(snapshot)
+    state = model.state_dict(keep_vars=True)
+    tied = (spec.model_type == 'qwen3' and getattr(model.config, 'tie_word_embeddings', False) is True and
+            'model.embed_tokens.weight' in shapes and 'lm_head.weight' not in shapes and
+            'model.embed_tokens.weight' in state and 'lm_head.weight' in state and
+            state['lm_head.weight'] is state['model.embed_tokens.weight'])
+    allowed = {'lm_head.weight'} if tied else set()
+    for key in ('missing_keys', 'unexpected_keys', 'mismatched_keys', 'error_msgs'):
+        types = (list, tuple) if key == 'error_msgs' else (list, tuple, set)
+        if key not in report or not isinstance(report[key], types):
+            raise LabError('missing/malformed loading report field: ' + key)
+        value = report[key]
+        if key == 'missing_keys' and isinstance(value, (list, tuple, set)):
+            if any(not isinstance(k, str) for k in value):
+                raise LabError('invalid missing parameter names')
+            value = set(value) - allowed
+        if value:
+            raise LabError('checkpoint loading rejected: ' + key)
+    # Reject any other nonempty diagnostics, rather than ignore future API errors.
+    if any(value for key, value in report.items() if key not in
+           {'missing_keys', 'unexpected_keys', 'mismatched_keys', 'error_msgs'}):
+        raise LabError('unreviewed loading report diagnostics')
+    actual = {name: tuple(tensor.shape) for name, tensor in state.items() if name not in allowed}
+    if actual != shapes:
+        raise LabError('materialized architecture does not match checkpoint parameter names/shapes')
     return model
 
 

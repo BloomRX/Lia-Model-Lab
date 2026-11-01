@@ -5,35 +5,82 @@ from .io import LabError
 
 
 
+def _bounded_tree(value, *, nodes=4096, depth=48, references=True):
+    stack = [(value, 0)]
+    while stack:
+        child, level = stack.pop()
+        nodes -= 1
+        if nodes < 0 or level > depth:
+            raise LabError('tool schema/arguments complexity or depth limit exceeded')
+        if isinstance(child, dict):
+            for key, item in child.items():
+                if references and key in {'$ref', '$dynamicRef', '$recursiveRef'} and (not isinstance(item, str) or not item.startswith('#')):
+                    raise LabError('external tool schema references forbidden')
+                stack.append((item, level + 1))
+        elif isinstance(child, list):
+            stack.extend((item, level + 1) for item in child)
+
+
 def validate_tool_schema(schema):
-    """Only in-document references: schema validation must never fetch files/URLs."""
+    """Only bounded, in-document schemas; recursive data schemas remain supported."""
     if not isinstance(schema, dict):
         raise LabError('explicit object tool schema required')
-    def walk(value):
-        if isinstance(value, dict):
-            for key, child in value.items():
-                if key in {'$ref', '$dynamicRef', '$recursiveRef'} and (not isinstance(child, str) or not child.startswith('#')):
-                    raise LabError('external tool schema references forbidden')
-                walk(child)
-        elif isinstance(value, list):
-            for child in value:
-                walk(child)
-    walk(schema)
+    if schema.get('$schema', 'https://json-schema.org/draft/2020-12/schema') not in (
+            'https://json-schema.org/draft/2020-12/schema', 'https://json-schema.org/draft/2020-12/schema#'):
+        raise LabError('only Draft 2020-12 tool schemas are supported')
+    _bounded_tree(schema)
     from jsonschema.exceptions import SchemaError
     try:
         Draft202012Validator.check_schema(schema)
-    except SchemaError as exc:
-        raise LabError('invalid tool parameter schema') from exc
+    except (SchemaError, RecursionError) as exc:
+        raise LabError('invalid/recursive tool parameter schema') from exc
 
 
 def validate_tool_arguments(schema, arguments):
     validate_tool_schema(schema)
+    _bounded_tree(arguments, references=False)  # bounded instance depth as well as bounded schema size
     from referencing.exceptions import Unresolvable
+    from jsonschema.validators import extend
+    active, steps = set(), [0]
+
+    def bounded(keyword, original):
+        def validate(validator, value, instance, subschema):
+            steps[0] += 1
+            if steps[0] > 20000:
+                raise LabError('tool schema evaluation complexity limit exceeded')
+            token = (id(subschema), id(instance)) if keyword in {'$ref', '$dynamicRef'} else None
+            if token is not None and token in active:
+                raise LabError('circular local tool schema reference without data progress')
+            if token is not None:
+                active.add(token)
+            try:
+                yield from original(validator, value, instance, subschema)
+            finally:
+                if token is not None:
+                    active.remove(token)
+        return validate
+
+    validator_class = extend(Draft202012Validator, {
+        key: bounded(key, fn) for key, fn in Draft202012Validator.VALIDATORS.items()})
+    original_evolve = validator_class.evolve
+    def bounded_evolve(self, **changes):
+        evolved = original_evolve(self, **changes)
+        if isinstance(evolved, validator_class):
+            return evolved
+        # $schema may select the library's base class on a referenced schema.
+        # Keep budget/cycle handlers, without rewriting literals in enum/const.
+        if type(evolved) is not Draft202012Validator:
+            raise LabError('only Draft 2020-12 tool schemas are supported')
+        return validator_class(evolved.schema, format_checker=evolved.format_checker,
+                               registry=evolved._registry, _resolver=evolved._resolver)
+    validator_class.evolve = bounded_evolve
     try:
-        errors = list(Draft202012Validator(schema).iter_errors(arguments))
+        error = next(validator_class(schema).iter_errors(arguments), None)
     except Unresolvable as exc:
         raise LabError('unresolvable local tool schema reference') from exc
-    if errors:
+    except RecursionError as exc:
+        raise LabError('recursive tool schema evaluation exceeded safe depth') from exc
+    if error is not None:
         raise LabError('tool arguments do not match schema')
 
 

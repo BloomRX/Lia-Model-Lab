@@ -4,6 +4,8 @@ This is a bounded in-memory pilot factory, not a multimodal or production pipeli
 """
 import hashlib
 import json
+import os
+import stat
 import random
 import re
 import unicodedata
@@ -59,27 +61,53 @@ def validate_example(row):
     return row
 
 
-def read_examples(path, max_bytes=16 * 1024 * 1024, max_rows=10000):
+def read_examples(path, max_bytes=16 * 1024 * 1024, max_rows=10000, max_line_bytes=256 * 1024):
+    """Regular-file pilot only. At most budget+one sentinel byte is read.
+
+    Binary bounded readline prevents allocating a huge line before enforcing the
+    UTF-8 byte quota. fstat checks the opened object, not just the path's old size.
+    """
+    if any(type(n) is not int or n <= 0 for n in (max_bytes, max_rows, max_line_bytes)):
+        raise LabError('positive integer JSONL budgets required')
     path = Path(path)
-    if path.stat().st_size > max_bytes:
-        raise LabError("pilot input exceeds byte limit")
-    rows, ids = [], set()
-    with path.open(encoding="utf-8") as stream:
-        for line_no, line in enumerate(stream, 1):
-            if not line.strip():
-                raise LabError(f"blank JSONL line {line_no}")
+    if not stat.S_ISREG(path.lstat().st_mode):
+        raise LabError('JSONL input must be a regular file, not symlink/special/stream')
+    fd = os.open(path, os.O_RDONLY | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_NOFOLLOW', 0))
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode):
+            raise LabError('opened JSONL input must be a regular file')
+        if info.st_size > max_bytes:
+            raise LabError('pilot input exceeds byte limit')
+        stream = os.fdopen(fd, 'rb', buffering=0)  # no buffered read-ahead past the quota
+    except BaseException:
+        os.close(fd)
+        raise
+    rows, ids, consumed = [], set(), 0
+    with stream:
+        while True:
+            cap = min(max_line_bytes, max_bytes - consumed)
+            line = stream.readline(cap + 1)
+            if not line:
+                break
+            if len(line) > cap:
+                raise LabError('pilot byte/line limit exceeded during read')
+            consumed += len(line)
+            line_no = len(rows) + 1
             if line_no > max_rows:
-                raise LabError("pilot row limit exceeded")
+                raise LabError('pilot row limit exceeded')
+            if not line.strip():
+                raise LabError(f'blank JSONL line {line_no}')
             try:
-                row = validate_example(json_loads(line))
+                row = validate_example(json_loads(line.decode('utf-8')))
             except (ValueError, KeyError) as exc:
-                raise LabError(f"invalid example at line {line_no}: {exc}") from exc
-            if row["id"] in ids:
-                raise LabError("duplicate example id")
-            ids.add(row["id"])
+                raise LabError(f'invalid example at line {line_no}: {exc}') from exc
+            if row['id'] in ids:
+                raise LabError('duplicate example id')
+            ids.add(row['id'])
             rows.append(row)
     if not rows:
-        raise LabError("empty dataset")
+        raise LabError('empty dataset')
     return rows
 
 

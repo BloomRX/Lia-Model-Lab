@@ -117,3 +117,34 @@ def verify_snapshot(directory, manifest_path):
     if manifest['license']['file'] not in files:
         raise LabError('license file missing')
     return manifest
+
+
+def tensor_shapes(directory):
+    """Headers only, no Torch; callers also verify the sealed inventory."""
+    shapes = {}
+    try:
+        for path in sorted(Path(directory).rglob('*.safetensors')):
+            with safe_open(path, framework='numpy') as handle:
+                for name in handle.keys():
+                    if name in shapes:
+                        raise LabError('duplicate checkpoint parameter')
+                    shapes[name] = tuple(handle.get_slice(name).get_shape())
+    except Exception as exc:
+        raise LabError('cannot establish checkpoint tensor shapes') from exc
+    return shapes
+
+
+def checkpoint_capacity(directory):
+    """Config-derived verified parameter count, or None: never trust file count alone.
+
+    Only the explicit dense Qwen3 contract is implemented. This is parameter/load
+    sizing, not a universal KV-cache/activation bound or real-runtime validation.
+    """
+    from .model_backends import qwen3_shapes
+    import math
+    expected = qwen3_shapes(load(Path(directory) / 'config.json'))
+    if expected is None:
+        return None
+    if tensor_shapes(directory) != expected:
+        raise LabError('checkpoint differs from explicit architecture parameter names/shapes')
+    return sum(math.prod(shape) for shape in expected.values())

@@ -12,18 +12,20 @@ def config(kind):
 
 
 @pytest.mark.parametrize('kind,model,front,concrete',[('qwen3','AutoModelForCausalLM','AutoTokenizer','Qwen3ForCausalLM'),('qwen3_5','AutoModelForImageTextToText','AutoProcessor','Qwen3_5ForConditionalGeneration')])
-def test_explicit_backend_and_from_pretrained(kind,model,front,concrete):
+def test_explicit_backend_and_from_pretrained(kind,model,front,concrete,monkeypatch):
+    from lia_lab import checkpoints
+    monkeypatch.setattr(checkpoints, "tensor_shapes", lambda _: {"weight": (1,)})
     spec=select_backend(config(kind));calls=[]
     assert spec.model_auto==model and spec.frontend_auto==front
     def load_front(*a,**kw):
         calls.append(('front',a,kw));return type(spec.frontend_class,(),{})()
     def load_weights(*a,**kw):
-        calls.append(('weights',a,kw));return type(concrete,(),{})()
+        calls.append(('weights',a,kw));return type(concrete,(),{'state_dict':lambda self,**kw: {'weight':SimpleNamespace(shape=(1,))},'config':SimpleNamespace(tie_word_embeddings=False)})(), dict(missing_keys=[], unexpected_keys=[], mismatched_keys=[], error_msgs=[])
     tf=SimpleNamespace(**{front:SimpleNamespace(from_pretrained=load_front),model:SimpleNamespace(from_pretrained=load_weights)})
     load_frontend(tf,'/local-only',spec);load_model(tf,'/local-only',spec,'synthetic-dtype')
     assert calls[0][2]=={'local_files_only':True,'trust_remote_code':False}
     assert calls[1][2]=={'local_files_only':True,'trust_remote_code':False,'dtype':'synthetic-dtype',
-        'use_safetensors':True,'attn_implementation':'eager','use_kernels':False}
+        'use_safetensors':True,'attn_implementation':'eager','use_kernels':False,'output_loading_info':True}
 
 
 @pytest.mark.parametrize('cfg',[{}, {'model_type':'gemma4','architectures':['Gemma4ForConditionalGeneration']},
