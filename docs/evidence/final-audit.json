@@ -82,5 +82,48 @@
     "reviewer": null,
     "F01_F12_independently_reviewed": false,
     "integration_recommendation": "pending human review; no independent approval claimed"
+  },
+  "R1_R6_correction": {
+    "date": "2026-11-01",
+    "starting_head": "395241b73a3357aa8610086068d70ee5145a40a0",
+    "original_scenarios_reproduced": [
+      "R1",
+      "R2-unchecked-loader",
+      "R3-432-byte-FIFO-max16",
+      "R4",
+      "R5",
+      "R6-committed-whitespace"
+    ],
+    "status": {
+      "R1": "fixed-tested-synthetic-filesystem; unknown/hidden/v1 layouts block",
+      "R2": "fixed-stub-and-header-contracts; real-runtime-NOT-TESTED; Qwen3.5-sizing-unknown-blocked",
+      "R3": "fixed-tested-regular-descriptor-and-bounded-read",
+      "R4": "fixed-tested-bounded-local-progressive-references",
+      "R5": "fixed-tested-root-intermediate-descendant-symlinks",
+      "R6": "fixed-tested-committed-PR-and-push-diffs"
+    },
+    "tests": {
+      "targeted_passed": 58,
+      "base_passed": 255,
+      "base_skipped": 1,
+      "api_passed": 263,
+      "torch_installed": false,
+      "new_regression_cases": 58
+    },
+    "checks": {
+      "pip_check_environments": 2,
+      "compileall": "PASS",
+      "repository_verifier": "PASS after manifest regeneration",
+      "full_pr_whitespace": "PASS after conftest correction"
+    },
+    "capacity_contract": "Explicit dense Qwen3 config + canonical tensor shapes only; otherwise unknown/blocked. All visible v2 ancestors with true hierarchy root proof only; hidden/virtual roots unknown.",
+    "tied_weight_exception": "Only Qwen3 omitted lm_head.weight with true config flag and exact state_dict Parameter identity with serialized model.embed_tokens.weight",
+    "real_inference_or_training": false,
+    "real_operational_grants": 0,
+    "weights_or_datasets_acquired": false,
+    "independent_review": "NOT PERFORMED",
+    "wheel_clean_repeated": false,
+    "remote_final_sha_and_ci": "Verify after push and record exact SHA/run IDs in PR and final response; no self-referential SHA in artifact",
+    "pr_required_state": "OPEN-not-merged"
   }
 }

@@ -84,3 +84,31 @@ CI tem jobs separados base e lightweight-api; ambos não adquirem pesos. Estado 
 Zero pesos/datasets externos adquiridos, zero GPU/API paga, zero dados pessoais, zero licença aceita, zero publicação de pesos/datasets/adapters. Somente dependências pequenas de desenvolvimento/API foram instaladas. Grants dos testes são fictícios/temporários; operador humano deve confirmar uma operação real em terminal próprio e store externo. JSON/SQLite/TTY não autenticam identidade criptográfica; código/relógio/host e conta local são fronteiras de confiança.
 
 [Guia atual](16-REAL-INFERENCE-PILOT.md), [ADR](adr/0003-INFERENCE-HARDENING.md), [evidência](evidence/hardening-validation.json). Histórico de relatórios permanece no Git, sem coleções documentais paralelas.
+
+## Correções R1–R6 — 2026-11-01
+
+Partida: `395241b73a3357aa8610086068d70ee5145a40a0`. Resultados atuais desta missão substituem, mas não apagam, contagens históricas acima:
+
+| Verificação | Resultado |
+|---|---|
+| `pytest tests/test_review_resources.py tests/test_review_loading.py tests/test_review_whitespace.py -q` | 58 passed; cenários sintéticos, sem inferência |
+| Suíte base | 255 passed, 1 skipped (API opcional) |
+| Suíte API leve TF5.22.1 sem Torch | 263 passed |
+| pip check base/API | Sem dependências quebradas |
+| compileall src/scripts/tests | PASS |
+| Verificador + PACKAGE-MANIFEST | PASS após regeneração; 110 arquivos mantidos |
+| `git diff --check` e comparação explícita main...HEAD | PASS após remoção da linha extra de conftest |
+| Gate CI | `python scripts/check_whitespace.py`, revisões explícitas do payload GitHub; histórico completo |
+
+Antes de corrigir foram reproduzidos R1–R5; R6 foi confirmado no diff commitado completo. Um teste CLI novo inicialmente omitiu a opção obrigatória --containment e falhou em argparse; corrigido o comando do teste e repetidas as suítes, sem relaxar a CLI. Os novos testes cobrem limites/ancestrais desconhecidos, aliases tied comprovados, parâmetros ausentes/inesperados/shape/materialização, arquivo especial/crescimento/linha, refs progressivas/circulares/exponenciais, symlinks nas raízes/componentes e whitespace em commits apesar de worktree limpa.
+
+R2 é corrigido **com mocks e headers sintéticos**, não com checkpoint/Torch real. Dimensionamento Qwen3.5 e variantes não implementadas é desconhecido e bloqueia execução. R1 só fornece capacidade para hierarquia v2 completa reconhecida; cgroup v1, raiz virtual/ancestrais ocultos ou ambiente sem identificação devolvem null. Nenhum fallback para RAM total do host. Memória observada não é reserva contra alocações concorrentes.
+
+Para whitespace local sem evento GitHub:
+
+```sh
+git diff --check
+git diff --check 20f1883ad1671139d7c023eff42b72c6bca96525 HEAD
+```
+
+No workflow, o checker examina merge-base..head em pull_request, before..after em push e árvore vazia..head em primeiro push; não usa apenas mudanças não commitadas. SHA final e runs de push/PR ficam na descrição da PR/relatório após consulta remota. Os testes locais não são evidência de CI remota, inferência ou compatibilidade de pesos. Revisão independente continua **NOT PERFORMED**.

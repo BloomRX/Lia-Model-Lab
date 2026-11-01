@@ -1,5 +1,7 @@
 # 16 — Inferência local: contratos endurecidos, pesos ainda NOT-TESTED
 
+> **Gate de capacidade após R2 (2026-11-01):** registry de arquitetura não é aprovação de execução. O preflight só dimensiona Qwen3 denso com config explícita e nomes/shapes canônicos; Qwen3.5 permanece bloqueado por sizing desconhecido. Exemplos abaixo são planejamento, não comandos autorizados nem executáveis para Qwen3.5 neste estado. Loader exige relatório limpo e correspondência com state_dict; única exceção é alias Qwen3 tied comprovado. Consulte as [correções R1–R6](18-FINAL-AUDIT.md). RAM cgroup desconhecida/ancestrais ocultos também bloqueia, sem fallback para host.
+
 Estado v0.4.0: **software e API leve testados**, não inferência real aprovada. [ADR atual](adr/0003-INFERENCE-HARDENING.md), [validação](VALIDATION.md), [evidência do hardening](evidence/hardening-validation.json). Nenhum peso/tokenizer upstream, treinamento, aprovação operacional real ou qualidade de modelo nesta missão. A [readiness anterior](evidence/inference-readiness.json) é snapshot histórico, não inventário atualizado de dependências.
 
 ## Evidência por candidato e arquitetura

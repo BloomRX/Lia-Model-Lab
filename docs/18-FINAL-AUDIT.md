@@ -100,3 +100,31 @@ llama.cpp b11960: código/conversor/template inspecionados historicamente, relea
 **Bloqueios mantidos para executar/adaptar/distribuir modelos:** aquisição e revisões individuais/autorização humana, LICENSE/NOTICE, código customizado/vendorização LFM, runtime/hardware/driver, pesos/config/tokenizer/template, masks exatas e forward/backward/PEFT/reload/merge/quantização. Qualidade/persona pt-BR e efeitos reais das tools/jogos/memória/voz continuam não testados. Skills/perfis tiveram sintaxe/referências/procedimentos/limites revisados; execução real de agentes e delegação continuam NOT-TESTED.
 
 Não houve downloads de checkpoints/GGUF/datasets, instalação Torch/stack GPU, recursos pagos, treino, dados pessoais, aceite de termos, publicação de pesos ou grants operacionais reais. Não adicionar contagens históricas de testes a resultados atuais.
+
+## Correções R1–R6 — 2026-11-01
+
+Partida remota confirmada: `395241b73a3357aa8610086068d70ee5145a40a0`, PR OPEN, mesma branch. O snapshot restaurado novamente tinha HEAD/index antigos; comparação de todos os blobs encontrou zero diferenças antes do alinhamento mixed, sem substituir arquivos. Os cenários R1–R5 foram reproduzidos no código de partida: RAM do host indevida, loader sem relatório, FIFO de 432 bytes aceito com orçamento 16, RecursionError e raiz docs symlink aceita. O diff completo também confirmou a linha excedente de conftest (R6). Esta missão é correção pelo mesmo agente, **não revisão independente**; `independent_review.status = NOT PERFORMED` permanece.
+
+| ID | Estado e evidência atual | Limites explícitos |
+|---|---|---|
+| R1 / P1 | Corrigido e testado com filesystem sintético: membership v2, mountinfo/escapes/root mapping, todos os ancestrais visíveis e headroom mínimo. Host 8 GiB + child 64 MiB/60 MiB retorna 4 MiB quando a hierarquia completa é identificável | v1, ausência de membership, mounts ambíguos, ancestrais ocultos e dados inválidos -> capacidade null/preflight bloqueado. Raiz montada diferente de `/` é mapeada mas bloqueada; uma raiz virtual com memory.max, mesmo apresentada como `/`, também é bloqueada por possível ancestral oculto. Não suporte universal a namespaces/cgroups |
+| R2 / P1 | Corrigido com doubles e headers de tensores zero: relatório obrigatório missing/unexpected/mismatched/error_msgs, diagnósticos não vazios recusados, state_dict materializado confrontado com nomes/shapes serializados | Sem Torch/pesos reais: compatibilidade de checkpoint continua NOT-TESTED. Única exceção: alias Qwen3 lm_head.weight omitido com tie_word_embeddings=True e identidade comprovada com model.embed_tokens.weight. Nenhuma conversão arbitrária de nomes ou allowlist genérica |
+| R3 / P2 | Corrigido e testado: arquivo regular por lstat + fstat do descritor, open não bloqueante/nofollow onde disponível, leitura binária sem read-ahead com quota total e por linha | Piloto não streaming; 16 MiB totais, 256 KiB/linha, 10.000 linhas. Até um byte sentinela para detectar excesso. FIFO sem produtor recusado sem bloqueio; socket/dispositivo/descritor trocado e crescimento testados. Portabilidade operacional fora do Linux NOT-TESTED |
+| R4 / P2 | Corrigido e testado: limite 4.096 nós/48 níveis, 20.000 passos de avaliação, ciclos no mesmo schema/instância recusados; erro controlado de recursão e CLI sem traceback | Draft 2020-12 apenas; refs locais progressivas suportadas, externas continuam proibidas. Testado também grafo exponencial e `$schema` que poderia remover o wrapper de orçamento |
+| R5 / P2 | Corrigido e testado: raízes docs/src, raiz do pacote, componentes intermediários e descendentes verificados antes da travessia/filtro | Não promete resistência a troca concorrente por invasor com mesmo UID; mantém fronteira de host confiável |
+| R6 / P3 | Corrigido e testado: checkout fetch-depth=0; checker usa merge-base/base+head de PR e before/after de push. Primeiro push sem before usa árvore vazia | Evento/ref inválido, base ausente ou ref deletada falha explicitamente. Teste cria commits sintéticos: checkout limpo com whitespace ruim falha nos dois eventos; commit corrigido passa |
+
+### Restrição deliberada de capacidade R2
+
+Inventário selado continua sendo evidência **estrutural**, não completude da arquitetura ou autenticidade upstream. O preflight agora só dimensiona o layout **Qwen3 denso com dimensões explícitas**, attention_bias=False e esquema canônico de nomes/shapes. Config ausente/variante não implementada devolve capacidade desconhecida; conjunto de tensores divergente é recusado. Qwen3.5 permanece no registry de arquitetura, mas **sua execução é bloqueada por sizing desconhecido**. Não inferir tamanho do modelo a partir de stored_tensor_elements. O cálculo de carga usa parâmetros verificados, dtype solicitado, bytes do snapshot como staging e margem; não é reserva, sizing universal de KV/ativações nem medição de pico real.
+
+A exceção de tied weights não permite embedding ausente, aliases não comprovados, outros parâmetros faltantes ou diferenças de nomenclatura não revistas. O relatório público de Transformers 5.22.1 retorna quatro campos; conversion_errors não é exposto por seu to_dict. Diagnósticos adicionais não vazios, se retornados, são recusados. Nomes/shapes são verificados independentemente do relatório, mas isso não é assinatura dos valores em RAM contra uma dependência comprometida.
+
+### Validação desta missão (não somar com históricos)
+
+- Testes específicos novos R1–R6: **58 passed**.
+- Base: **255 passed, 1 skipped**; API leve separada Transformers 5.22.1: **263 passed**, sem Torch.
+- pip check nos dois ambientes, compileall e verificações de integridade/manifesto e whitespace do diff completo executados; comandos/resultados em [VALIDATION](VALIDATION.md).
+- As fixtures compartilhadas agora têm um mapa Qwen3 minúsculo manuscrito e valores zero, apenas para exercitar os gates; não são pesos pré-treinados nem prova de compatibilidade real.
+- Wheel limpo da auditoria anterior não foi reexecutado nesta missão. Hardware/runtime, modelos reais, qualidade, treinamento, licenças individuais e auditoria de dependências continuam NOT-TESTED.
+- Estado CI de push/PR no SHA final e HEAD remoto exato são registrados na descrição da PR e no relatório após push, sem SHA autorreferente neste documento. PR deve permanecer OPEN, sem merge.

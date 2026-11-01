@@ -101,8 +101,8 @@
     },
     {
       "path": ".github/workflows/verify.yml",
-      "bytes": 1060,
-      "sha256": "41a9939a7233b52eb70ae583d52621dc9bb9befbe321a4e7f113e257b8e9e57c"
+      "bytes": 1208,
+      "sha256": "c88b98a2a8641788262817456747bdeedf6adef4c6c0481941c24542fa7e584f"
     },
     {
       "path": ".gitignore",
@@ -231,8 +231,8 @@
     },
     {
       "path": "docs/16-REAL-INFERENCE-PILOT.md",
-      "bytes": 16047,
-      "sha256": "a81d259acec1e343f88450031037b5eeb15ab4ad2f66cff9af1c821bc182383e"
+      "bytes": 16654,
+      "sha256": "31588451150bddb8e74ad8a421d1680ae147eac46b0cdad6fc02bb13b5f1ccd3"
     },
     {
       "path": "docs/17-LFM3-RESEARCH.md",
@@ -241,8 +241,8 @@
     },
     {
       "path": "docs/18-FINAL-AUDIT.md",
-      "bytes": 14714,
-      "sha256": "f566ede0d5884994f0ad498ba914467e89b8848037fd37a651707b52688763bb"
+      "bytes": 20308,
+      "sha256": "6ea8cf07695679873be59e203dd0cde7c0d16d428687622767b8b697db355df8"
     },
     {
       "path": "docs/BRAND-STANDARDS.md",
@@ -261,8 +261,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 9558,
-      "sha256": "97d11e59ddfcdcda0a93cd39b1fe2b1e380cffed94ca5d6bd3814ab7e8d04174"
+      "bytes": 11996,
+      "sha256": "d719b11ab1170e9ef1e178d25ab7f785d5a4efe649131a1afe1344d41e9905ca"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -286,8 +286,8 @@
     },
     {
       "path": "docs/evidence/final-audit.json",
-      "bytes": 3159,
-      "sha256": "477c48d1034c0748961815b9e227b779c6aac9a7f4cb804a34243a6da274b18e"
+      "bytes": 5076,
+      "sha256": "bb9f34f87c14d7fadcf3426650ed1579fb02b9549d1f6567a23dfaef93409674"
     },
     {
       "path": "docs/evidence/hardening-validation.json",
@@ -320,9 +320,14 @@
       "sha256": "e8a9efa626d4b1a7e57b0caaa94abf6480c941d3bdb5bd494f2a157788067594"
     },
     {
+      "path": "scripts/check_whitespace.py",
+      "bytes": 2035,
+      "sha256": "109743cdb26012faafb500221f09d21afb72e066d899517b34ef6231cc10ece5"
+    },
+    {
       "path": "scripts/verify_repository.py",
-      "bytes": 6747,
-      "sha256": "e499b8580dd59386735734bd00d6c45669bc58296a9c01d60ccbed493f68f8c7"
+      "bytes": 7196,
+      "sha256": "c98bf8783c867c3057a4774ead9f1e7f17c1a7e6d94a0ca1b05a608ddef05732"
     },
     {
       "path": "src/lia_lab/__init__.py",
@@ -341,13 +346,13 @@
     },
     {
       "path": "src/lia_lab/checkpoints.py",
-      "bytes": 6213,
-      "sha256": "a726f17b8273a2a7962c638c53406f813b82294716ad2d07d1acd2f9a0f6f4d5"
+      "bytes": 7508,
+      "sha256": "f78c000e801c77f3d5510627f9f921f5ed55d3cc9bb698eb035dca6dc51b2427"
     },
     {
       "path": "src/lia_lab/cli.py",
-      "bytes": 6140,
-      "sha256": "a890fe62c130a2c81c30c0fde06e6daad161870ea31349154ee77904fbb398fc"
+      "bytes": 6156,
+      "sha256": "e34f0afa947bd9dd2d6e70e570f6f9e5ac776e5fd63cba15fbea46128b70ece4"
     },
     {
       "path": "src/lia_lab/containment.py",
@@ -356,13 +361,13 @@
     },
     {
       "path": "src/lia_lab/datasets.py",
-      "bytes": 6902,
-      "sha256": "c2b02ebf2500f42f0e9be4a7d97e9ab033792051632702fa92fe8261c144d695"
+      "bytes": 8190,
+      "sha256": "ba3bfd000b72d7381547228ca4e3b74a57b245df11bea4f903cfaff98e61ea0a"
     },
     {
       "path": "src/lia_lab/environment.py",
-      "bytes": 2984,
-      "sha256": "068dc830b71925be239ece781262f51e6ba7aec640b1905dd7a9bf94b378851e"
+      "bytes": 5857,
+      "sha256": "3ba9b4b7daca650f6bfea198770ed6890120be43a2e8d7583e5d2ade18bc37b2"
     },
     {
       "path": "src/lia_lab/evaluation.py",
@@ -376,8 +381,8 @@
     },
     {
       "path": "src/lia_lab/inference.py",
-      "bytes": 12566,
-      "sha256": "865c132635950d0c7617362cf4168ae54eb76707a7f2d6bf4838476f787ce49b"
+      "bytes": 12845,
+      "sha256": "0bb5d6e3034f6ae9ebb2e23bf35ead5eb1a136ddba0a696a67feb374a5c2000d"
     },
     {
       "path": "src/lia_lab/inference_protocol.py",
@@ -386,8 +391,8 @@
     },
     {
       "path": "src/lia_lab/inference_worker.py",
-      "bytes": 10556,
-      "sha256": "47c19d312db8878f82fe3eb26959ef9e1ec08a9fbe08671520d737170b040fda"
+      "bytes": 10698,
+      "sha256": "7f89aece1fe4d47fb40a5a04b6f148a0221597104c6ff497b8d4fa0249ff9570"
     },
     {
       "path": "src/lia_lab/io.py",
@@ -396,8 +401,8 @@
     },
     {
       "path": "src/lia_lab/model_backends.py",
-      "bytes": 5323,
-      "sha256": "b2cb99b9f1cf7052e476a0bd93265c2b2157878edd22089788f5b1b17c9fe365"
+      "bytes": 9340,
+      "sha256": "b0468db840e20d3e2250c2d49545d8f9c523d74c229265647a2c240b74d4960f"
     },
     {
       "path": "src/lia_lab/schemas/example.schema.json",
@@ -416,8 +421,8 @@
     },
     {
       "path": "src/lia_lab/training_prep.py",
-      "bytes": 7407,
-      "sha256": "bc9f3c8dd9001284f40db413eab00e74b183d19cda5366ac1f3d030edc7a3e30"
+      "bytes": 9959,
+      "sha256": "29911aa6d3d57cee754a6b85c20062c0c17b088dce888f2504f43f9569e85c61"
     },
     {
       "path": "templates/ADR.md",
@@ -446,8 +451,8 @@
     },
     {
       "path": "tests/conftest.py",
-      "bytes": 960,
-      "sha256": "8a9d1fc5d34bfa03d8118023a6ab2a62b38c36746be293c6f9319f4c92105c38"
+      "bytes": 978,
+      "sha256": "a16eb0e117fd735f08f41895719743b0dfb2ebe1bbf62ca4919e6eb5fa7e54fc"
     },
     {
       "path": "tests/fixtures/README.md",
@@ -480,14 +485,19 @@
       "sha256": "18817d103fd8c3527d2c8a1099950e305715ab44c195b909e6aec4fa9cefcf23"
     },
     {
+      "path": "tests/support_checkpoint.py",
+      "bytes": 1041,
+      "sha256": "1f75fd82a86a45b0bc49e357e12a84a88dce43ac43ae8107e8779709adc8888c"
+    },
+    {
       "path": "tests/test_authorization.py",
       "bytes": 7173,
       "sha256": "9b9227ec3d6c3f038e2995ca8bb51b9f7a9346ff85ef22d65d103fac00871d23"
     },
     {
       "path": "tests/test_backend_contracts.py",
-      "bytes": 5967,
-      "sha256": "d09b33fc3a2a91cc72c7b5052e3e16b2f53f7a6b508918561492a7e01c5cc591"
+      "bytes": 6323,
+      "sha256": "2ee9f5e180fbb5839ba811e98dae2fe9490e220c0041febd9cfa9e55ed8b8532"
     },
     {
       "path": "tests/test_containment.py",
@@ -506,8 +516,8 @@
     },
     {
       "path": "tests/test_inference.py",
-      "bytes": 13791,
-      "sha256": "e056408ef58ee6ece2b48e30dddcc225ff744c81d0b315f29c886c7b530c912f"
+      "bytes": 13898,
+      "sha256": "f4e8a42c4ecb235a8c59db758f6e07dc55a9a9d445c7137ef61690b40d4d633b"
     },
     {
       "path": "tests/test_repository.py",
@@ -518,6 +528,21 @@
       "path": "tests/test_research_catalog.py",
       "bytes": 2562,
       "sha256": "cd74b6a9c478c84e08ad89947155b49d75086b202b1762b89da9bbb83cc59209"
+    },
+    {
+      "path": "tests/test_review_loading.py",
+      "bytes": 6433,
+      "sha256": "bcfeaa7fd11a023bba795e0c18b29db357040ac5619e9c7898c457fe04b4c30b"
+    },
+    {
+      "path": "tests/test_review_resources.py",
+      "bytes": 10623,
+      "sha256": "2a9af8164a4c3db44c6aa0a949d6e6b4a26370eec17d5910cd34c485dc28612f"
+    },
+    {
+      "path": "tests/test_review_whitespace.py",
+      "bytes": 2060,
+      "sha256": "becabdeab6604f29371257220e3f73c9e37c89025e38b12e122cb72043cf0d09"
     },
     {
       "path": "tests/test_supervisor_results.py",
