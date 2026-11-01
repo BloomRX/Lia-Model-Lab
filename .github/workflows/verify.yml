@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
@@ -14,12 +16,15 @@ jobs:
       - run: python -m compileall -q src scripts
       - run: python -m pytest -q
       - run: python scripts/verify_repository.py
-      - run: git diff --check
+      - name: Check committed PR or push whitespace
+        run: python scripts/check_whitespace.py
 
   lightweight-api:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
