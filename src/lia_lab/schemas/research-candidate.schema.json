@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lia.invalid/research-candidate.schema.json",
+  "title": "LFM3 research-only contract, not runtime approval",
+  "type": "object",
+  "required": [
+    "model_id",
+    "family",
+    "revision",
+    "status",
+    "license_declared",
+    "research_contract"
+  ],
+  "properties": {
+    "model_id": {
+      "type": "string",
+      "pattern": "^LiquidAI/"
+    },
+    "family": {
+      "const": "LFM3"
+    },
+    "revision": {
+      "type": "null"
+    },
+    "status": {
+      "const": "research-only"
+    },
+    "license_declared": {
+      "const": "LFM Open License v1.0"
+    },
+    "research_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "format",
+        "parent_model_id",
+        "parameters_billions_declared",
+        "components_declared",
+        "input_modalities",
+        "output_modalities",
+        "context_tokens_declared",
+        "context_evidence",
+        "languages_declared",
+        "license_review",
+        "individual_license_inspected",
+        "runtime_validation",
+        "training_validation",
+        "execution_allowed",
+        "backend_documented",
+        "concrete_architecture_evidence",
+        "frontend_documented",
+        "custom_code",
+        "files_inventory",
+        "quantizations_documented",
+        "auxiliary_files_required",
+        "source",
+        "consulted_at",
+        "existence_evidence",
+        "checkpoint_card_url",
+        "blockers"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "base",
+            "post-trained",
+            "vision",
+            "audio",
+            "omni",
+            "decision"
+          ]
+        },
+        "format": {
+          "enum": [
+            "safetensors",
+            "GGUF"
+          ]
+        },
+        "parent_model_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameters_billions_declared": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "components_declared": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_modalities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "text",
+              "image",
+              "video",
+              "audio"
+            ]
+          }
+        },
+        "output_modalities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "text",
+              "speech",
+              "interleaved",
+              "typed-decision"
+            ]
+          }
+        },
+        "context_tokens_declared": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "context_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "languages_declared": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text",
+            "speech",
+            "pt_BR_validation"
+          ],
+          "properties": {
+            "text": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "speech": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "pt_BR_validation": {
+              "type": "string",
+              "pattern": "^NOT-TESTED"
+            }
+          }
+        },
+        "license_review": {
+          "const": "license-review-required"
+        },
+        "individual_license_inspected": {
+          "const": false
+        },
+        "runtime_validation": {
+          "const": "NOT-TESTED"
+        },
+        "training_validation": {
+          "const": "NOT-TESTED"
+        },
+        "execution_allowed": {
+          "const": false
+        },
+        "backend_documented": {
+          "type": "string",
+          "minLength": 1
+        },
+        "concrete_architecture_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "frontend_documented": {
+          "type": "string",
+          "minLength": 1
+        },
+        "custom_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files_inventory": {
+          "type": "null"
+        },
+        "quantizations_documented": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "auxiliary_files_required": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^https://github.com/Liquid4All/docs/blob/[0-9a-f]{40}/"
+        },
+        "consulted_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "existence_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checkpoint_card_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "blockers": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "decision"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "output_modalities": {
+                "const": [
+                  "typed-decision"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "format": {
+                "const": "GGUF"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parent_model_id": {
+                "type": "string",
+                "pattern": "^LiquidAI/"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "parent_model_id": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

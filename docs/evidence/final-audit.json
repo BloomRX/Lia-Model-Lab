@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "mission": "final-integration-audit",
+  "date": "2026-10-31",
+  "initial_head": "4eadfa39860914ea1c84e19e0bc246933a44ae62",
+  "main_at_start": "20f1883ad1671139d7c023eff42b72c6bca96525",
+  "main_exclusive_commits_at_start": 0,
+  "branch_exclusive_commits_at_start": 17,
+  "initial_pr_state": "OPEN-not-merged",
+  "initial_comments_reviews_threads": 0,
+  "snapshot_byte_differences_from_remote": 0,
+  "baseline": {
+    "passed": 157,
+    "skipped": 1
+  },
+  "base_final": {
+    "passed": 197,
+    "skipped_optional_api_module": 1
+  },
+  "lightweight_api_final": {
+    "passed": 205,
+    "transformers": "5.22.1",
+    "torch_installed": false
+  },
+  "findings": {
+    "P0_identified": 0,
+    "P1_fixed": 6,
+    "P2_fixed": 6,
+    "P3": "documented future improvements, not quantified claims of completion"
+  },
+  "clean_wheel_test": "Linux Python3.11; separate venv; imports/resources/doctor/fixture-validation outside source root",
+  "pip_check_environments": 3,
+  "new_ml_dependencies": false,
+  "license_allowlist_changed": false,
+  "lfm3_executable": false,
+  "llama_cpp_built": false,
+  "real_operational_grants_created": 0,
+  "weights_gguf_datasets_acquired": false,
+  "real_model_inference_or_training": false,
+  "paid_resources_or_license_acceptance": false,
+  "independent_subagent_review": false,
+  "merge_performed": false,
+  "limitations": [
+    "not a formal security or dependency vulnerability audit",
+    "not a legal opinion or checkpoint license approval",
+    "same-UID trusted host threat boundary remains",
+    "model/hardware compatibility NOT-TESTED"
+  ],
+  "final_remote_ci": "consult and record exact SHA/run IDs in PR after final push; not inferred from local tests",
+  "history_verification": {
+    "base": "20f1883ad1671139d7c023eff42b72c6bca96525",
+    "method": "complete Git ancestry after git fetch --unshallow origin, cross-checked with GitHub compare API",
+    "initial": {
+      "head": "4eadfa39860914ea1c84e19e0bc246933a44ae62",
+      "behind_by": 0,
+      "ahead_by": 17
+    },
+    "after_previous_audit": {
+      "head": "9db718caadb0d0cc255c3972608ba3059650816a",
+      "behind_by": 0,
+      "ahead_by": 19
+    },
+    "remote_observed_at_start_of_documentary_correction": {
+      "head": "9db718caadb0d0cc255c3972608ba3059650816a",
+      "behind_by": 0,
+      "ahead_by": 19
+    },
+    "previous_incorrect_shallow_counts": {
+      "initial": 19,
+      "after_previous_audit": 21
+    },
+    "cause": "shallow boundary at main omitted ancestry; two base ancestors incorrectly counted as branch-exclusive",
+    "incorrectly_counted_ancestors": [
+      "182f1a1edd08e7197b8ea62c9932e9778bc2af9a",
+      "311eb4a7f0200ae11ecf433876c5a5ac051df6dc"
+    ],
+    "new_remote_tip_after_correction": "exact SHA/count verified after push and recorded in PR; not self-referential in this artifact"
+  },
+  "independent_review": {
+    "status": "NOT PERFORMED",
+    "reason": "No real second-agent delegation/return tool exposed in this session",
+    "reviewer": null,
+    "F01_F12_independently_reviewed": false,
+    "integration_recommendation": "pending human review; no independent approval claimed"
+  },
+  "R1_R6_correction": {
+    "date": "2026-11-01",
+    "starting_head": "395241b73a3357aa8610086068d70ee5145a40a0",
+    "original_scenarios_reproduced": [
+      "R1",
+      "R2-unchecked-loader",
+      "R3-432-byte-FIFO-max16",
+      "R4",
+      "R5",
+      "R6-committed-whitespace"
+    ],
+    "status": {
+      "R1": "fixed-tested-synthetic-filesystem; unknown/hidden/v1 layouts block",
+      "R2": "fixed-stub-and-header-contracts; real-runtime-NOT-TESTED; Qwen3.5-sizing-unknown-blocked",
+      "R3": "fixed-tested-regular-descriptor-and-bounded-read",
+      "R4": "fixed-tested-bounded-local-progressive-references",
+      "R5": "fixed-tested-root-intermediate-descendant-symlinks",
+      "R6": "fixed-tested-committed-PR-and-push-diffs"
+    },
+    "tests": {
+      "targeted_passed": 58,
+      "base_passed": 255,
+      "base_skipped": 1,
+      "api_passed": 263,
+      "torch_installed": false,
+      "new_regression_cases": 58
+    },
+    "checks": {
+      "pip_check_environments": 2,
+      "compileall": "PASS",
+      "repository_verifier": "PASS after manifest regeneration",
+      "full_pr_whitespace": "PASS after conftest correction"
+    },
+    "capacity_contract": "Explicit dense Qwen3 config + canonical tensor shapes only; otherwise unknown/blocked. All visible v2 ancestors with true hierarchy root proof only; hidden/virtual roots unknown.",
+    "tied_weight_exception": "Only Qwen3 omitted lm_head.weight with true config flag and exact state_dict Parameter identity with serialized model.embed_tokens.weight",
+    "real_inference_or_training": false,
+    "real_operational_grants": 0,
+    "weights_or_datasets_acquired": false,
+    "independent_review": "NOT PERFORMED",
+    "wheel_clean_repeated": false,
+    "remote_final_sha_and_ci": "Verify after push and record exact SHA/run IDs in PR and final response; no self-referential SHA in artifact",
+    "pr_required_state": "OPEN-not-merged"
+  }
+}

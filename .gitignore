@@ -81,3 +81,10 @@ CLAUDE.local.md
 # Configuração local do Codex pode conter ajustes ou referências específicas da máquina
 .codex/config.toml
 .codex/config.local.toml
+
+# Local Python package metadata
+*.egg-info/
+
+# Local wheel/sdist build outputs
+build/
+dist/

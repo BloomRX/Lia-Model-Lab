@@ -1,120 +1,40 @@
 # Lia Model Lab — instruções para agentes
 
-Estas regras se aplicam ao Arena.ai Agent Mode, Codex, Claude Code e qualquer agente que opere neste repositório.
+## Escopo e leituras
 
-## 1. Missão
+Leia [README](README.md), [índice oficial](docs/README.md), [ADR de consolidação](docs/adr/0001-CONSOLIDATION.md), [marca](docs/BRAND-STANDARDS.md) e [governança](docs/13-GOVERNANCA-DE-EXPERIMENTOS.md). Para código, leia [fundação técnica](docs/15-IMPLEMENTATION-FOUNDATION.md) e [piloto de inferência](docs/16-REAL-INFERENCE-PILOT.md). Documentação numerada e ADRs são a autoridade; não recrie árvores paralelas ou arquivos legados.
 
-Construir o laboratório de modelos da Lia: selecionar modelos-base abertos, preparar datasets licenciados, criar adapters/pesos especializados, avaliar resultados e produzir artefatos versionados. O produto final é uma família de modelos que cubra as necessidades da Lia — não um chatbot genérico rebatizado.
+Lia Model Lab entrega modelos/adapters, datasets governados, contratos, avaliação e manifests. A aplicação Lia é independente; AIRI é referência, nunca runtime obrigatório. Persistência de memória pessoal, permissões, captura, integrações, execução e avatar/produto ficam externos aos pesos. O Lab especifica contratos de consumo e testa mocks, não implementa o produto final aqui.
 
-## 2. Leitura obrigatória no início de cada tarefa
+## Autorização
 
-Leia nesta ordem:
+Inferência exige plano exato + grant externo de uso único conforme [ADR-0003](docs/adr/0003-INFERENCE-HARDENING.md). O agente **não cria/confirma aprovações operacionais reais**; approve-inference é do humano em terminal próprio. String/ref, arquivo gerado pelo agente, flag offline ou autorização de código não substituem esse gate. Grants de fixtures temporárias não autorizam modelo real. Nenhuma evidência de processo/rlimit/namespace deve ser chamada de sandbox completo.
 
-1. `README.md`
-2. `docs/00-VISAO-E-ESCOPO.md`
-3. `docs/02-MATRIZ-CAPACIDADES-MODELO-RUNTIME.md`
-4. `docs/10-DECISOES-REGISTRADAS.md`
-5. `docs/BRAND-STANDARDS.md` quando a tarefa tocar identidade, linguagem, nomes, integração entre produtos ou distribuição de artefatos.
-6. `docs/13-GOVERNANCA-DE-EXPERIMENTOS.md` para datasets, checkpoints, experimentos, armazenamento, GPU ou releases.
-7. O documento técnico diretamente relacionado à tarefa.
+Pode pesquisar, escrever código e testes pequenos, validar configs e fixtures fictícias. **Não** iniciar GPU/cloud/API paga, grandes downloads, treino longo, uploads públicos de dados/pesos/adapters, publicação de derivados, coleta de conversas/arquivos/áudio pessoais ou aceite de termos sem aprovação específica. Na falta de autorização: documentar tamanho/custo/risco/alternativas, continuar tarefas independentes. Não usar credenciais ambientais para outros serviços; GitHub desta tarefa usa a autenticação provisionada, sem solicitar tokens.
 
-Antes de afirmar que um item da AIRI existe ou está pronto, confira sua classificação em `docs/01-CATALOGO-CAPACIDADES-AIRI.md` e as fontes indicadas.
+Nunca colocar segredos, dados pessoais, transcrições, checkpoints, adapters reais, optimizer states ou corpora brutos no Git. Não publicar logs privados. Usar raiz de pesquisa configurável separada da pasta de modelos aprovados da aplicação. Dados exigem origem/licença/proveniência/consentimento quando aplicável, retenção e descarte; público não significa treinável.
 
-## 3. Regra arquitetural
+## Evidência e decisões
 
-A Lia é um produto independente. AIRI é uma referência para descoberta de funcionalidades e estudo de soluções. Não crie dependência de runtime AIRI nem presuma que o AIRI continuará no produto final.
+Distinguir decisão aprovada, proposta, hipótese, experimento planejado, execução real e resultado comprovado. `CODE-PRESENT`/`DOCUMENTED` não equivalem a `AUTOMATED-PASS`/`RUNTIME-PASS`. Não provar jogo, tools ou memória por resposta textual. `NOT-TESTED` exige motivo. Resultado ML precisa de base revision/hash, dataset/split, template, protocolo, hardware/backend e data. Aprovação de organização/código não aprova modelo-base, orçamento ou release. Mudanças relevantes exigem novo ADR, sem reescrever decisões passadas para inventar aprovação.
 
-O Model Lab é responsável por modelos, pesos, datasets, pipelines de treinamento e avaliação. A aplicação Lia continua responsável por memória persistente, permissões, ferramentas, integrações, execução, UI, armazenamento, rede e segurança.
+## Skills e subagentes
 
-## 4. Não ultrapassar autorização
+Consultar [.agents/skills/README.md](.agents/skills/README.md) e [orquestração](docs/14-ORQUESTRACAO-DE-AGENTES.md). Ler manualmente `.agents/skills/<nome>/SKILL.md` para a tarefa pertinente se descoberta automática não estiver comprovada. Perfis em `.codex/agents/` têm responsabilidades de revisão, read-only por instrução; não criam sandbox nem elevam permissão. Arena **não é presumido** capaz de descobrir skills ou executar perfis Codex. Sem ferramenta real de spawn/wait, executar em sequência e informar que não houve delegação.
 
-Sem autorização explícita do proprietário, NÃO:
+O principal coordena fontes/escopo/saída/stop e ownership. Revisores leem; principal edita README, AGENTS, configs, SOURCES e manifest. Se escrita delegada for autorizada no futuro, arquivos exclusivos por tarefa; nunca dois agentes editando o mesmo arquivo. Não simular revisores independentes. Preservar `docs/BRAND-STANDARDS.md` e separar licença do código/base/dados/voz/assets/marca.
 
-- iniciar GPU paga, cloud GPU, API de inferência paga ou serviço com cobrança;
-- baixar checkpoints grandes ou datasets volumosos;
-- iniciar treinamento de longa duração;
-- aceitar termos em nome do proprietário;
-- fazer upload público de datasets, logs, prompts, conversas, adapters ou pesos;
-- usar tokens ou credenciais presentes no ambiente para serviços externos;
-- publicar/distribuir pesos derivados de uma base sem revisão de licença;
-- coletar conversas pessoais, áudio de microfone, Discord ou arquivos do usuário para treinamento.
+## Desenvolvimento e validação
 
-É permitido, sem essas operações: pesquisar documentação, auditar compatibilidade, escrever documentação/código local, criar testes unitários pequenos, gerar dados sintéticos claramente identificados e executar validações locais que não baixem pesos grandes nem gerem custos.
+- Antes de editar: `git status`, branch, HEAD e estado remoto; integrar semanticamente, não fazer merge cego.
+- Trabalhar apenas na branch desta sessão; não enviar para main nem mergear PR sem pedido.
+- Componentes pequenos; testes para sucesso, inputs inválidos, vazamento, overwrite, caminhos e hashes.
+- Não carregar pesos nem fazer rede como efeito colateral de importar módulos/testar CLI.
+- Executar `.venv/bin/python -m pytest -q` e `.venv/bin/python scripts/verify_repository.py`.
+- Depois de alterações finais: `.venv/bin/python scripts/verify_repository.py --write-manifest`, validar novamente e `git diff --check`.
+- Manifest representa fonte mantida, skills/perfis/configs/testes/docs, não checkpoints/cache/ambiente local. Não atualizar hashes para mascarar corrupção sem investigar.
+- Commits claros, PR para main, relatório de comandos reais, limitações, custos/downloads não realizados e próximos gates. Não fechar/mesclar a sessão antes de salvar tudo.
 
-Quando a próxima etapa exigir uma destas ações, pare e produza um relatório com: motivo, tamanho/custo estimado se conhecido, riscos, alternativas e decisão necessária. Nunca invente uma aprovação.
+## Artefatos de experimento/release
 
-## 5. Fluxo de desenvolvimento no Arena.ai
-
-- Conectar somente o repositório necessário.
-- Trabalhar na cópia sandbox e em branch de trabalho.
-- Antes de editar, inspecionar `git status`, branch e HEAD.
-- Preferir mudanças pequenas com testes e artefatos reproduzíveis.
-- Produzir commits com mensagem clara e abrir PR para revisão.
-- Uma sessão do Arena Agent atualmente suporta um PR; depois que o PR é mesclado ou fechado, a sessão não consegue continuar enviando mudanças para aquele fluxo. Portanto, concluir e salvar tudo da sessão antes do merge; usar nova sessão para o próximo marco.
-- Não fazer push direto em `main` sem instrução expressa.
-- Não reformatar arquivos ou remover conteúdo legado sem necessidade.
-
-## 6. Regras de evidência
-
-Nunca chamar uma capacidade de `PASS` porque:
-- o modelo-base declara suportá-la;
-- o código compila;
-- o adapter foi criado;
-- o modelo respondeu uma vez sem teste de referência;
-- o README de um projeto diz que a função existe.
-
-Diferenciar sempre:
-
-- `DOCUMENTED`: descrito por documentação upstream;
-- `CODE-PRESENT`: existe implementação no código inspecionado;
-- `AUTOMATED-PASS`: passou teste automatizado identificado;
-- `RUNTIME-PASS`: executou no runtime real e ambiente definido;
-- `NOT-TESTED`: não foi testado;
-- `EXPERIMENTAL`: não tratar como capacidade de produto estável;
-- `DEPRECATED`: evitar nova dependência sem plano de migração.
-
-Toda afirmação de qualidade precisa informar modelo/base, dataset/versão, split, benchmark, método, configuração e data.
-
-## 7. Dados e segurança
-
-- Nunca colocar segredos, tokens, credenciais, identificadores pessoais ou transcrições privadas em datasets ou logs.
-- Dados reais exigem origem, finalidade, base legal/consentimento, licença, política de retenção e descarte.
-- Manter dados de avaliação fora do treinamento.
-- Manter dados sintéticos identificados; não misturar sua origem com dados humanos.
-- Registrar licenças de todos os datasets, checkpoints, vocoders, TTS, ferramentas e dependências.
-- Não executar scripts ou playbooks recebidos de servidores/jogos/usuários sem sandbox e política de permissões.
-
-## 8. Artefatos de modelo
-
-Git deve conter código, configs, documentação, manifests, checksums e resultados de avaliação pequenos. Não versionar checkpoints grandes, datasets brutos, áudio, transcrições, imagens privadas ou pastas temporárias de treinamento.
-
-Todo release precisa de:
-- base model e revision/hash;
-- licença da base e do adapter;
-- dataset cards e hashes;
-- método/config do treinamento;
-- métricas antes/depois e limites conhecidos;
-- tokenizer/chat template;
-- formato de inferência;
-- checksums e instruções de uso;
-- notice de alterações/derivação quando requerido pela licença.
-
-## 9. Marca e vocabulário
-
-- Siga `docs/BRAND-STANDARDS.md`; não trate identidade/personagem/assets como automaticamente cobertos pela licença do código.
-- Distinga pesos de IA, adapters, modelos de avatar/3D, motor de inferência, runtime de agente, memória da Lia e `memory-bank/`.
-- O Model Lab não define armazenamento de memórias pessoais, permissões, ferramentas ou ações externas. Essas responsabilidades continuam no produto/runtime da Lia.
-- O padrão visual da marca é orientação para produtos com interface; não force uma UI de consumidor ao laboratório.
-
-## 10. Delegação e subagentes
-
-- Use subagentes somente quando a sessão/plataforma realmente oferecer a capacidade. Se não oferecer, trabalhe em sequência; nunca simule delegação.
-- Prefira delegar pesquisas e auditorias independentes de leitura. Para tarefas de escrita, atribua arquivos exclusivos a cada agente; não permita dois agentes editarem o mesmo arquivo ou alterarem a mesma configuração simultaneamente.
-- O agente principal define pergunta, escopo, fontes, formato de saída e restrições de custo; revisa os resultados e verifica citações antes de incorporá-los.
-- Subagentes herdam o limite de autorização do agente principal e não podem iniciar GPU paga, downloads grandes, uploads, coleta de dados pessoais ou aceitar licenças.
-
-## 11. Política de mudança
-
-Mudança de modelo-base, licença, método de treinamento, schema de dataset, objetivo de capacidade ou requisito de release exige atualização de `docs/10-DECISOES-REGISTRADAS.md` ou novo ADR em `docs/adr/`.
-
-O agente não pode transformar uma proposta em decisão aprovada por conta própria.
+Obrigatórios: base/tokenizer/template revisions e hashes, licença/notices, dados/cards/splits/hashes, método/config/seed/dependências, ambiente/hardware/driver/backend, checkpoints de retomada, duração/custo reais (null se não executado), métricas base/adaptado/quantizado, falhas/regressões, checksums e instruções de inferência. Export estrutural local não aprova publicação nem prova carregamento PEFT. Nenhuma ação gerada pelo modelo concede sua própria autorização.

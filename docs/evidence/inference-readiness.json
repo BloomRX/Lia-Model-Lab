@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "run_id": "phase2-readiness-20261030",
+  "kind": "inference-readiness",
+  "status": "blocked-authorization-artifacts-and-runtime",
+  "observed_on": "2026-10-30",
+  "evidence": "actual-environment-diagnostic-not-model-inference",
+  "environment": {
+    "schema_version": 1,
+    "evidence": "observed-environment-not-inference",
+    "python": "3.11.2",
+    "os": "Linux",
+    "machine": "x86_64",
+    "cpu_count": 2,
+    "ram": {
+      "total_bytes": 4131278848,
+      "available_bytes": 3847180288
+    },
+    "disk_free_bytes": 20543062016,
+    "device_nodes": {
+      "/dev/nvidia0": false,
+      "/dev/kfd": false,
+      "/dev/dri": false
+    },
+    "dependencies": {
+      "torch": null,
+      "transformers": null,
+      "peft": null,
+      "bitsandbytes": null,
+      "safetensors": "0.6.2",
+      "numpy": "2.3.4",
+      "tokenizers": null,
+      "huggingface-hub": null,
+      "accelerate": null
+    },
+    "gpu_runtime_verified": false,
+    "recommendations": [
+      "No automatic CUDA selection: choose cpu/cuda/rocm/mps explicitly.",
+      "With limited RAM prefer a small reviewed GGUF on CPU/Vulkan in llama.cpp; that backend is not yet implemented by this CLI.",
+      "For Transformers CPU reference use float32; memory is checked again against the real tensor inventory.",
+      "Qwen3.5-4B is not a safe unquantized target on a 4 GB host; use a larger authorized environment."
+    ],
+    "note": "Nodes/packages do not prove CUDA/ROCm/Vulkan support; worker probes torch after authorization."
+  },
+  "checkpoint": null,
+  "inference_executed": false,
+  "training_executed": false,
+  "model_metrics": null,
+  "cost": null,
+  "weights_downloaded_bytes": 0,
+  "release_approved": false,
+  "candidate_smoke": "Qwen/Qwen3.5-0.8B",
+  "candidate_capability": "Qwen/Qwen3.5-4B",
+  "blockers": [
+    "No owner approval for checkpoint acquisition/execution",
+    "Weight hosts outside session network allowlist: exact checkpoint revision/files/bytes/license snapshot pending",
+    "No torch/transformers installed; no GPU devices exposed",
+    "Approximately 4 GB host RAM: unquantized 4B is not viable; smaller models still require sizing from real inventory"
+  ],
+  "next_gate": "Review exact artifact inventory/license/download proposal, authorize, provision suitable environment and run infer-local",
+  "synthetic_tests_are_model_results": false
+}

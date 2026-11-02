@@ -1,0 +1,5 @@
+schema_version: 1
+# Example paths only: CLI requires explicit paths and rejects overlap.
+research_root: /home/user/lia-research
+approved_application_root: /home/user/lia-approved-models
+# No automatic promotion into the application store.

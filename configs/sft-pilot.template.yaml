@@ -1,0 +1,43 @@
+# Planning template only. Replace placeholders with measured, reviewed values.
+# register-plan intentionally rejects this until immutable revisions/hashes exist.
+schema_version: 1
+experiment_id: lia-core-pilot-001
+status: planned
+base:
+  model_id: Qwen/Qwen3.5-4B
+  revision: PENDING_EXACT_COMMIT
+  tokenizer_revision: PENDING_EXACT_COMMIT
+  weights_sha256: PENDING_SHA256
+  chat_template_sha256: PENDING_SHA256
+  license_review_ref: PENDING_REVIEW
+dataset_manifest: PENDING_APPROVED_DATASET_MANIFEST
+seed: 42
+training:
+  method: sft
+  adapter: qlora
+  rank: 8
+  alpha: 16
+  max_seq_length: 2048
+  microbatch: 1
+  gradient_accumulation: 8
+  max_steps: 100
+  save_steps: 25
+  learning_rate: 0.0001
+  compute_dtype: bfloat16
+  quantization: nf4-double-quant
+  target_modules: [PENDING_INSPECT_MODULE_NAMES]
+environment:
+  python: "3.11.2"
+  dependencies:
+    transformers: PENDING_PROBE
+    peft: PENDING_PROBE
+    trl: PENDING_PROBE
+    torch: PENDING_PROBE
+  hardware: PENDING_GPU_AND_VRAM
+  backend: cuda  # proposed remote backend, not local RX 580 support
+  driver: PENDING_DRIVER
+budget:
+  max_hours: 0
+  max_cost: 0
+  currency: BRL
+authorization_ref: null

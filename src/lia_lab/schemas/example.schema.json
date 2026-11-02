@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lia training example v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "group_id",
+    "language",
+    "capabilities",
+    "provenance",
+    "privacy",
+    "messages"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "group_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "const": "pt-BR"
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "revision",
+        "license",
+        "rights_reviewed",
+        "synthetic"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rights_reviewed": {
+          "const": true
+        },
+        "synthetic": {
+          "type": "boolean"
+        },
+        "generator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "reviewed"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "fictional",
+            "public-licensed",
+            "consented"
+          ]
+        },
+        "reviewed": {
+          "const": true
+        },
+        "consent_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "messages": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "tool"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tool_call_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tool_calls": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "arguments"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "arguments": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

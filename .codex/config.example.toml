@@ -1,0 +1,4 @@
+# Exemplo opcional; copiar para .codex/config.toml somente após revisão.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4

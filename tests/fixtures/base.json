@@ -1,0 +1,36 @@
+{
+  "variant": "base",
+  "split": "test",
+  "dataset_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "base_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "model_artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "protocol": {
+    "template_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "prompt_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "tool_schema_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "seed": 42,
+    "max_tokens": 64,
+    "context_limit": 512,
+    "sampling": {
+      "temperature": 0
+    }
+  },
+  "environment": {
+    "engine": "fixture"
+  },
+  "evidence_ref": "synthetic-not-inference",
+  "predictions": [
+    {
+      "id": "1",
+      "capability": "tools",
+      "expected": "ok",
+      "prediction": "ok"
+    },
+    {
+      "id": "2",
+      "capability": "ptbr",
+      "expected": "sim",
+      "prediction": "sim"
+    }
+  ]
+}
