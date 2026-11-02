@@ -121,7 +121,7 @@ Partida: PR #1 integrada por pedido explícito do proprietário em `25ab213de09c
 |---|---|
 | `.venv\Scripts\python -m pytest tests/test_windows_memory.py -q` | 34 passed: chamadas simuladas/contratos |
 | `.venv\Scripts\python -m pytest tests/test_windows_memory_native.py -q` | 6 passed: Win32 real, filhos/Jobs descartáveis |
-| `.venv\Scripts\python -m pytest -q` | 259 passed, 37 skipped |
+| `.venv\Scripts\python -m pytest -q` | 260 passed, 37 skipped |
 | `.venv\Scripts\python -m pip check` | Sem dependências quebradas |
 | `.venv\Scripts\python -m compileall -q src scripts tests` | PASS |
 | `.venv\Scripts\python scripts/verify_repository.py --write-manifest`, depois sem flag | PASS após edições finais; manifesto regenerado, sem pesos/cache/venv |
@@ -136,6 +136,8 @@ Limitação nativa observada: no host desta sessão, a consulta NULL não expôs
 Os 37 skips são explícitos: 19 fixtures Linux/mountinfo em paths POSIX; 11 casos de symlink sem privilégio Windows (erro 1314); 5 testes exclusivos de Linux/POSIX (rlimit, namespace, FIFO); 1 socket Unix indisponível nesse ambiente; 1 módulo API Transformers opcional. Os testes Linux continuam no job Ubuntu; não foram executados nativamente nesta sessão Windows. A conta não recebeu elevação nem privilégio de symlink. UTF-8 das fixtures foi explicitado, conexões SQLite passaram a ser fechadas além do commit/rollback, colorama Windows foi pinado.
 
 Primeiro verificador antes de regenerar apontou manifest desatualizado. Investigação dos 110 registros originais encontrou 85 cujo único desvio era CRLF do checkout (`core.autocrlf=true`): normalizar esses bytes para LF reproduziu os hashes originais. `.gitattributes` agora fixa LF para texto e entra no escopo do manifesto; fontes mantidas foram normalizadas antes do hash final. Isso evita manifesto específico do checkout Windows sem esconder corrupção. Conteúdo da marca permanece idêntico ao blob Git original.
+
+A primeira CI do commit `4abd482` passou os testes Ubuntu (289 passed, 7 skipped), mas falhou no manifesto: os bytes/hashes dos 118 blobs estavam corretos, porém `WindowsPath` ordenava nomes sem distinguir caixa e `PosixPath` usava ordem distinta. Reproduzido no Windows com `README.md`, `Z.md`, `a.md`; corrigido o sort para strings relativas POSIX, com regressão automatizada. A suíte local ganhou esse teste (260 passed); contagens da primeira CI são históricas, não resultado do HEAD corrigido.
 
 **NOT-TESTED:** Windows x86/outras versões; ausência real de qualquer Job neste host (caso coberto por mock, sem remover Job herdado); cadeia completa/uso agregado atual; launcher controlado de produção, reserva de memória, ACL do store ou sandbox; API ML opcional nesta venv; inferência/Torch, pesos, qualidade, GPU, treino ou release. Nova job Windows no workflow exercita testes nativos em futuras execuções; resultado remoto não é presumido por este relatório local.
 

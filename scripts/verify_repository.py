@@ -51,7 +51,9 @@ def package_paths(root=ROOT):
     for p in paths:
         if p.is_symlink() or not p.resolve().is_relative_to(root.resolve()):
             raise LabError(f"package symlink: {p}")
-    return sorted(set(paths))
+    # WindowsPath sorts case-insensitively, unlike PosixPath. Manifest order
+    # must be identical across checkouts, as well as file bytes/hashes.
+    return sorted(set(paths), key=lambda p: p.relative_to(root).as_posix())
 
 
 def manifest(root=ROOT):

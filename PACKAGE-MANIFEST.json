@@ -5,6 +5,11 @@
   "manifest_scope": "All maintained source/documentation/config/fixture/skill/agent files; excludes itself, Git, caches, installed metadata and ML artifacts.",
   "files": [
     {
+      "path": ".agents/skills/README.md",
+      "bytes": 1492,
+      "sha256": "a6d9567ff33c9880353576266c3200f56a1309b1bdde7a7b546bb62391a4544a"
+    },
+    {
       "path": ".agents/skills/capability-mapping/SKILL.md",
       "bytes": 1902,
       "sha256": "aca4735bdb111d32867eb11e4a044f66e989bd2b0e0dad61964c9375d1fe3665"
@@ -50,9 +55,9 @@
       "sha256": "54fdae94faf4f7365b6cadfe5c6936d665912b3303786c50c6e284591a7ccde5"
     },
     {
-      "path": ".agents/skills/README.md",
-      "bytes": 1492,
-      "sha256": "a6d9567ff33c9880353576266c3200f56a1309b1bdde7a7b546bb62391a4544a"
+      "path": ".codex/README.md",
+      "bytes": 703,
+      "sha256": "1a2c39e6b3a69d108a9033123564d396425bfbd4f483effdb1d24eab5206fd2b"
     },
     {
       "path": ".codex/agents/brand-reviewer.toml",
@@ -95,11 +100,6 @@
       "sha256": "68a80881e111eb70f91b9927d2e41a81e7ed6abc7756860feea89f3e12f72e57"
     },
     {
-      "path": ".codex/README.md",
-      "bytes": 703,
-      "sha256": "1a2c39e6b3a69d108a9033123564d396425bfbd4f483effdb1d24eab5206fd2b"
-    },
-    {
       "path": ".gitattributes",
       "bytes": 19,
       "sha256": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c"
@@ -118,6 +118,11 @@
       "path": "AGENTS.md",
       "bytes": 5493,
       "sha256": "a10aa60131badd91a16cc17e7b39e81145218fa0fb8eb080eb25de1d2d54d0c0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5106,
+      "sha256": "48aca2edf49ea89b37a2fb4c6839b25f36528e38c625f3c5edc944608271a40c"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -245,6 +250,26 @@
       "sha256": "6ea8cf07695679873be59e203dd0cde7c0d16d428687622767b8b697db355df8"
     },
     {
+      "path": "docs/BRAND-STANDARDS.md",
+      "bytes": 8470,
+      "sha256": "bd6e42e87c941591fd5200a2a2e9447d50a877633fe35621f75f724caa6962b4"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 2026,
+      "sha256": "788b32bb89a3a6f8b7ae51e618d3184b5842b8a213a95c61b41fa8ce012a1631"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 23909,
+      "sha256": "e02bd20dcdcc0cc9a9ff171d7671aee6beb51984243e17a8362ec07a9c108413"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 17526,
+      "sha256": "2266c3bc502f6160f2e75c48f046464d5dc924dd1b373c91731ca390f0ddb396"
+    },
+    {
       "path": "docs/adr/0001-CONSOLIDATION.md",
       "bytes": 3933,
       "sha256": "165d2995c845f2f3d9f0595c78612e5a5b065ef906915fbc9f494d34e04aeb5a"
@@ -263,11 +288,6 @@
       "path": "docs/adr/0004-WINDOWS-MEMORY.md",
       "bytes": 5270,
       "sha256": "4d71b1a7e7f725944da592b5d6efa9597e699fa6a85af47da09a0779ba43c260"
-    },
-    {
-      "path": "docs/BRAND-STANDARDS.md",
-      "bytes": 8470,
-      "sha256": "bd6e42e87c941591fd5200a2a2e9447d50a877633fe35621f75f724caa6962b4"
     },
     {
       "path": "docs/evidence/airi-evidence.json",
@@ -300,29 +320,9 @@
       "sha256": "305958bbf8557eaf261bc7349b45abb2ba1cd78bc00624b982d6b20df4c78f39"
     },
     {
-      "path": "docs/README.md",
-      "bytes": 2026,
-      "sha256": "788b32bb89a3a6f8b7ae51e618d3184b5842b8a213a95c61b41fa8ce012a1631"
-    },
-    {
-      "path": "docs/SOURCES.md",
-      "bytes": 23909,
-      "sha256": "e02bd20dcdcc0cc9a9ff171d7671aee6beb51984243e17a8362ec07a9c108413"
-    },
-    {
-      "path": "docs/VALIDATION.md",
-      "bytes": 17020,
-      "sha256": "8505d4340910e212ca8bc16e7cc878cd07b7425b811df0dcbcf702619dc19341"
-    },
-    {
       "path": "pyproject.toml",
       "bytes": 812,
       "sha256": "d6da3eff1a0d4c3c83a94902d4df591480c9c170db2ac0f6e104a3ddb60c6553"
-    },
-    {
-      "path": "README.md",
-      "bytes": 5106,
-      "sha256": "48aca2edf49ea89b37a2fb4c6839b25f36528e38c625f3c5edc944608271a40c"
     },
     {
       "path": "requirements-api.lock",
@@ -341,8 +341,8 @@
     },
     {
       "path": "scripts/verify_repository.py",
-      "bytes": 7214,
-      "sha256": "b74ef932c3b6cc006cb205baae2dddbed6fcf9e74a850938d0235582a2a3adfc"
+      "bytes": 7409,
+      "sha256": "36a6f67b7f3300331fd263637ee2e2b0ffb44fdf7aadfb4920e1019a81a7053c"
     },
     {
       "path": "src/lia_lab/__init__.py",
@@ -480,6 +480,11 @@
       "sha256": "4feb784ba61c0648a8a9e2cd92adb5a3dd5940ab54ce06fb4a20c918bde70963"
     },
     {
+      "path": "tests/fixtures/README.md",
+      "bytes": 903,
+      "sha256": "1c06140954c6e0886963258c9b7b57ca6c3b8a5c44d883d98a3030ff7cfe46aa"
+    },
+    {
       "path": "tests/fixtures/adapter-quantized.json",
       "bytes": 1041,
       "sha256": "6da5b198ca424fabdc07fa4f91a372981b7e2f61c81ffe862a99f2a133939d5b"
@@ -498,11 +503,6 @@
       "path": "tests/fixtures/pilot.jsonl",
       "bytes": 4212,
       "sha256": "a791137eaac8017eea986501738afbb337b82a6a78477690e3a3e78ba96b836a"
-    },
-    {
-      "path": "tests/fixtures/README.md",
-      "bytes": 903,
-      "sha256": "1c06140954c6e0886963258c9b7b57ca6c3b8a5c44d883d98a3030ff7cfe46aa"
     },
     {
       "path": "tests/support_authorization.py",
@@ -551,8 +551,8 @@
     },
     {
       "path": "tests/test_repository.py",
-      "bytes": 1722,
-      "sha256": "3a6f439e371eab55fe8b917937d700bb689851cf4efd75570ad6d8f1c22d37cc"
+      "bytes": 2035,
+      "sha256": "a38b49b6f96df10293bdde9ce30121b9109c76ae5c3fe572afe7ba88ff248738"
     },
     {
       "path": "tests/test_research_catalog.py",
