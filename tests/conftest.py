@@ -1,10 +1,24 @@
 """All snapshots here are tiny synthetic zero tensors, NOT language-model weights."""
 import pytest
+from pathlib import Path
 import numpy as np
 from safetensors.numpy import save_file
 from lia_lab.checkpoints import seal_snapshot
 from lia_lab.io import atomic_json
 from support_checkpoint import CONFIG, SHAPES
+
+
+@pytest.fixture
+def require_symlink(tmp_path):
+    link = tmp_path / 'capability-link'
+    try:
+        link.symlink_to(tmp_path / 'missing')
+    except OSError as exc:
+        if getattr(exc, 'winerror', None) == 1314:
+            pytest.skip('Windows account lacks symlink privilege (WinError 1314)')
+        raise
+    link.unlink()
+
 
 @pytest.fixture
 def snapshot(tmp_path):

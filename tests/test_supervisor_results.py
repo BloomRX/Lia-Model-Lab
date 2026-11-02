@@ -1,4 +1,5 @@
 """Synthetic producer stubs test only supervisor protocol/status transitions; NO inference."""
+from support_environment import synthetic_ram
 import copy
 import json
 import subprocess
@@ -17,7 +18,7 @@ def run_setup(snapshot,tmp_path,monkeypatch):
     op=inference.make_operation(**args)
     store,grant=fixture_grant(tmp_path/'operator/grants.db',op)
     env=doctor();env['dependencies'].update(torch='FAKE-PREFLIGHT',transformers='FAKE-PREFLIGHT');env['ram']['available_bytes']=10**12
-    monkeypatch.setattr(inference,'doctor',lambda _:env)
+    monkeypatch.setattr(inference,'doctor',lambda _:synthetic_ram(env))
     return dict(**args,approval_store=store,approval_id=grant),tmp_path/'research/experiments/synthetic-protocol-only'
 
 
@@ -42,6 +43,10 @@ def test_result_state_machine_is_structural_only(run_setup,monkeypatch,mode):
     def producer(command,env,log,timeout):
         request_file=path/'request.json';r=load(request_file)
         claim_worker(r['authorization']['store'],r['authorization']['id'],r['authorization']['operation'])
+        from lia_lab.inference_worker import memory_preflight
+        monkeypatch.setattr('lia_lab.inference_worker.observe', lambda:copy.deepcopy(r['memory_supervisor']))
+        r['_request_sha256'] = digest(request_file)
+        memory_preflight(r, path/'results.json', load(r['snapshot_manifest']))
         n=len(r['suite']['cases'])*r['repeats'] if mode=='completed' else 1
         data=result_fixture(r,digest(request_file),n,completed=mode=='completed')
         if mode=='wrong-hash':data['request_sha256']='0'*64

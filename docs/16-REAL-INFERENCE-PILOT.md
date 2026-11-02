@@ -104,3 +104,23 @@ Checkpoint-base ≠ Lia Core. Adapter/persona/prompt/template são versionados e
 ## Exclusão explícita LFM3
 
 A [pesquisa LFM3](17-LFM3-RESEARCH.md) não altera este piloto. LFM3/d1/custom Python e GGUF continuam sem backend autorizado; LFM Open License v1.0 não está na allowlist Apache. Nenhum registro research-only pode ser convertido em aprovação por string de catálogo. Decisão tipada, geração áudio e auxiliares exigem protocolos específicos antes de suporte executável.
+
+## Preflight Windows por política — 2026-11-02
+
+O [ADR-0004](adr/0004-WINDOWS-MEMORY.md) acrescenta diagnóstico Win32 ao contrato comum. Linux conserva os gates cgroup-v2 anteriores. Windows não depende de Torch/PowerShell/WMI para consultar memória; `ctypes` lê RAM física, commit, processo e limites de Job acessíveis. `best-effort` é padrão; `balanced` e `strict` são opcionais, com requisitos e margens descritos em [hardware](08-HARDWARE-INFRASTRUCTURE.md).
+
+```powershell
+.venv\Scripts\python -m lia_lab.cli doctor --memory-policy best-effort
+.venv\Scripts\python -m lia_lab.cli doctor --memory-policy balanced --memory-margin-percent 25
+.venv\Scripts\python -m lia_lab.cli doctor --memory-policy strict
+```
+
+Acrescentar os mesmos `--memory-policy`, `--memory-margin-percent` e `--memory-uncertainty-margin-percent` a `plan-inference` e `infer-local`. O plano normaliza defaults e inclui as três opções em `arguments`, além de `memory_policy` na operação. Qualquer mudança invalida o grant exato. Planos anteriores precisam ser regenerados e revisados pelo operador; nenhuma política concede autorização. `approve-inference` continua exclusivamente humano em terminal próprio.
+
+O orçamento continua `resident * 1.5 + bytes_snapshot + 1 GiB`, condicionado ao contrato de arquitetura existente. A avaliação exige que o orçamento caiba nas disponibilidades e nos caps conhecidos após margem; não confunde físico com commit ou working set. Falha de consulta é desconhecimento, jamais limite ilimitado. `doctor.assessment.allowed` indica suficiência das observações para a política, sem orçamento de modelo; não é licença, grant ou autorização de execução.
+
+`experiment.json.memory_supervisor` contém observação e avaliação preliminar. O worker repete depois da contenção e antes do import ML, e novamente imediatamente antes de carregar pesos. `memory-worker.json` preserva a última avaliação, inclusive bloqueio, com hash do request; o supervisor registra `memory_worker` e `memory_differences` (antes/depois/delta). Relatório ausente/inválido impede promoção a sucesso; se o worker não chegou à coleta, registra motivo. Comparação não atribui causalidade às mudanças. Aprovação/licença/integridade/arquitetura continuam gates separados; Qwen3.5 permanece bloqueado por sizing não implementado.
+
+Há suporte diagnóstico opcional a handle explícito emprestado de Job já conhecido, com associação verificada; a CLI usa consulta NULL e não recebe nem cria handles de terceiros. Uso agregado atual permanece null com fonte null. Cadeia não enumerada aparece em warnings e pode impedir `strict`. Handle explícito também não comprova a cadeia completa. Nenhum desses resultados reserva memória ou garante alocação; alocações concorrentes e fragmentação ainda podem falhar.
+
+O supervisor Windows continua `portable-process`, sem Job próprio de contenção, sem isolamento de arquivos/rede/VRAM. Criar/associar/retomar worker atomicamente e acompanhar accounting requer o launcher planejado no ADR. Os Jobs descartáveis dos testes não são esse launcher nem sandbox. Não houve inferência real, instalação Torch/CUDA/ROCm ou aquisição de pesos.

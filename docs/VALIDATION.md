@@ -112,3 +112,31 @@ git diff --check 20f1883ad1671139d7c023eff42b72c6bca96525 HEAD
 ```
 
 No workflow, o checker examina merge-base..head em pull_request, before..after em push e árvore vazia..head em primeiro push; não usa apenas mudanças não commitadas. SHA final e runs de push/PR ficam na descrição da PR/relatório após consulta remota. Os testes locais não são evidência de CI remota, inferência ou compatibilidade de pesos. Revisão independente continua **NOT PERFORMED**.
+
+## Adaptador Windows — 2026-11-02
+
+Partida: PR #1 integrada por pedido explícito do proprietário em `25ab213de09c65630d35b7bbac529ee1c4104558`; implementação em `codex/windows-memory-adapter`. Ambiente desta execução: Windows real x64, Python 3.11.0, venv local, sem Torch/Transformers. [Observação sanitizada e avaliações das três políticas](evidence/windows-memory-validation.json), [decisão/limites](adr/0004-WINDOWS-MEMORY.md).
+
+| Comando executado no Windows | Resultado |
+|---|---|
+| `.venv\Scripts\python -m pytest tests/test_windows_memory.py -q` | 34 passed: chamadas simuladas/contratos |
+| `.venv\Scripts\python -m pytest tests/test_windows_memory_native.py -q` | 6 passed: Win32 real, filhos/Jobs descartáveis |
+| `.venv\Scripts\python -m pytest -q` | 259 passed, 37 skipped |
+| `.venv\Scripts\python -m pip check` | Sem dependências quebradas |
+| `.venv\Scripts\python -m compileall -q src scripts tests` | PASS |
+| `.venv\Scripts\python scripts/verify_repository.py --write-manifest`, depois sem flag | PASS após edições finais; manifesto regenerado, sem pesos/cache/venv |
+| `git diff --check` | PASS |
+
+Simulados: RAM abundante/escassa, commit escasso, sem Job, cap por processo, cap agregado com uso desconhecido, erros de cada API/erro 5, dados inconsistentes, conversão de páginas, working set diferente de commit privado, cobertura incompleta da cadeia, três políticas, margens inválidas/configuráveis, alteração de política/margens recusada pelo grant e pelo worker, bloqueio e diferenças supervisor/worker, relatório de memória adulterado e import sem ML/rede. Fixtures de autorização temporárias só para tensores zero minúsculos; nenhum grant real criado.
+
+Nativos: tamanhos/offsets ABI x64, métricas globais e do próprio processo, associação a Job, criação descartável com 256 MiB por processo/384 MiB por Job, leitura do cap, filho cooperativo associado antes da coleta, dois níveis de Jobs de teste, handle aberto sem direito QUERY retornando WinError 5 real, fechamento de handles e consulta do handle fechado retornando WinError 6, helper de preflight do worker em filho real bloqueado em strict antes de importar ML. Não houve alocação até o limite, OOM ou interrupção de processo externo. Filho aguarda stdin; esta sincronização de teste não implementa launcher atômico.
+
+Limitação nativa observada: no host desta sessão, a consulta NULL não expôs o cap do Job de teste recém-associado, mas consulta por handle explícito e `IsProcessInJob` confirmaram o cap/associação. A cadeia não é enumerada; ausência de flags na consulta não prova ausência de outros limites. Cap agregado não tem uso atual medido nesta etapa. Pico nunca vira consumo atual. Best-effort pode permitir preparação com aviso e margem adicional; strict bloqueia a cobertura incompleta, mesmo quando a RAM global é abundante. Balanced bloqueia secundárias críticas ausentes/cap agregado sem consumo atual, mas tolera cadeia parcial com aviso.
+
+Os 37 skips são explícitos: 19 fixtures Linux/mountinfo em paths POSIX; 11 casos de symlink sem privilégio Windows (erro 1314); 5 testes exclusivos de Linux/POSIX (rlimit, namespace, FIFO); 1 socket Unix indisponível nesse ambiente; 1 módulo API Transformers opcional. Os testes Linux continuam no job Ubuntu; não foram executados nativamente nesta sessão Windows. A conta não recebeu elevação nem privilégio de symlink. UTF-8 das fixtures foi explicitado, conexões SQLite passaram a ser fechadas além do commit/rollback, colorama Windows foi pinado.
+
+Primeiro verificador antes de regenerar apontou manifest desatualizado. Investigação dos 110 registros originais encontrou 85 cujo único desvio era CRLF do checkout (`core.autocrlf=true`): normalizar esses bytes para LF reproduziu os hashes originais. `.gitattributes` agora fixa LF para texto e entra no escopo do manifesto; fontes mantidas foram normalizadas antes do hash final. Isso evita manifesto específico do checkout Windows sem esconder corrupção. Conteúdo da marca permanece idêntico ao blob Git original.
+
+**NOT-TESTED:** Windows x86/outras versões; ausência real de qualquer Job neste host (caso coberto por mock, sem remover Job herdado); cadeia completa/uso agregado atual; launcher controlado de produção, reserva de memória, ACL do store ou sandbox; API ML opcional nesta venv; inferência/Torch, pesos, qualidade, GPU, treino ou release. Nova job Windows no workflow exercita testes nativos em futuras execuções; resultado remoto não é presumido por este relatório local.
+
+Instaladas somente dependências pequenas do lock de desenvolvimento e pacote local editável; nenhum checkpoint/GGUF/dataset, Torch/CUDA/ROCm ou serviço pago. Nenhuma licença aceita, allowlist alterada, LFM3 habilitado ou trust_remote_code ativado. Qwen3.5 continua bloqueado sem sizing. Revisão pelo principal, sem subagentes ou alegação de revisão independente. Job próprio do supervisor fica como etapa 2 planejada no ADR.

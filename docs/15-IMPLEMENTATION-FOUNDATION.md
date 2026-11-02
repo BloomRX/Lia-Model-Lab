@@ -12,7 +12,7 @@ python -m venv .venv
 .venv/bin/python scripts/verify_repository.py
 ```
 
-No Windows, usar `.venv\Scripts\python.exe` e `pip.exe`. Essa plataforma **não foi executada** aqui. O lock registra versões do ambiente CPU desta entrega; wheels/driver/kernels de ML precisam de lock próprio por backend. Nenhuma compatibilidade Qwen/Gemma é inferida dessas dependências.
+No Windows, usar `.venv\Scripts\python.exe` e `pip.exe`. Diagnóstico Windows e suíte offline executados em 2026-11-02; [evidência e skips](VALIDATION.md), [contrato de memória](adr/0004-WINDOWS-MEMORY.md). Isso não prova execução ML. O lock registra versões do ambiente CPU desta entrega; wheels/driver/kernels de ML precisam de lock próprio por backend. Nenhuma compatibilidade Qwen/Gemma é inferida dessas dependências.
 
 ## Dataset Factory v1
 

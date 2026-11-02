@@ -24,7 +24,7 @@ def test_manifest_full_coverage_and_hash_change(tmp_path):
     assert len(verify.manifest(tmp_path)['files'])==1
 
 
-def test_manifest_rejects_symlinks(tmp_path):
+def test_manifest_rejects_symlinks(tmp_path, require_symlink):
     (tmp_path/'README.md').symlink_to('/etc/hostname')
     with pytest.raises(ValueError):verify.manifest(tmp_path)
 
@@ -35,7 +35,7 @@ def test_broken_link_detection(tmp_path):
 
 
 @pytest.mark.parametrize('directory',[False,True])
-def test_manifest_rejects_previously_unlisted_symlink(tmp_path,directory):
+def test_manifest_rejects_previously_unlisted_symlink(tmp_path,directory, require_symlink):
     (tmp_path/'docs').mkdir()
     (tmp_path/'docs/link').symlink_to(tmp_path/'missing',target_is_directory=directory)
     with pytest.raises(ValueError,match='symlink'):verify.manifest(tmp_path)

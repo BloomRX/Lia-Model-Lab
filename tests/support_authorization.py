@@ -1,4 +1,5 @@
 """Synthetic test grants ONLY. Not operator confirmation; no real checkpoint/authorization."""
+from contextlib import closing
 import os
 import secrets
 import sqlite3
@@ -12,7 +13,7 @@ def fixture_grant(path, operation, not_before=None, expires=None):
     path = Path(path); path.parent.mkdir(parents=True, exist_ok=True)
     grant_id = 'unit-fixture-' + secrets.token_hex(6)
     now = time.time()
-    with sqlite3.connect(path) as db:
+    with closing(sqlite3.connect(path)) as db, db:
         db.execute(SCHEMA)
         db.execute('INSERT INTO grants VALUES (?, ?, ?, ?, NULL, NULL, NULL)',
             (grant_id, canonical(operation), now-1 if not_before is None else not_before,

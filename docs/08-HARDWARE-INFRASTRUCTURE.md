@@ -45,4 +45,18 @@ Diagnóstico futuro no PC: SO, CPU/RAM, PCI ID/modelo real/VRAM, driver, Vulkan 
 
 Ryzen5 5500/16GB/RX5802048SP ~4GB é referência histórica, não telemetria. CPU é candidato a probe portável, sem promessa de velocidade. Vulkan AMD depende de driver, operações, offload de encoder/codec e build exatos; ROCm/RX580 não aprovado. Quantização nominal não inclui KV/cache/buffers/mmproj/codec/contexto/OS. Windows documentado não significa contenção equivalente ao Linux. Sem downloads/builds/pesos/stack GPU nesta missão.
 
-Na auditoria de 2026-10-31, o sizing do doctor retorna RAM null quando não encontra layout cgroup v2 reconhecido. Não substitui esse desconhecido pela RAM do host: inferência bloqueia no preflight. cgroup v1/Windows/macOS ou hierarquias não cobertas exigem implementação/probe específico. A observação histórica acima não é telemetria atual.
+Na auditoria de 2026-10-31, o sizing do doctor retornava RAM null quando não encontrava layout cgroup v2 reconhecido. Linux continua sem substituir esse desconhecido pela RAM do host; cgroup v1/macOS ou hierarquias não cobertas bloqueiam. Windows recebeu o adaptador abaixo em 2026-11-02. A observação histórica acima não é telemetria atual.
+
+## Diagnóstico Windows — 2026-11-02
+
+[ADR-0004](adr/0004-WINDOWS-MEMORY.md) define a avaliação multidimensional, testada em Windows real x64/Python 3.11. `doctor.memory` separa RAM física, commit global/chamador, commit privado e working set. Fontes Win32, erros, cobertura do Job, estimativa e margens aparecem no JSON. `ram` permanece como resumo de compatibilidade; no Windows seu available é o mínimo das disponibilidades calculáveis antes da margem, nunca RAM total.
+
+| Política Windows | Margem padrão | Evidência exigida |
+|---|---|---|
+| best-effort | 10% + 10 pontos quando parcial | RAM física e commit do chamador; secundárias desconhecidas avisam, caps conhecidos insuficientes bloqueiam |
+| balanced | 20% + 10 pontos quando parcial | Também commit global, commit privado, associação e limites do Job consultado; cap agregado sem uso atual bloqueia; cadeia parcial avisa |
+| strict | 30% + 10 pontos quando parcial | Todas as anteriores e cadeia de Jobs coberta; cadeia não enumerada bloqueia |
+
+`--memory-margin-percent` e `--memory-uncertainty-margin-percent` configuram inteiros não negativos, soma <=90. Adicional é aplicado uma vez se houver incerteza; não mede confiança. As margens Windows não mudam o contrato Linux/cgroup. Menor headroom calculável limita a estimativa; cap agregado desconhecido não vira headroom e é avaliado separadamente como teto. Memória observada não está reservada e pode mudar antes da alocação.
+
+Neste host, a consulta NULL do filho em Job aninhado não expôs o cap do Job de teste, apesar da associação confirmada e da leitura por handle explícito. Registrar cadeia não enumerada evita prometer visibilidade completa. Não coletamos uso agregado por API não documentada nem por pico. [Validação nativa e limites](VALIDATION.md); launcher com Job próprio permanece segunda etapa planejada, sem alterar Jobs externos.
