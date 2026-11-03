@@ -212,9 +212,17 @@ def test_native_handle_whitelist_does_not_inherit_unrelated_event(tmp_path):
 import ctypes as C
 k=C.WinDLL('kernel32',use_last_error=True)
 k.SetEvent.argtypes=[C.c_void_p];k.SetEvent.restype=C.c_int
-assert not k.SetEvent({event})
-assert C.get_last_error()==6
-print('unrelated-event-not-inherited')
+signaled=k.SetEvent({event})
+print('SetEvent-result',signaled)
 """
         assert invoke(tmp_path,code,api=api)==0
+        # Handle values are process-local and may be reused for a different
+        # child object. Observe the original parent's event, not child errno.
+        assert api.dll.WaitForSingleObject(event,0)==258  # WAIT_TIMEOUT
+        # Positive control: unrestricted inheritance must signal that same
+        # parent event. This detects a broken probe or inert child code.
+        subprocess.run([sys.executable,'-c',code+'\nassert signaled\n'],
+            close_fds=False,creationflags=subprocess.CREATE_NO_WINDOW,
+            timeout=10,check=True,capture_output=True)
+        assert api.dll.WaitForSingleObject(event,0)==0  # WAIT_OBJECT_0
     finally: api.close(event)

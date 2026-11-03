@@ -276,8 +276,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 25412,
-      "sha256": "d9402e831248dd0a02ad9da274ab6a780476f9878c43cba3b44614b1f9c73988"
+      "bytes": 25990,
+      "sha256": "0a96605342eaaa2d41318031e40fab536e8e9ad8cc3310afff6c90201244a950"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -671,8 +671,8 @@
     },
     {
       "path": "tests/test_windows_launcher_native.py",
-      "bytes": 10026,
-      "sha256": "4511b65bd071a77ebe98497df5f55afca11c6a4e5af1243110bfb50552b6d029"
+      "bytes": 10636,
+      "sha256": "2f14b09dfbc73e663eb07e78a33dd856d8afcc44dcaeb397cea436efd7ca30ed"
     },
     {
       "path": "tests/test_windows_memory.py",

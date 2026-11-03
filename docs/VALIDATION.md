@@ -10,6 +10,8 @@
 
 Alteração revisada pelo principal, sem delegação independente. [ADR-0006](adr/0006-QWEN35-PINNED-CPU-PILOT.md) e [relatório](19-QWEN35-FIRST-PILOT.md) distinguem essa nova conformance da evidência histórica abaixo. CI e commit final são reportados na PR, sem autoatestação anterior à execução.
 
+O primeiro CI da PR #5 passou no push, mas falhou no Windows do evento PR: o teste de whitelist presumiu ERROR_INVALID_HANDLE para o valor numérico do handle do pai no filho. Valores são locais ao processo e podem ser reutilizados. O teste foi corrigido para verificar que o **evento original do pai** continua não sinalizado após o launcher e para exigir que um filho de controle com herança irrestrita sinalize esse mesmo evento. A correção altera só a prova, sem modificar o launcher ou afrouxar a whitelist. Revalidação e CI do HEAD final são registrados na PR.
+
 Retificação: histórico completo/API confirmam17 commits exclusivos em4eadfa3 e19 em9db718c; números antigos19/21 vieram de checkout shallow. Revisão independente **NOT PERFORMED**, sem mecanismo real de delegação. SHA/contagem/CI após a retificação são registrados na PR. Não houve alteração de código executável nesta correção.
 
 Partida da auditoria anterior `4eadfa39860914ea1c84e19e0bc246933a44ae62`; baseline reproduzida **157 passed, 1 skipped**. Após correções: **197 passed, 1 skipped** na base e **205 passed** no ambiente API TF5.22.1 sem Torch. Os 40 casos adicionais cobrem lacunas descritas no [relatório de auditoria](18-FINAL-AUDIT.md); não são validação de modelo.
