@@ -152,8 +152,8 @@ PR #3 integrada por pedido do proprietário em `2a3ed22b20e2667814c26319e963b114
 | `.venv\Scripts\python -m pytest tests/test_windows_launcher.py -q` | 50 passed, simulados/contratos; inclui 5 cenários de relatório ausente/adulterado/incoerente na supervisão |
 | `.venv\Scripts\python -m pytest tests/test_windows_launcher_native.py -q` | 13 passed, Windows real com processos descartáveis; 5 casos injetam erro na chamada Win32 para exercitar cleanup |
 | `.venv\Scripts\python -m pytest tests/test_windows_memory_native.py -q` | 6 passed, APIs reais de memória e Jobs da etapa 1 |
-| `.venv\Scripts\python -m pytest -q` | 324 passed, 37 skipped |
-| `.venv-api\Scripts\python -m pytest -q` com HF_HUB_OFFLINE/TRANSFORMERS_OFFLINE=1 | 332 passed, 36 skipped, TF5.22.1 sem Torch/modelos |
+| `.venv\Scripts\python -m pytest -q` | 325 passed, 37 skipped |
+| `.venv-api\Scripts\python -m pytest -q` com HF_HUB_OFFLINE/TRANSFORMERS_OFFLINE=1 | 333 passed, 36 skipped, TF5.22.1 sem Torch/modelos |
 | `python -m pip check`, nas duas venvs | Sem dependências quebradas |
 | `.venv\Scripts\python -m compileall -q src scripts tests` | PASS |
 | Verificador, `--write-manifest`, verificador novamente | PASS após edições finais, manifesto de fonte sem ambientes/pesos/cache |
@@ -168,6 +168,8 @@ A evidência pública registra duas novas execuções sem ML: saída natural e t
 Desvio técnico documentado: Job sinalizado não equivale a todo esvaziamento normal; a fonte Microsoft só promete sinalização no caso específico do limite de tempo do Job. Assim, usa-se WaitForSingleObject no processo principal e ActiveProcesses no Job para confirmar zero. O teste nativo demonstra que o supervisor espera descendentes e que a limpeza termina a árvore.
 
 Os 37 skips da suíte base conservam os motivos da etapa 1 (Linux/POSIX, symlink sem privilégio e módulo API opcional); a API leve executa esse módulo e mantém 36 skips do SO. Skips não contam como testes passados. CI Windows/Ubuntu/API leve do HEAD final é consultada remotamente e registrada na PR; testes locais não antecipam seu resultado. Linux nativo não foi executado neste PC; regressão Linux ocorre no CI Ubuntu.
+
+No primeiro push de `829fc51`, os testes Ubuntu passaram (341 passed, 20 skipped) e os três jobs da PR passaram, mas o checker de push comparou árvore vazia com toda a branch nova e rejeitou duas quebras Markdown históricas da marca. A marca não foi alterada. O caso foi corrigido para primeiro push de branch de trabalho usar merge-base da branch padrão remota, com ref validada e histórico completo; primeiro push da branch padrão e fixtures sem metadados continuam cobrindo árvore inteira. Regressão prova que whitespace novo na feature ainda falha. A mudança de escopo complementa o registro histórico R6 acima, sem eliminar seu gate para mudanças commitadas. Resultado do HEAD corrigido fica na PR.
 
 **NOT-TESTED:** Windows x86/versões antigas, todas as configurações de Jobs/ACL externas, resistência a administrador/mesma conta/serviços externos, isolamento de arquivos/rede/identidade/VRAM, inferência e uso real de memória dos modelos, reserva/garantia de alocação. Cap próprio não elimina restrições ancestrais; balanced/strict ainda podem bloquear por cobertura/uso agregado desconhecidos. Cleanup tem grace de 5 s para verificar processos já terminados; falha de API/fechamento impede sucesso.
 

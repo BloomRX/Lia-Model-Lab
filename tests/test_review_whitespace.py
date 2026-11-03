@@ -35,3 +35,22 @@ def test_r6_workflow_uses_committed_checker_and_full_history():
     steps=workflow['jobs']['verify']['steps']
     assert any(step.get('run')=='python scripts/check_whitespace.py' for step in steps)
     assert any(step.get('uses')=='actions/checkout@v5' and step.get('with',{}).get('fetch-depth')==0 for step in steps)
+
+
+def test_first_feature_push_checks_own_changes_preserves_inherited_history(tmp_path):
+    def git(*args): return subprocess.check_output(['git',*args],cwd=tmp_path,text=True).strip()
+    git('init','-q');git('config','user.name','Synthetic fixture');git('config','user.email','fixture@invalid.example')
+    (tmp_path/'brand.md').write_text('historical Markdown hard break  \n')
+    git('add','.');git('commit','-qm','historical fixture')
+    base=git('rev-parse','HEAD');git('update-ref','refs/remotes/origin/main',base)
+    file=tmp_path/'change.txt';file.write_text('clean feature\n');git('add','.');git('commit','-qm','feature')
+    head=git('rev-parse','HEAD')
+    event=dict(before='0'*40,after=head,ref='refs/heads/codex/fixture',repository={'default_branch':'main'})
+    checker=module('check_whitespace')
+    assert checker.revisions('push',event,tmp_path)==(base,head)
+    assert checker.check('push',event,tmp_path)==0
+    file.write_text('new bad whitespace \n');git('add','.');git('commit','-qm','bad new change')
+    event['after']=git('rev-parse','HEAD')
+    assert checker.check('push',event,tmp_path)!=0
+    event['ref']='refs/heads/main'
+    assert checker.check('push',event,tmp_path)!=0  # first default push still checks all files

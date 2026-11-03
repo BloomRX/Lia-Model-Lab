@@ -266,8 +266,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 22805,
-      "sha256": "bf4c9ace725013b41702bc4ebc362c239d7c0bf985312dbc082b96f625b7d14b"
+      "bytes": 23522,
+      "sha256": "ef7190a3693ba64f7f76e2206a52423a6eace64f5fe038fc6ccbe3e638ce642a"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -346,8 +346,8 @@
     },
     {
       "path": "scripts/check_whitespace.py",
-      "bytes": 2035,
-      "sha256": "109743cdb26012faafb500221f09d21afb72e066d899517b34ef6231cc10ece5"
+      "bytes": 2614,
+      "sha256": "b00ff2e37a35a9f22138084a32284d3d835ee997f2964dc3f6586cc7e592507e"
     },
     {
       "path": "scripts/verify_repository.py",
@@ -586,8 +586,8 @@
     },
     {
       "path": "tests/test_review_whitespace.py",
-      "bytes": 2060,
-      "sha256": "becabdeab6604f29371257220e3f73c9e37c89025e38b12e122cb72043cf0d09"
+      "bytes": 3313,
+      "sha256": "47ff78b91247308373d7f39b0e716ec8dd08000c0af8caddf4cdec11c9d4e09e"
     },
     {
       "path": "tests/test_supervisor_results.py",

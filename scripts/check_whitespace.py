@@ -25,8 +25,16 @@ def revisions(event_name, event, cwd=None):
         raise ValueError('deleted ref has no change HEAD to validate')
     git('cat-file', '-e', head + '^{commit}', cwd=cwd)
     if base == '0' * 40:
-        # First push: no previous tip, so examine all committed files.
-        base = git('hash-object', '-w', '-t', 'tree', '--stdin', cwd=cwd, input='')
+        default = event.get('repository', {}).get('default_branch')
+        if isinstance(default, str) and event.get('ref') != 'refs/heads/' + default:
+            # A newly published feature branch inherits maintained history. Its
+            # change is relative to the fetched default branch, not an empty repo.
+            git('check-ref-format', 'refs/heads/' + default, cwd=cwd)
+            target = git('rev-parse', '--verify', 'refs/remotes/origin/' + default + '^{commit}', cwd=cwd)
+            base = git('merge-base', target, head, cwd=cwd)
+        else:
+            # Initial default-branch push / metadata-free fixtures: all files.
+            base = git('hash-object', '-w', '-t', 'tree', '--stdin', cwd=cwd, input='')
     else:
         git('cat-file', '-e', base + '^{commit}', cwd=cwd)
         if event_name == 'pull_request':
