@@ -111,8 +111,8 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 1308,
-      "sha256": "76f5000a7de08f1bf056f20c7cc75542c64d4c9e2243d46b22f6fe0a99db2971"
+      "bytes": 1319,
+      "sha256": "f8acc531462387e8449569201ba7fe8402191131230ba0316f0ffe32bae5cc78"
     },
     {
       "path": "AGENTS.md",
@@ -121,8 +121,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 5106,
-      "sha256": "48aca2edf49ea89b37a2fb4c6839b25f36528e38c625f3c5edc944608271a40c"
+      "bytes": 5506,
+      "sha256": "a269168bf5ec22436a5605a1d134d3e0affa2190a3d033ade1714fe865997153"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -196,8 +196,8 @@
     },
     {
       "path": "docs/08-HARDWARE-INFRASTRUCTURE.md",
-      "bytes": 7861,
-      "sha256": "da9260a05258f6f9a23827baa6cfe635881d11c8bfd7c256b6a0f5d41d76f666"
+      "bytes": 8945,
+      "sha256": "8b0da5672ccb18291cb74f898650e0f38cdcf0152ee897ea9b4f02400f0076da"
     },
     {
       "path": "docs/09-BENCHMARK-STRATEGY.md",
@@ -236,8 +236,8 @@
     },
     {
       "path": "docs/16-REAL-INFERENCE-PILOT.md",
-      "bytes": 19888,
-      "sha256": "4ad576d1ebc417a3dd4b57e082bbeb681d9840236b1956106d16893e4fbd3327"
+      "bytes": 22461,
+      "sha256": "673c7958c5bdde28ddca26aea82d201d3737d49c7438f5f46b87beae166b90c3"
     },
     {
       "path": "docs/17-LFM3-RESEARCH.md",
@@ -256,18 +256,18 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 2026,
-      "sha256": "788b32bb89a3a6f8b7ae51e618d3184b5842b8a213a95c61b41fa8ce012a1631"
+      "bytes": 2112,
+      "sha256": "41e92e242f5f94e2f0a1ac6cd8a71bfc93e2b04ba1d0cde18cdd4ff4aa83531e"
     },
     {
       "path": "docs/SOURCES.md",
-      "bytes": 23909,
-      "sha256": "e02bd20dcdcc0cc9a9ff171d7671aee6beb51984243e17a8362ec07a9c108413"
+      "bytes": 26376,
+      "sha256": "c87f0a4665f8f79017f14b8ae66a317fe399c450fed8790e460586a1059e7ca2"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 17526,
-      "sha256": "2266c3bc502f6160f2e75c48f046464d5dc924dd1b373c91731ca390f0ddb396"
+      "bytes": 23522,
+      "sha256": "ef7190a3693ba64f7f76e2206a52423a6eace64f5fe038fc6ccbe3e638ce642a"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -286,8 +286,13 @@
     },
     {
       "path": "docs/adr/0004-WINDOWS-MEMORY.md",
-      "bytes": 5270,
-      "sha256": "4d71b1a7e7f725944da592b5d6efa9597e699fa6a85af47da09a0779ba43c260"
+      "bytes": 5853,
+      "sha256": "53b0c6ca7a839187ed38e1fd132e0a2e800cfb04c716cdf5ef96d4e8342dde13"
+    },
+    {
+      "path": "docs/adr/0005-WINDOWS-CONTROLLED-LAUNCHER.md",
+      "bytes": 7122,
+      "sha256": "13335870b6710c3e36f51ba047fac1e5bfe3dffffc99fb7163a36ff995cd9cd4"
     },
     {
       "path": "docs/evidence/airi-evidence.json",
@@ -315,6 +320,11 @@
       "sha256": "ae5331da2193572fa01ec979e488cd2918d2506e2781e7f2b7abe1b3d537b80b"
     },
     {
+      "path": "docs/evidence/windows-launcher-validation.json",
+      "bytes": 4406,
+      "sha256": "643952816fb86955c47dab47213741e12eec12400230e867c3ff8f4d297545c5"
+    },
+    {
       "path": "docs/evidence/windows-memory-validation.json",
       "bytes": 4276,
       "sha256": "305958bbf8557eaf261bc7349b45abb2ba1cd78bc00624b982d6b20df4c78f39"
@@ -336,8 +346,8 @@
     },
     {
       "path": "scripts/check_whitespace.py",
-      "bytes": 2035,
-      "sha256": "109743cdb26012faafb500221f09d21afb72e066d899517b34ef6231cc10ece5"
+      "bytes": 2614,
+      "sha256": "b00ff2e37a35a9f22138084a32284d3d835ee997f2964dc3f6586cc7e592507e"
     },
     {
       "path": "scripts/verify_repository.py",
@@ -371,8 +381,8 @@
     },
     {
       "path": "src/lia_lab/containment.py",
-      "bytes": 3768,
-      "sha256": "0f0e3e6a7545d5bf25f6618ef6c6adc9b64a9327a5139f3058960b7532c829a5"
+      "bytes": 3995,
+      "sha256": "49a162916665b938ccf11a58a46d522c0a7dd2575ec48436dc9fb0c27a28a494"
     },
     {
       "path": "src/lia_lab/datasets.py",
@@ -396,8 +406,8 @@
     },
     {
       "path": "src/lia_lab/inference.py",
-      "bytes": 15376,
-      "sha256": "5f6fde8687d31a55d170cddd348ce96ecc2f84180c8af76825a830c0a985c7db"
+      "bytes": 17427,
+      "sha256": "b381bcca0af2976bb256e318f7bcaead34c430faefffc54ed3ce7a76c0cbc0e0"
     },
     {
       "path": "src/lia_lab/inference_protocol.py",
@@ -406,8 +416,8 @@
     },
     {
       "path": "src/lia_lab/inference_worker.py",
-      "bytes": 11918,
-      "sha256": "32adacb345868bf1c7a884e51769539f1c69989ff8e456250a4c185418a9f1d1"
+      "bytes": 11820,
+      "sha256": "737a51dbc899bf39f07a9601d32d1632428ff4d0e29f7024fb3f9df3407f07f2"
     },
     {
       "path": "src/lia_lab/io.py",
@@ -416,8 +426,8 @@
     },
     {
       "path": "src/lia_lab/memory_resources.py",
-      "bytes": 6808,
-      "sha256": "ecc25609ee9ecc646607bd0fc78cefd2d58f4904754a9ad81803a9dbb20306aa"
+      "bytes": 7025,
+      "sha256": "9d161a8ee92557b5c542075cad80515d268f767a8d7984436404e2aae3aa59e5"
     },
     {
       "path": "src/lia_lab/model_backends.py",
@@ -443,6 +453,11 @@
       "path": "src/lia_lab/training_prep.py",
       "bytes": 9959,
       "sha256": "29911aa6d3d57cee754a6b85c20062c0c17b088dce888f2504f43f9569e85c61"
+    },
+    {
+      "path": "src/lia_lab/windows_launcher.py",
+      "bytes": 20227,
+      "sha256": "b4c58f052adc3cc451ea5cc1df7d1866ac55bdbfeea675f7ab1339ac9e0c3955"
     },
     {
       "path": "src/lia_lab/windows_memory.py",
@@ -516,13 +531,13 @@
     },
     {
       "path": "tests/support_environment.py",
-      "bytes": 297,
-      "sha256": "8ad175a00d7cb25695934775ed8951333a70fa84381fc58e12902f7eedd7653f"
+      "bytes": 1513,
+      "sha256": "59d37ab9a8c3a6e5585c6b11120c19c0634fb4925feb5054b94674d35190bff6"
     },
     {
       "path": "tests/test_authorization.py",
-      "bytes": 7190,
-      "sha256": "35664e5eda6f44df3ba791d2411b8b4084d7f15e8c8841fb299fd60dfeaa5862"
+      "bytes": 7204,
+      "sha256": "646023b868b35413b09f600917342c026a3e9d5d6eab92fd4f0c016e8d6c2553"
     },
     {
       "path": "tests/test_backend_contracts.py",
@@ -531,8 +546,8 @@
     },
     {
       "path": "tests/test_containment.py",
-      "bytes": 2843,
-      "sha256": "9cf2e38401e6268a4bbeee5ed96e2cf03184f8e513748d5fd79fee56c0a83568"
+      "bytes": 2923,
+      "sha256": "dad7c37d88767db097eac7e50ad4e4d05358a2591d622e1d0ac37b6c522c64e7"
     },
     {
       "path": "tests/test_final_audit.py",
@@ -546,8 +561,8 @@
     },
     {
       "path": "tests/test_inference.py",
-      "bytes": 14380,
-      "sha256": "7e9ce774b7930432e8fd41f7572bc7df23808587b8241c93d58413326c125a90"
+      "bytes": 14390,
+      "sha256": "03bbbc4c45bc5c9c62f413e892598d258dafd5843b6317c4d216f6c8c4503c69"
     },
     {
       "path": "tests/test_repository.py",
@@ -571,13 +586,13 @@
     },
     {
       "path": "tests/test_review_whitespace.py",
-      "bytes": 2060,
-      "sha256": "becabdeab6604f29371257220e3f73c9e37c89025e38b12e122cb72043cf0d09"
+      "bytes": 3313,
+      "sha256": "47ff78b91247308373d7f39b0e716ec8dd08000c0af8caddf4cdec11c9d4e09e"
     },
     {
       "path": "tests/test_supervisor_results.py",
-      "bytes": 4510,
-      "sha256": "96b1738b990efbb05e03b0536d6ff3b5ed510b5e2ecf898c08a0d0ca2170cd58"
+      "bytes": 4589,
+      "sha256": "939f93e489a8c45f37cb02fe4f8702449328a4c8eae4921df7f558ea5fec1e57"
     },
     {
       "path": "tests/test_transformers_api.py",
@@ -585,9 +600,19 @@
       "sha256": "71a5d552f7c2f92fc2e6edf6ba9741caf277cfd9d72bd23e261d38b8181f3a8c"
     },
     {
+      "path": "tests/test_windows_launcher.py",
+      "bytes": 11874,
+      "sha256": "2f4121f53bbd9f78c482e028e8709ec1c5e43dc275af96779ce58c27393c21a4"
+    },
+    {
+      "path": "tests/test_windows_launcher_native.py",
+      "bytes": 10026,
+      "sha256": "4511b65bd071a77ebe98497df5f55afca11c6a4e5af1243110bfb50552b6d029"
+    },
+    {
       "path": "tests/test_windows_memory.py",
-      "bytes": 11493,
-      "sha256": "1f420488724eb273b1a3baf9c644d7b0f05060797d31b05ed65f7798fdacd70f"
+      "bytes": 11503,
+      "sha256": "b575b97206a2c6bb94a78599dc4aad63556c0f1bb375f51cadf28a08404c5b50"
     },
     {
       "path": "tests/test_windows_memory_native.py",

@@ -11,7 +11,7 @@ from lia_lab.io import LabError
 def test_portable_is_explicitly_not_sandbox():
     p=policy('portable-process',10,'cpu')
     assert p['security_sandbox'] is False and p['network_policy']=='not-applied'
-    assert p['os_resource_limits'].startswith('not-applied')
+    assert p['os_resource_limits'] == ('required-in-supervisor-windows-job' if os.name == 'nt' else 'not-applied-explicit-portable-profile')
 
 
 def test_no_silent_platform_or_gpu_fallback(monkeypatch):

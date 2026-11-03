@@ -2,6 +2,13 @@
 from .io import LabError
 
 
+def loading_envelope(elements, dtype, snapshot_bytes):
+    if elements is None:
+        return None
+    resident = elements * (4 if dtype == 'float32' else 2)
+    return resident * 3 // 2 + snapshot_bytes + 1024**3
+
+
 def settings(policy='best-effort', margin_percent=None, uncertainty_margin_percent=10):
     if policy not in {'best-effort', 'balanced', 'strict'}:
         raise LabError('invalid memory policy')

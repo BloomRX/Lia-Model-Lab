@@ -48,6 +48,7 @@ credentials.*
 __pycache__/
 *.py[cod]
 .venv/
+.venv-api/
 venv/
 .pytest_cache/
 .mypy_cache/

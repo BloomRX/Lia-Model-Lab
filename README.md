@@ -10,6 +10,8 @@ Pesquisa e skills integradas em uma única documentação oficial; marca e gover
 
 **Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
+**Launcher Windows, etapa 2:** criação suspensa, associação a Job próprio antes da retomada e supervisão de toda a árvore implementadas e exercitadas em Windows x64/Python 3.11. Limites e recibos vinculados ao plano; [ADR-0005](docs/adr/0005-WINDOWS-CONTROLLED-LAUNCHER.md) e [validação](docs/VALIDATION.md). Job Objects não isolam arquivos/rede/identidade e não substituem grant humano.
+
 Auditoria final: [achados, correções e limites para integração](docs/18-FINAL-AUDIT.md). Prontidão de revisão do código não é aprovação de modelos, licença ou execução.
 
 ## Começar

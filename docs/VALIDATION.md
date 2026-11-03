@@ -142,3 +142,35 @@ A primeira CI do commit `4abd482` passou os testes Ubuntu (289 passed, 7 skipped
 **NOT-TESTED:** Windows x86/outras versões; ausência real de qualquer Job neste host (caso coberto por mock, sem remover Job herdado); cadeia completa/uso agregado atual; launcher controlado de produção, reserva de memória, ACL do store ou sandbox; API ML opcional nesta venv; inferência/Torch, pesos, qualidade, GPU, treino ou release. Nova job Windows no workflow exercita testes nativos em futuras execuções; resultado remoto não é presumido por este relatório local.
 
 Instaladas somente dependências pequenas do lock de desenvolvimento e pacote local editável; nenhum checkpoint/GGUF/dataset, Torch/CUDA/ROCm ou serviço pago. Nenhuma licença aceita, allowlist alterada, LFM3 habilitado ou trust_remote_code ativado. Qwen3.5 continua bloqueado sem sizing. Revisão pelo principal, sem subagentes ou alegação de revisão independente. Job próprio do supervisor fica como etapa 2 planejada no ADR.
+
+## Etapa 2: launcher Windows controlado — 2026-11-02
+
+PR #3 integrada por pedido do proprietário em `2a3ed22b20e2667814c26319e963b114cf9537df`; branch `codex/windows-controlled-launcher`. Ambiente local: Windows nativo x64 10.0.26200, Python 3.11.0. [ADR-0005](adr/0005-WINDOWS-CONTROLLED-LAUNCHER.md) e [evidência sanitizada](evidence/windows-launcher-validation.json). Nenhuma conclusão abaixo comprova inferência ou sandbox.
+
+| Verificação local executada | Resultado |
+|---|---|
+| `.venv\Scripts\python -m pytest tests/test_windows_launcher.py -q` | 50 passed, simulados/contratos; inclui 5 cenários de relatório ausente/adulterado/incoerente na supervisão |
+| `.venv\Scripts\python -m pytest tests/test_windows_launcher_native.py -q` | 13 passed, Windows real com processos descartáveis; 5 casos injetam erro na chamada Win32 para exercitar cleanup |
+| `.venv\Scripts\python -m pytest tests/test_windows_memory_native.py -q` | 6 passed, APIs reais de memória e Jobs da etapa 1 |
+| `.venv\Scripts\python -m pytest -q` | 325 passed, 37 skipped |
+| `.venv-api\Scripts\python -m pytest -q` com HF_HUB_OFFLINE/TRANSFORMERS_OFFLINE=1 | 333 passed, 36 skipped, TF5.22.1 sem Torch/modelos |
+| `python -m pip check`, nas duas venvs | Sem dependências quebradas |
+| `.venv\Scripts\python -m compileall -q src scripts tests` | PASS |
+| Verificador, `--write-manifest`, verificador novamente | PASS após edições finais, manifesto de fonte sem ambientes/pesos/cache |
+| `git diff --check` e diff da base integrada ao HEAD | PASS |
+
+Casos nativos: ABI x64; aplicação/readback de 256 MiB de commit agregado e 16 processos; marcador inexistente enquanto o processo permanece suspenso; associação por handle explícito antes de ResumeThread; processo principal e descendente associados; saída do principal com descendente ainda ativo; supervisão continuada até accounting zero; timeout e interrupção terminando árvore; último handle do Job encerrando pai/filho; criação sob dois Jobs próprios aninhados; whitelist impedindo herança de evento alheio; argumentos com espaços/aspas/backslash/vazio, cwd e ambiente Unicode, stderr/stdout e exit code 7 preservados. Processos abertos para observação pertencem aos próprios testes; não foram usados processos de terceiros ou stress/OOM.
+
+Falhas nativas injetadas de CreateJobObjectW, SetInformationJobObject, CreateProcessW, AssignProcessToJobObject e ResumeThread mantiveram o marcador ausente, sem fallback e com fechamento dos handles/contagem de handles revalidada. São chamadas interceptadas para falhar no Windows real, não alegação de reproduzir toda recusa possível do kernel. Os simulados também cobrem query/wait/exit-code, erro de cleanup e CloseHandle; cleanup não comprovado gera falha, sem falso sucesso. Testes de grants/worker recusam alteração do contrato de contenção; arquivos de recibo forjados não substituem a observação em memória do supervisor.
+
+A evidência pública registra duas novas execuções sem ML: saída natural e timeout, ambas com cap de 268435456 bytes, cinco processos totais contabilizados, zero ativos ao terminar e `cleanup_complete=true`. Pico de commit é métrica de pico; máximo de processos amostrado é nomeado como amostrado. PID/UUID/caminhos temporários e linha de comando de exceções foram omitidos da cópia pública. Relatórios locais do pipeline preservam PID/ID e hashes de request/operação. Não há grant real ou resultado ML nesse artefato.
+
+Desvio técnico documentado: Job sinalizado não equivale a todo esvaziamento normal; a fonte Microsoft só promete sinalização no caso específico do limite de tempo do Job. Assim, usa-se WaitForSingleObject no processo principal e ActiveProcesses no Job para confirmar zero. O teste nativo demonstra que o supervisor espera descendentes e que a limpeza termina a árvore.
+
+Os 37 skips da suíte base conservam os motivos da etapa 1 (Linux/POSIX, symlink sem privilégio e módulo API opcional); a API leve executa esse módulo e mantém 36 skips do SO. Skips não contam como testes passados. CI Windows/Ubuntu/API leve do HEAD final é consultada remotamente e registrada na PR; testes locais não antecipam seu resultado. Linux nativo não foi executado neste PC; regressão Linux ocorre no CI Ubuntu.
+
+No primeiro push de `829fc51`, os testes Ubuntu passaram (341 passed, 20 skipped) e os três jobs da PR passaram, mas o checker de push comparou árvore vazia com toda a branch nova e rejeitou duas quebras Markdown históricas da marca. A marca não foi alterada. O caso foi corrigido para primeiro push de branch de trabalho usar merge-base da branch padrão remota, com ref validada e histórico completo; primeiro push da branch padrão e fixtures sem metadados continuam cobrindo árvore inteira. Regressão prova que whitespace novo na feature ainda falha. A mudança de escopo complementa o registro histórico R6 acima, sem eliminar seu gate para mudanças commitadas. Resultado do HEAD corrigido fica na PR.
+
+**NOT-TESTED:** Windows x86/versões antigas, todas as configurações de Jobs/ACL externas, resistência a administrador/mesma conta/serviços externos, isolamento de arquivos/rede/identidade/VRAM, inferência e uso real de memória dos modelos, reserva/garantia de alocação. Cap próprio não elimina restrições ancestrais; balanced/strict ainda podem bloquear por cobertura/uso agregado desconhecidos. Cleanup tem grace de 5 s para verificar processos já terminados; falha de API/fechamento impede sucesso.
+
+Instaladas apenas dependências do lock de API leve em venv própria ignorada e pacote editável, sem Torch/CUDA/ROCm, checkpoints, datasets ou tokenizers upstream. Sem grant operacional real, licença aceita, LFM3/remote-code habilitado, treino, adapter real, publicação de pesos ou serviço pago. Estado da etapa 1 e sua evidência permanecem acima; etapa 2 não reescreve aprovações passadas. Revisão do principal, sem subagentes/revisão independente.
