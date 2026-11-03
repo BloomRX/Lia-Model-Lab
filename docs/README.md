@@ -23,6 +23,7 @@ Coleção consolidada em 2026-10-30. ADRs registram decisões; pesquisa distingu
 - [16-REAL-INFERENCE-PILOT](16-REAL-INFERENCE-PILOT.md)
 - [17-LFM3-RESEARCH](17-LFM3-RESEARCH.md)
 - [18-FINAL-AUDIT](18-FINAL-AUDIT.md)
+- [19-QWEN35-FIRST-PILOT](19-QWEN35-FIRST-PILOT.md)
 
 ## Evidência e políticas
 
@@ -32,6 +33,7 @@ Coleção consolidada em 2026-10-30. ADRs registram decisões; pesquisa distingu
 - [ADR-0003 — Hardening e autorização](adr/0003-INFERENCE-HARDENING.md)
 - [ADR-0004 — Diagnóstico de memória Windows](adr/0004-WINDOWS-MEMORY.md)
 - [ADR-0005 — Launcher Windows controlado](adr/0005-WINDOWS-CONTROLLED-LAUNCHER.md)
+- [ADR-0006 — Contrato fixo Qwen3.5-0.8B CPU](adr/0006-QWEN35-PINNED-CPU-PILOT.md)
 - [Fontes](SOURCES.md)
 - [Validação executada](VALIDATION.md)
 - [Ledger AIRI](evidence/airi-evidence.json)

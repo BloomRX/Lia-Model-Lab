@@ -1,5 +1,7 @@
 # 08 — Hardware e infraestrutura
 
+Atualização medida em 2026-11-02: [primeiro piloto Qwen3.5-0.8B](19-QWEN35-FIRST-PILOT.md) e [evidência](evidence/qwen35-first-pilot.json) registram host Windows/Ryzen 5 5500, 17063882752 bytes de RAM física e RX 580 2048SP apenas inventariada. Stack CPU separada validada com pesos sintéticos; nenhum runtime GPU foi provado. O envelope float32 completo é 8084353423 bytes; a disponibilidade após margens foi insuficiente. Números de proposta abaixo não substituem essa observação nem autorizam execução.
+
 **Missão 001 · consulta: 2026-10-30 · estado: proposta para revisão.**
 
 ## Três ambientes que não devem ser confundidos

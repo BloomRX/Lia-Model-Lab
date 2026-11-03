@@ -1,5 +1,15 @@
 # Validação atual — auditoria final e retificação documental (2026-10-31)
 
+## Atualização posterior — preparação Qwen3.5-0.8B, 2026-11-02
+
+- Windows x64/Python 3.11.0: `.venv\Scripts\python -m pytest -q`: **359 passed, 39 skipped**; `.venv-api\Scripts\python -m pytest -q`: **367 passed, 38 skipped**. Skips incluem plataformas/cgroups/namespaces indisponíveis, API ausente no ambiente base, symlink sem privilégio e módulo ML explicitamente opt-in.
+- Testes específicos contrato/aquisição: **32 passed, 1 skipped**. Sem rede; respostas HTTP fictícias verificam retomada, restart, corrupção, tamanho, overwrite e disjunção de paths.
+- Ambiente externo CPU fixado: `LIA_TEST_ML_RUNTIME=1`, snapshot explícito e flags offline; `python -m pytest tests/test_qwen35_ml_runtime.py -q`: **4 passed**. Loader com pesos **sintéticos**, alias por identidade Parameter e MTP não zero; frontend original nos cinco casos; modelo oficial em **meta**. Nenhuma geração ou carga de pesos originais.
+- Inventário oficial adquirido/verificado: 12 arquivos/1769978895 bytes fora do Git. Headers reais: 488 tensores/873438784 elementos; contrato completo de shapes/dtypes/índice aprovado automaticamente. Grant/seal/plano reais ausentes; revisão humana da licença pendente.
+- [Evidência com orçamento](evidence/qwen35-first-pilot.json): estado **blocked**, motivo `host RAM/commit below memory loading envelope with margin`; envelope 8084353423 bytes, política best-effort 10% + 10%. `doctor` sem orçamento não comprova capacidade do modelo. Requests reais 0; picos/latência/qualidade pt-BR e visão NOT-TESTED por bloqueio antes da execução.
+
+Alteração revisada pelo principal, sem delegação independente. [ADR-0006](adr/0006-QWEN35-PINNED-CPU-PILOT.md) e [relatório](19-QWEN35-FIRST-PILOT.md) distinguem essa nova conformance da evidência histórica abaixo. CI e commit final são reportados na PR, sem autoatestação anterior à execução.
+
 Retificação: histórico completo/API confirmam17 commits exclusivos em4eadfa3 e19 em9db718c; números antigos19/21 vieram de checkout shallow. Revisão independente **NOT PERFORMED**, sem mecanismo real de delegação. SHA/contagem/CI após a retificação são registrados na PR. Não houve alteração de código executável nesta correção.
 
 Partida da auditoria anterior `4eadfa39860914ea1c84e19e0bc246933a44ae62`; baseline reproduzida **157 passed, 1 skipped**. Após correções: **197 passed, 1 skipped** na base e **205 passed** no ambiente API TF5.22.1 sem Torch. Os 40 casos adicionais cobrem lacunas descritas no [relatório de auditoria](18-FINAL-AUDIT.md); não são validação de modelo.

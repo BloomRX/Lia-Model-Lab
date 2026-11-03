@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from lia_lab.io import LabError, load, json_loads, atomic_json
 from jsonschema import Draft202012Validator
 
-ROOT_FILES = {".gitattributes", ".gitignore", "README.md", "AGENTS.md", "pyproject.toml", "requirements.lock", "requirements-api.lock"}
+ROOT_FILES = {".gitattributes", ".gitignore", "README.md", "AGENTS.md", "pyproject.toml", "requirements.lock", "requirements-api.lock", "requirements-ml-windows-cpu.lock"}
 TREES = ("docs", "configs", "templates", "src", "tests", "scripts", ".agents", ".codex", ".github")
 EXTENSIONS = {".md", ".json", ".jsonl", ".yaml", ".yml", ".toml", ".py", ".txt"}
 

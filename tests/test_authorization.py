@@ -24,7 +24,7 @@ def test_positive_atomic_single_use(operation,tmp_path):
     with pytest.raises(LabError,match='consumed'):consume_grant(store,grant,operation)
 
 
-@pytest.mark.parametrize('field', ['action','model_id','revision','snapshot_manifest_sha256','suite_sha256','source_snapshot_sha256','license','limits','arguments','containment','disallowed_actions'])
+@pytest.mark.parametrize('field', ['action','model_id','revision','snapshot_manifest_sha256','suite_sha256','source_snapshot_sha256','runtime_identity','architecture_contract','license','limits','arguments','containment','disallowed_actions'])
 def test_every_operation_binding(operation,tmp_path,field):
     store,grant=fixture_grant(tmp_path/'operator/grants.db',operation)
     modified=copy.deepcopy(operation)
