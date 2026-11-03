@@ -29,3 +29,7 @@ Exige desenho separado: criar Job próprio, limites em bytes vinculados ao plano
 ## Limites de evidência
 
 Windows x64/Python 3.11 com filhos descartáveis e fixtures minúsculas; sem OOM ou pesos reais. x86, outras versões Windows, launcher/ACL do store e execução ML permanecem NOT-TESTED. SQLite agora fecha conexões explicitamente para liberar handles Windows; fixtures UTF-8 e skips por capacidade do SO não alteram gates do produto. Revisão feita pelo principal, sem delegação ou revisão independente simulada.
+
+## Atualização da etapa 2 — 2026-11-02
+
+O planejamento e os limites acima registram a etapa 1. A etapa 2 foi implementada e testada com APIs Windows reais no [ADR-0005](0005-WINDOWS-CONTROLLED-LAUNCHER.md): criação suspensa, associação explícita antes de retomar, Job próprio sem herança de handle, controle de descendentes, limites e cleanup confirmado. Estado atual e contagens em [VALIDATION](../VALIDATION.md). A limitação histórica de consulta NULL e a falta de enumeração completa da cadeia continuam válidas; não há aprovação de inferência nem sandbox.

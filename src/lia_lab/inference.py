@@ -10,7 +10,7 @@ from .authorization import consume_grant, finalize_grant
 from .checkpoints import verify_snapshot, checkpoint_capacity
 from .containment import policy, supervise, launch_command
 from .environment import doctor
-from .memory_resources import settings as memory_settings, assess, compare
+from .memory_resources import settings as memory_settings, assess, compare, loading_envelope
 from .experiments import ID
 from .inference_protocol import validate_suite, validate_worker_results
 from .io import LabError, atomic_json, digest, load, owned, roots, source_snapshot_hash, canonical, json_loads
@@ -55,6 +55,10 @@ def make_operation(snapshot, snapshot_manifest, suite_path, research_root, appro
         context=context, timeout=timeout, containment=containment, memory_policy=memory_policy,
         memory_margin_percent=memory_config['margin_percent'],
         memory_uncertainty_margin_percent=memory_config['uncertainty_margin_percent'])
+    containment_settings = policy(containment, timeout, device)
+    if os.name == 'nt':
+        from .windows_launcher import contract
+        containment_settings['windows_launcher'] = contract(loading_envelope(checkpoint_capacity(snapshot), dtype, manifest['total_bytes']))
     return {'schema_version': 1, 'action': 'local-inference', 'arguments': settings,
         'repository_root': subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(),
         'snapshot': settings['snapshot'], 'research_root': str(root), 'approved_root': str(approved),
@@ -67,7 +71,7 @@ def make_operation(snapshot, snapshot_manifest, suite_path, research_root, appro
                    'max_total_output_tokens': max_tokens*len(suite['cases'])*repeats,
                    'max_context_tokens': context, 'max_duration_seconds': timeout,
                    'max_external_cost': 0, 'cost_currency': 'USD', 'cost_scope': 'no-paid-services-not-an-energy-meter'},
-        'containment': policy(containment, timeout, device),
+        'containment': containment_settings,
         'memory_policy': memory_config,
         'disallowed_actions': ['download', 'training', 'publication', 'release']}
 
@@ -125,10 +129,10 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
     except BaseException:
         finalize_grant(approval_store, approval_id, operation)
         raise
+    launcher_report = None
     try:
         elements = checkpoint_capacity(snapshot)
-        resident = None if elements is None else elements * (4 if dtype == 'float32' else 2)
-        required = None if resident is None else int(resident * 1.5) + manifest['total_bytes'] + 1024**3
+        required = loading_envelope(elements, dtype, manifest['total_bytes'])
         record['estimated_host_ram_bytes'] = required
         observation = {k: v for k, v in environment['memory'].items() if k != 'assessment'}
         assessment = assess(observation, operation['memory_policy'], required)
@@ -164,7 +168,18 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
         with (run / 'worker.log').open('wb') as log:
             command = launch_command([sys.executable, '-m', 'lia_lab.inference_worker',
                 str(run / 'request.json'), str(run / 'results.json')], operation['containment'])
-            returncode = supervise(command, env, log, remaining)
+            options = {}
+            if 'windows_launcher' in operation['containment']:
+                launcher_report = dict(request_sha256=record['request_sha256'],
+                    operation_sha256=hashlib.sha256(canonical(operation).encode()).hexdigest())
+                options['windows'] = dict(config=operation['containment']['windows_launcher'],
+                    observation=observation, assessment=assessment, report=launcher_report)
+            returncode = supervise(command, env, log, remaining, **options)
+            if returncode == 0 and launcher_report is not None:
+                from .windows_launcher import validate_report
+                validate_report(launcher_report, operation['containment']['windows_launcher'],
+                    record['request_sha256'], hashlib.sha256(canonical(operation).encode()).hexdigest(),
+                    observation, assessment)
         if returncode != 0:
             record.update(status='failed', failure=f'worker exit {returncode}; inspect local worker.log')
         else:
@@ -182,6 +197,13 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
     except Exception as exc:
         record.update(status='failed', failure=f'{type(exc).__name__}: {exc}')
     finally:
+        if launcher_report is not None:
+            record['windows_launcher'] = launcher_report
+            try:
+                atomic_json(run / 'windows-launcher.json', launcher_report)
+                record['windows_launcher_report_sha256'] = digest(run / 'windows-launcher.json')
+            except OSError as exc:
+                record.update(status='failed', failure=f'cannot preserve Windows launcher report: {exc}')
         memory_file = run / 'memory-worker.json'
         if memory_file.is_file():
             try:
@@ -224,6 +246,12 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
                     record['containment'] = applied['report']
             except (ValueError, OSError, AttributeError):
                 record['containment_report_invalid'] = True
+        if launcher_report is not None and launcher_report.get('cleanup_complete') is False:
+            record.update(status='failed', failure='Windows process tree/handle cleanup not confirmed')
+        elif (launcher_report is not None and record['status'] == 'failed' and
+              launcher_report.get('resumed') is False and launcher_report.get('cleanup_complete') is True and
+              launcher_report.get('failure_stage') in {'associate', 'verify-association'}):
+            record.update(status='blocked', blockers=['Windows owned Job association blocked: ' + launcher_report['failure']])
         try:
             finalize_grant(approval_store, approval_id, operation)
         except LabError as exc:

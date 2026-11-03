@@ -161,7 +161,7 @@ def test_timeout_never_promotes(snapshot, tmp_path, monkeypatch):
     real = doctor(); real['ram']['available_bytes'] = 10**12
     real['dependencies'].update(torch='synthetic-version', transformers='synthetic-version')
     monkeypatch.setattr(inference, 'doctor', lambda _: synthetic_ram(real))
-    def timeout(command, env, log, duration):
+    def timeout(command, env, log, duration, **kwargs):
         assert env['HF_HUB_OFFLINE'] == '1'
         assert 0 < duration <= 1
         raise subprocess.TimeoutExpired('synthetic-unit-test', duration)

@@ -1,5 +1,5 @@
 """Synthetic producer stubs test only supervisor protocol/status transitions; NO inference."""
-from support_environment import synthetic_ram
+from support_environment import synthetic_ram, synthetic_launcher
 import copy
 import json
 import subprocess
@@ -40,7 +40,8 @@ def result_fixture(request,request_hash,n,completed=False):
 @pytest.mark.parametrize('mode',['completed','incomplete','failed-partial','timeout-partial','interrupted-partial','corrupt-list','corrupt-json','wrong-hash','empty','wrong-model','wrong-order'])
 def test_result_state_machine_is_structural_only(run_setup,monkeypatch,mode):
     args,path=run_setup
-    def producer(command,env,log,timeout):
+    def producer(command,env,log,timeout,**kwargs):
+        synthetic_launcher(kwargs.get('windows'))
         request_file=path/'request.json';r=load(request_file)
         claim_worker(r['authorization']['store'],r['authorization']['id'],r['authorization']['operation'])
         from lia_lab.inference_worker import memory_preflight

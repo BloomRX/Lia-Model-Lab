@@ -20,11 +20,12 @@ def policy(profile, timeout, device):
             'supervisor_netns_inode': os.stat('/proc/self/ns/net').st_ino if netns else None,
             'profile': profile, 'security_sandbox': False, 'network_policy': 'required-linux-IP-network-namespace' if netns else 'not-applied',
             'filesystem_policy': 'not-applied', 'gpu_memory_hard_limit': 'not-applied',
-            'descendant_cleanup': 'posix-process-group-not-escape-proof' if os.name == 'posix' else 'worker-only-no-job-object',
+            'descendant_cleanup': 'posix-process-group-not-escape-proof' if os.name == 'posix' else 'required-owned-windows-job',
             'limits': {'cpu_seconds': timeout * 4, 'address_space_bytes': 8 * 1024**3,
                        'file_bytes': 64 * 1024**2, 'open_files': 128, 'user_processes_threads': 128}
                        if profile != 'portable-process' else None,
-            'os_resource_limits': 'required-in-worker' if profile != 'portable-process' else 'not-applied-explicit-portable-profile'}
+            'os_resource_limits': ('required-in-supervisor-windows-job' if os.name == 'nt' else
+                ('required-in-worker' if profile != 'portable-process' else 'not-applied-explicit-portable-profile'))}
 
 
 def apply_limits(settings):
@@ -51,8 +52,11 @@ def apply_limits(settings):
             'nproc_caveat':'per-real-UID count, not PID namespace; privileged accounts may bypass enforcement'}
 
 
-def supervise(command, env, log, timeout):
-    """Kill the POSIX group on timeout/interruption; Windows only the direct child."""
+def supervise(command, env, log, timeout, *, windows=None):
+    """POSIX group controls unchanged; native Windows always uses an owned Job."""
+    if os.name == 'nt':
+        from .windows_launcher import run
+        return run(command, env, log, timeout, **(windows or {}))
     process = subprocess.Popen(command, env=env, stdout=log, stderr=log, start_new_session=os.name == 'posix')
     try:
         return process.wait(timeout=timeout)

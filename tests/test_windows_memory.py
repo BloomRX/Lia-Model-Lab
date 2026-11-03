@@ -215,7 +215,7 @@ def test_supervisor_records_worker_measurement_difference(snapshot, tmp_path, mo
     env['memory'] = supervisor
     env['dependencies'].update(torch='synthetic-only', transformers='synthetic-only')
     monkeypatch.setattr(inference, 'doctor', lambda _:env)
-    def blocked_worker(command, env, log, timeout):
+    def blocked_worker(command, env, log, timeout, **kwargs):
         request = load(command[-2])
         worker = copy.deepcopy(supervisor); worker['physical_available_bytes'] = 1
         data = dict(request_sha256=digest(command[-2]), observation=worker,

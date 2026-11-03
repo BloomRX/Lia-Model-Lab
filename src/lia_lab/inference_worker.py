@@ -7,7 +7,7 @@ import threading
 import time
 from .checkpoints import verify_snapshot, checkpoint_capacity
 from .environment import dependencies, rss
-from .memory_resources import observe, assess
+from .memory_resources import observe, assess, loading_envelope
 from .containment import apply_limits
 from .authorization import claim_worker
 from .io import source_snapshot_hash
@@ -78,8 +78,7 @@ def validate_worker_grant(request):
 
 def memory_preflight(request, output, manifest):
     elements = checkpoint_capacity(request['snapshot'])
-    resident = None if elements is None else elements * (4 if request['dtype'] == 'float32' else 2)
-    required = None if resident is None else int(resident * 1.5) + manifest['total_bytes'] + 1024**3
+    required = loading_envelope(elements, request['dtype'], manifest['total_bytes'])
     observation = observe()
     assessment = assess(observation, request['memory_policy'], required)
     atomic_json(Path(output).parent / 'memory-worker.json', {

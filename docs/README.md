@@ -31,6 +31,7 @@ Coleção consolidada em 2026-10-30. ADRs registram decisões; pesquisa distingu
 - [ADR-0002 — Inferência local](adr/0002-LOCAL-INFERENCE.md)
 - [ADR-0003 — Hardening e autorização](adr/0003-INFERENCE-HARDENING.md)
 - [ADR-0004 — Diagnóstico de memória Windows](adr/0004-WINDOWS-MEMORY.md)
+- [ADR-0005 — Launcher Windows controlado](adr/0005-WINDOWS-CONTROLLED-LAUNCHER.md)
 - [Fontes](SOURCES.md)
 - [Validação executada](VALIDATION.md)
 - [Ledger AIRI](evidence/airi-evidence.json)
