@@ -11,7 +11,9 @@ from .memory_resources import observe, assess, loading_envelope
 from .containment import apply_limits
 from .authorization import claim_worker
 from .io import source_snapshot_hash
-from .model_backends import select_backend, load_frontend, load_model, prepare_inputs, output_text, check_context, select_dtype, generation_options
+from .runtime_identity import fingerprint, locked_mismatches
+from .model_backends import architecture_contract
+from .model_backends import select_backend, load_frontend, load_model, prepare_inputs, output_text, check_context, select_dtype, generation_options, native_chat_template
 from .inference_protocol import check_output
 from .io import LabError, atomic_json, canonical, digest, load
 
@@ -67,6 +69,8 @@ def validate_worker_grant(request):
         request['snapshot_manifest_sha256'] != operation['snapshot_manifest_sha256'] or
         hashlib.sha256(canonical(request['suite']).encode()).hexdigest() != operation['suite_content_sha256'] or
         request['containment'] != operation['containment'] or
+        fingerprint() != operation.get('runtime_identity') or
+        architecture_contract(load(Path(request['snapshot'])/'config.json')) != operation.get('architecture_contract') or
         request.get('memory_policy') != operation.get('memory_policy') or
         request.get('memory_policy') != {'policy': args['memory_policy'],
             'margin_percent': args['memory_margin_percent'],
@@ -105,6 +109,13 @@ def execute(request, output):
     import transformers
     if transformers.__version__ != '5.22.1':
         raise LabError('reference API requires Transformers 5.22.1')
+    config = load(Path(request['snapshot'])/'config.json')
+    if config['model_type'] == 'qwen3_5':
+        mismatch=locked_mismatches(fingerprint())
+        if mismatch:raise LabError('; '.join(mismatch))
+        if (torch.__version__ != '2.14.0+cpu' or torch.version.cuda is not None or torch.version.hip is not None or
+            request['device'] != 'cpu' or request['dtype'] != 'float32'):
+            raise LabError('pinned Qwen3.5 pilot requires Torch 2.14.0+cpu, CPU float32')
     runtime_import_seconds = time.perf_counter() - import_started
     device, hardware = torch_device(torch, request['device'], elements * (4 if request['dtype'] == 'float32' else 2))
     dtype = select_dtype(torch, device, request['dtype'])
@@ -126,7 +137,7 @@ def execute(request, output):
         frontend = load_frontend(transformers, snapshot, spec)
         frontend_load_seconds = time.perf_counter() - frontend_started
         tokenizer = frontend.tokenizer if spec.multimodal else frontend
-        frontend.get_chat_template()  # fail safely if missing/ambiguous
+        native_chat_template(spec,frontend)  # fail safely if missing/ambiguous
         # Imports/frontend can change headroom: refresh immediately before weights too.
         memory_preflight(request, output, manifest)
         weights_started = time.perf_counter()
@@ -139,7 +150,10 @@ def execute(request, output):
         result = {'schema_version': 2, 'completed': False, 'containment': containment,
                   'request_sha256': request['_request_sha256'], 'evidence': 'real-local-checkpoint-inference',
                   'model_id': manifest['model_id'], 'revision': manifest['revision'],
-                  'default_template_sha256': hashlib.sha256(frontend.get_chat_template().encode()).hexdigest(),
+                  'loading_audit': model._lia_loading_audit,
+                  'runtime_identity': fingerprint(), 'torch_git_revision': torch.version.git_version,
+                  'frontend_class': type(frontend).__name__, 'tokenizer_class': type(tokenizer).__name__,
+                  'default_template_sha256': hashlib.sha256(native_chat_template(spec,frontend).encode()).hexdigest(),
                   'generation_config': model.generation_config.to_dict(),
                   'sft_readiness': {'peft_probe_executed': False, 'assistant_mask_verified': False,
                       'linear_modules_observed_not_approved_targets': {n: list(m.weight.shape) for n, m in model.named_modules() if isinstance(m, torch.nn.Linear)}},

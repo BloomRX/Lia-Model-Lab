@@ -1,5 +1,14 @@
 # Registry metadata checked 2026-10-30; NOT a tested ML lock. No installation by tests/CLI.
 status: lightweight-API-tested-without-Torch-model-runtime-NOT-TESTED
+qwen35_pinned_cpu_conformance:
+  lock: requirements-ml-windows-cpu.lock
+  torch: '2.14.0+cpu'
+  torchvision: '0.29.2+cpu'
+  transformers: '5.22.1'
+  original_weights_loaded: false
+  synthetic_loader_and_meta_and_original_frontend: AUTOMATED-PASS
+  real_inference: NOT-TESTED-resource-and-human-gates
+  report: docs/19-QWEN35-FIRST-PILOT.md
 python: '3.11'
 reference_versions:
   torch: '2.15.0'

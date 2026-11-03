@@ -1,5 +1,15 @@
 # Fontes, versões e evidências
 
+## Primeiro piloto Qwen3.5-0.8B — consulta 2026-11-02
+
+- [Card oficial na revisão imutável](https://huggingface.co/Qwen/Qwen3.5-0.8B/blob/2fc06364715b967f1860aea9cf38778875588b17/README.md), [LICENSE integral](https://huggingface.co/Qwen/Qwen3.5-0.8B/blob/2fc06364715b967f1860aea9cf38778875588b17/LICENSE) e [inventário público/API](https://huggingface.co/api/models/Qwen/Qwen3.5-0.8B/revision/2fc06364715b967f1860aea9cf38778875588b17?blobs=true). Tamanhos/blob IDs/LFS SHA-256 comparados com aquisição local. [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0): obrigações documentadas para revisão humana, sem parecer ou aprovação do agente.
+- [Transformers Qwen3.5](https://huggingface.co/docs/transformers/main/en/model_doc/qwen3_5), [tag v5.22.1](https://github.com/huggingface/transformers/tree/v5.22.1), [modeling no commit resolvido](https://github.com/huggingface/transformers/blob/446a570e62b04a89ea001604ada7366baac2ea67/src/transformers/models/qwen3_5/modeling_qwen3_5.py), [config](https://github.com/huggingface/transformers/blob/446a570e62b04a89ea001604ada7366baac2ea67/src/transformers/models/qwen3_5/configuration_qwen3_5.py) e [AutoModel](https://github.com/huggingface/transformers/blob/446a570e62b04a89ea001604ada7366baac2ea67/src/transformers/models/auto/modeling_auto.py): arquivos instalados comparados byte a byte; classe multimodal, config normalizado, alias tied e descarte oficial de MTP examinados. Esse descarte motivou armazenamento explícito, não implementação de MTP forward.
+- [ProcessorMixin](https://github.com/huggingface/transformers/blob/446a570e62b04a89ea001604ada7366baac2ea67/src/transformers/processing_utils.py): seleção de chat_template próprio/default, sem get_chat_template do tokenizer. API corrigida e exercitada com frontend original offline.
+- [PyTorch instalação oficial](https://pytorch.org/get-started/locally/) e [índice CPU](https://download.pytorch.org/whl/cpu/): wheels Windows x64 CPU Torch2.14.0/torchvision0.29.2 fixadas no lock com SHA-256. Não se infere suporte GPU da presença de pacotes ou placa.
+- [Matriz AMD Windows consultada](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityrad/windows/windows_compatibility.html): release documentada 7.2.1 não lista RX580; não é benchmark local nem prova sobre releases futuras. Nenhum pacote GPU instalado.
+
+Resultados e hashes: [relatório](19-QWEN35-FIRST-PILOT.md), [inventário](../configs/qwen35-acquisition.json), [evidência sanitizada](evidence/qwen35-first-pilot.json). Não houve execução do checkpoint original.
+
 **Missão 001 · consulta: 2026-10-30 · estado: proposta para revisão.**
 
 ## Método e alcance

@@ -11,10 +11,12 @@ def config(kind):
             'text_config':{'model_type':'qwen3_5_text'},'vision_config':{}}
 
 
-@pytest.mark.parametrize('kind,model,front,concrete',[('qwen3','AutoModelForCausalLM','AutoTokenizer','Qwen3ForCausalLM'),('qwen3_5','AutoModelForImageTextToText','AutoProcessor','Qwen3_5ForConditionalGeneration')])
+@pytest.mark.parametrize('kind,model,front,concrete',[('qwen3','AutoModelForCausalLM','AutoTokenizer','Qwen3ForCausalLM'),('qwen3_5','AutoModelForMultimodalLM','AutoProcessor','Qwen3_5ForConditionalGeneration')])
 def test_explicit_backend_and_from_pretrained(kind,model,front,concrete,monkeypatch):
     from lia_lab import checkpoints
     monkeypatch.setattr(checkpoints, "tensor_shapes", lambda _: {"weight": (1,)})
+    monkeypatch.setattr(checkpoints, 'checkpoint_capacity', lambda _:1)
+    monkeypatch.setattr('lia_lab.qwen35_auxiliary.restore', lambda *a:0)
     spec=select_backend(config(kind));calls=[]
     assert spec.model_auto==model and spec.frontend_auto==front
     def load_front(*a,**kw):
@@ -48,6 +50,7 @@ def test_unexpected_auto_registry_result():
 def test_native_template_and_explicit_no_truncation(kind):
     spec=select_backend(config(kind));calls=[]
     class Frontend:
+        chat_template='reviewed-native-template'
         def get_chat_template(self,**kw):return 'reviewed-native-template'
         def apply_chat_template(self,messages,**kwargs):
             calls.append(('template',messages,kwargs));return {'input_ids':'synthetic'} if spec.multimodal else 'rendered'

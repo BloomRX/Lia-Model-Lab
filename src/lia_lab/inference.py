@@ -11,6 +11,8 @@ from .checkpoints import verify_snapshot, checkpoint_capacity
 from .containment import policy, supervise, launch_command
 from .environment import doctor
 from .memory_resources import settings as memory_settings, assess, compare, loading_envelope
+from .runtime_identity import fingerprint, locked_mismatches
+from .model_backends import architecture_contract
 from .experiments import ID
 from .inference_protocol import validate_suite, validate_worker_results
 from .io import LabError, atomic_json, digest, load, owned, roots, source_snapshot_hash, canonical, json_loads
@@ -67,6 +69,8 @@ def make_operation(snapshot, snapshot_manifest, suite_path, research_root, appro
         'snapshot_manifest_sha256': manifest_hash, 'suite_sha256': hashlib.sha256(suite_bytes).hexdigest(),
         'suite_content_sha256': hashlib.sha256(canonical(suite).encode()).hexdigest(),
         'source_snapshot_sha256': source_snapshot_hash(), 'snapshot_total_bytes': manifest['total_bytes'],
+        'runtime_identity': fingerprint(),
+        'architecture_contract': architecture_contract(load(snapshot/'config.json')),
         'limits': {'max_output_tokens_per_request': max_tokens, 'max_requests': len(suite['cases'])*repeats,
                    'max_total_output_tokens': max_tokens*len(suite['cases'])*repeats,
                    'max_context_tokens': context, 'max_duration_seconds': timeout,
@@ -142,6 +146,8 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
         if required is None:
             blockers.append('architecture parameter capacity unknown; no stored-elements fallback')
         blockers.extend(assessment['blockers'])
+        if operation['architecture_contract']['model_type']=='qwen3_5':
+            blockers.extend(locked_mismatches(operation['runtime_identity']))
         if any(environment['dependencies'][n] is None for n in ('torch', 'transformers')):
             blockers.append('optional torch/transformers runtime is not installed')
         if blockers:

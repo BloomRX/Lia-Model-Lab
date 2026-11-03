@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-11-03T02:22:57.777957+00:00",
+  "status": "blocked-before-real-inference",
+  "result": "B",
+  "base_commit": "3ec4313ba57ec94a7f3d93ec4f7a0d533d5077cf",
+  "model": {
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "files": 12,
+    "snapshot_bytes": 1769978895,
+    "stored_elements": 873438784,
+    "serialized_tensors": 488,
+    "dtype_tensor_counts": {
+      "BF16": 452,
+      "F32": 36
+    },
+    "inventory": "configs/qwen35-acquisition.json",
+    "license_id": "Apache-2.0",
+    "license_review_ref": null,
+    "human_license_review_completed": false,
+    "license_sha256": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a",
+    "original_weights_loaded": false,
+    "seal_created": false
+  },
+  "runtime": {
+    "python": "3.11.0",
+    "device": "cpu",
+    "dtype": "float32",
+    "backend": "eager",
+    "packages": {
+      "torch": {
+        "version": "2.14.0+cpu",
+        "source_sha256": {
+          "torch/__init__.py": "2d89482562a491093a10c2dcf9a83eea070f02b69b65aa4ae1b95ad23bcdbcaf",
+          "torch/version.py": "d69ff7c9c96d68d70d975a5b9e5e1f599b007eff59b54adb68e3e099b3331468"
+        }
+      },
+      "torchvision": {
+        "version": "0.29.2+cpu",
+        "source_sha256": {}
+      },
+      "transformers": {
+        "version": "5.22.1",
+        "source_sha256": {
+          "transformers/models/qwen3_5/modeling_qwen3_5.py": "af05d0acfe79fff8aea1c75f93516a6a72bc80f6f901329a73e66a3866fe1e7c",
+          "transformers/models/qwen3_5/configuration_qwen3_5.py": "332ea31ed31cc81ddb72da28737e9868a55d295f9f1daa3e0ad0d57d56d4e657",
+          "transformers/models/auto/modeling_auto.py": "7e1d7f5da77efc95f11531ea2ed7270ffd4e19615c48ed44d9386229a8182988",
+          "transformers/processing_utils.py": "7abe9139989a915f8f23ca008eb27c13d87fbabe4fc66a9e8355ec8ee9cecdd0",
+          "transformers/models/qwen3_vl/processing_qwen3_vl.py": "02d50224d9dc9ce38690cfa6a0106be897f619444ebe3ff7ba38cbcdda9e3ef2"
+        }
+      },
+      "tokenizers": {
+        "version": "0.23.3",
+        "source_sha256": {}
+      },
+      "safetensors": {
+        "version": "0.8.0",
+        "source_sha256": {}
+      },
+      "numpy": {
+        "version": "2.3.4",
+        "source_sha256": {}
+      },
+      "pillow": {
+        "version": "12.0.0",
+        "source_sha256": {}
+      },
+      "huggingface-hub": {
+        "version": "2.4.0",
+        "source_sha256": {}
+      },
+      "accelerate": null
+    },
+    "ml_lock_sha256": "c08a5c22d80da04cf8e680c051dbeb0d829762d7cdfd4cd7a18d180900caa19c",
+    "lock_mismatches": [],
+    "transformers_git_commit": "446a570e62b04a89ea001604ada7366baac2ea67",
+    "upstream_source_byte_matches": [
+      "modeling_qwen3_5.py",
+      "configuration_qwen3_5.py",
+      "modeling_auto.py"
+    ],
+    "processor": "Qwen3VLProcessor",
+    "tokenizer": "Qwen3_5Tokenizer",
+    "concrete_class": "Qwen3_5ForConditionalGeneration",
+    "cuda": null,
+    "hip": null,
+    "mtp_generation_enabled": false
+  },
+  "memory": {
+    "observation": {
+      "platform": "windows",
+      "observed_at_unix": 1793672577.659221,
+      "physical_total_bytes": 17063882752,
+      "physical_available_bytes": 3086880768,
+      "system_commit_limit_bytes": 34243751936,
+      "system_commit_used_bytes": 24939880448,
+      "caller_commit_available_bytes": 9303871488,
+      "process_private_commit_bytes": 398704640,
+      "process_working_set_bytes": 39718912,
+      "sources": {
+        "physical_total_bytes": "GlobalMemoryStatusEx",
+        "physical_available_bytes": "GlobalMemoryStatusEx",
+        "caller_commit_available_bytes": "GlobalMemoryStatusEx",
+        "system_commit_limit_bytes": "GetPerformanceInfo.CommitLimit * PageSize",
+        "system_commit_used_bytes": "GetPerformanceInfo.CommitTotal * PageSize",
+        "process_private_commit_bytes": "GetProcessMemoryInfo.PrivateUsage",
+        "process_working_set_bytes": "GetProcessMemoryInfo.WorkingSetSize"
+      },
+      "errors": [],
+      "job": {
+        "in_any_job": true,
+        "job_chain_coverage": "immediate-only-chain-not-enumerated",
+        "query_mode": "implicit-null",
+        "limits_observed": true,
+        "process_memory_limit_bytes": null,
+        "job_memory_limit_bytes": null,
+        "current_usage_bytes": null,
+        "current_usage_source": null,
+        "membership_source": "IsProcessInJob",
+        "limits_source": "QueryInformationJobObject.JobObjectExtendedLimitInformation",
+        "limit_flags": 12288
+      }
+    },
+    "assessment": {
+      "policy": "best-effort",
+      "margin_percent": 10,
+      "uncertainty_margin_percent": 10,
+      "state": "blocked",
+      "allowed": false,
+      "required_bytes": 8084353423,
+      "estimated_available_bytes": 3086880768,
+      "usable_after_margin_bytes": 2469504614,
+      "effective_margin_percent": 20,
+      "dimensions": {
+        "physical_available_bytes": 3086880768,
+        "caller_commit_available_bytes": 9303871488,
+        "system_commit_headroom_bytes": 9303871488
+      },
+      "known_limit_upper_bounds": {},
+      "warnings": [
+        "job chain not enumerated; other applicable jobs may be hidden"
+      ],
+      "blockers": [
+        "host RAM/commit below memory loading envelope with margin"
+      ],
+      "reservation": false
+    },
+    "resident_float32_bytes": 3493755136,
+    "loading_envelope_bytes": 8084353423,
+    "proposed_job_commit_ceiling_bytes": 8084353423,
+    "applied_real_pilot_job_limit_bytes": null,
+    "real_pilot_peak_bytes": null
+  },
+  "conformance": {
+    "header_contract": "AUTOMATED-PASS",
+    "synthetic_loader": "AUTOMATED-PASS",
+    "meta_shapes": "AUTOMATED-PASS",
+    "native_processor_text_suite": "AUTOMATED-PASS",
+    "real_weights_runtime": "NOT-TESTED",
+    "reason": "physical memory insufficient; human license review and external grant absent"
+  },
+  "inference": {
+    "requests_completed": 0,
+    "responses": [],
+    "loading_seconds": null,
+    "generation_seconds": null,
+    "quality_pt_br": "NOT-TESTED",
+    "checks": "NOT-TESTED",
+    "real_grant_created": false,
+    "training_executed": false
+  },
+  "costs": {
+    "paid_external_usd": 0,
+    "snapshot_acquired_bytes": 1769978895,
+    "dependencies_downloaded_bytes": null,
+    "network_traffic_bytes": null
+  },
+  "next_gate": "sufficient resources, actual human license review, seal and exact plan, human external single-use grant"
+}

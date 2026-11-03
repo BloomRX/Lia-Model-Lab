@@ -121,8 +121,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 5506,
-      "sha256": "a269168bf5ec22436a5605a1d134d3e0affa2190a3d033ade1714fe865997153"
+      "bytes": 5813,
+      "sha256": "5eab1f90b56f4dd3b36671a7a4f168988a848d9978b209c8ddb6e76e2763e96e"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -140,9 +140,14 @@
       "sha256": "669ed47b09b334297fbd7f85107b15024a5ffb16bfb48f1c2b8b77e0ff3fc355"
     },
     {
+      "path": "configs/qwen35-acquisition.json",
+      "bytes": 5523,
+      "sha256": "86193d4156c51185b166295a104749aaac854d0a6be1ecc9703aebf767c2a3a9"
+    },
+    {
       "path": "configs/runtime-stack.proposal.yaml",
-      "bytes": 2572,
-      "sha256": "df04dee0f8cbbee40d9841b42b5ef4a2dd50e1626579dc6bf9cea95bcdce9ebb"
+      "bytes": 2912,
+      "sha256": "bf589fb00361b28939232a222b50f981822b924e8885103a38fcc42394f3f707"
     },
     {
       "path": "configs/sft-pilot.template.yaml",
@@ -196,8 +201,8 @@
     },
     {
       "path": "docs/08-HARDWARE-INFRASTRUCTURE.md",
-      "bytes": 8945,
-      "sha256": "8b0da5672ccb18291cb74f898650e0f38cdcf0152ee897ea9b4f02400f0076da"
+      "bytes": 9465,
+      "sha256": "6b5a6d7eaed4a87971be6ba20050fbd7e920e4fb21abcf4aa0a06c94f7a684bf"
     },
     {
       "path": "docs/09-BENCHMARK-STRATEGY.md",
@@ -236,8 +241,8 @@
     },
     {
       "path": "docs/16-REAL-INFERENCE-PILOT.md",
-      "bytes": 22461,
-      "sha256": "673c7958c5bdde28ddca26aea82d201d3737d49c7438f5f46b87beae166b90c3"
+      "bytes": 22994,
+      "sha256": "5870fb80e7c2a67103069b70fd50167a241a53c0a780fd0ecab71d06b94e56d6"
     },
     {
       "path": "docs/17-LFM3-RESEARCH.md",
@@ -250,24 +255,29 @@
       "sha256": "6ea8cf07695679873be59e203dd0cde7c0d16d428687622767b8b697db355df8"
     },
     {
+      "path": "docs/19-QWEN35-FIRST-PILOT.md",
+      "bytes": 10294,
+      "sha256": "d22afb56f957983b010cd23f061c39f410a48411fd42b99e46c84f90a637ea57"
+    },
+    {
       "path": "docs/BRAND-STANDARDS.md",
       "bytes": 8470,
       "sha256": "bd6e42e87c941591fd5200a2a2e9447d50a877633fe35621f75f724caa6962b4"
     },
     {
       "path": "docs/README.md",
-      "bytes": 2112,
-      "sha256": "41e92e242f5f94e2f0a1ac6cd8a71bfc93e2b04ba1d0cde18cdd4ff4aa83531e"
+      "bytes": 2249,
+      "sha256": "925c69ced04dfe24e71a3ab2cf9faf6a962d2eb2103edb5cb42aef6918c27dcf"
     },
     {
       "path": "docs/SOURCES.md",
-      "bytes": 26376,
-      "sha256": "c87f0a4665f8f79017f14b8ae66a317fe399c450fed8790e460586a1059e7ca2"
+      "bytes": 28983,
+      "sha256": "46185a3e543010642bde084287d75f7d31da64b14cbe1bf37ccbdba9cbfa6d6a"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 23522,
-      "sha256": "ef7190a3693ba64f7f76e2206a52423a6eace64f5fe038fc6ccbe3e638ce642a"
+      "bytes": 25990,
+      "sha256": "0a96605342eaaa2d41318031e40fab536e8e9ad8cc3310afff6c90201244a950"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -295,6 +305,11 @@
       "sha256": "13335870b6710c3e36f51ba047fac1e5bfe3dffffc99fb7163a36ff995cd9cd4"
     },
     {
+      "path": "docs/adr/0006-QWEN35-PINNED-CPU-PILOT.md",
+      "bytes": 4372,
+      "sha256": "86fddb4f7b44d67029fba6da27eb68489db2b779c5e45b3e777eef07f02a4702"
+    },
+    {
       "path": "docs/evidence/airi-evidence.json",
       "bytes": 27129,
       "sha256": "bcff59b8cf8aa3e508ccdb24d42e7044b13f8a0378fdab0ea71a9636ade6d9ce"
@@ -320,6 +335,11 @@
       "sha256": "ae5331da2193572fa01ec979e488cd2918d2506e2781e7f2b7abe1b3d537b80b"
     },
     {
+      "path": "docs/evidence/qwen35-first-pilot.json",
+      "bytes": 6461,
+      "sha256": "2ef37784b3a99b88fe7f6da33e39c807d15547be6d28e9c39ff6ea054ab38369"
+    },
+    {
       "path": "docs/evidence/windows-launcher-validation.json",
       "bytes": 4406,
       "sha256": "643952816fb86955c47dab47213741e12eec12400230e867c3ff8f4d297545c5"
@@ -340,9 +360,19 @@
       "sha256": "3e44ec76fed545cc77ce2588dbf7d2be1859ea7d61bb55409801f88932b0ad2d"
     },
     {
+      "path": "requirements-ml-windows-cpu.lock",
+      "bytes": 1338,
+      "sha256": "c08a5c22d80da04cf8e680c051dbeb0d829762d7cdfd4cd7a18d180900caa19c"
+    },
+    {
       "path": "requirements.lock",
       "bytes": 331,
       "sha256": "1e1493bf563d8a81aecbc9d59e4429112cc6f0c3294f1d23fd5e661a341cae78"
+    },
+    {
+      "path": "scripts/acquire_qwen35.py",
+      "bytes": 6691,
+      "sha256": "04b9cabd906f482bd402c3a3e68934006f28c571e76b6210a335e5ec78c70370"
     },
     {
       "path": "scripts/check_whitespace.py",
@@ -351,8 +381,8 @@
     },
     {
       "path": "scripts/verify_repository.py",
-      "bytes": 7409,
-      "sha256": "36a6f67b7f3300331fd263637ee2e2b0ffb44fdf7aadfb4920e1019a81a7053c"
+      "bytes": 7445,
+      "sha256": "94977f06900095fc238ea4632ed4a4593c2be543e212aa084dae10bcbb5fe325"
     },
     {
       "path": "src/lia_lab/__init__.py",
@@ -371,8 +401,8 @@
     },
     {
       "path": "src/lia_lab/checkpoints.py",
-      "bytes": 7508,
-      "sha256": "f78c000e801c77f3d5510627f9f921f5ed55d3cc9bb698eb035dca6dc51b2427"
+      "bytes": 9297,
+      "sha256": "61f58b4786fe01b5fdaa7bace94fe2dee3985512616421860bbbf552d544f988"
     },
     {
       "path": "src/lia_lab/cli.py",
@@ -406,8 +436,8 @@
     },
     {
       "path": "src/lia_lab/inference.py",
-      "bytes": 17427,
-      "sha256": "b381bcca0af2976bb256e318f7bcaead34c430faefffc54ed3ce7a76c0cbc0e0"
+      "bytes": 17817,
+      "sha256": "6e6e3cf060131b3b66965e51a965e0282fd77feb9c10d10ad5f8c7de90316bad"
     },
     {
       "path": "src/lia_lab/inference_protocol.py",
@@ -416,8 +446,8 @@
     },
     {
       "path": "src/lia_lab/inference_worker.py",
-      "bytes": 11820,
-      "sha256": "737a51dbc899bf39f07a9601d32d1632428ff4d0e29f7024fb3f9df3407f07f2"
+      "bytes": 12907,
+      "sha256": "cc31bf93fc0a1e09c9bc804313cc0407b3b53082e603f1411357206cd6725a97"
     },
     {
       "path": "src/lia_lab/io.py",
@@ -431,8 +461,23 @@
     },
     {
       "path": "src/lia_lab/model_backends.py",
-      "bytes": 9340,
-      "sha256": "b0468db840e20d3e2250c2d49545d8f9c523d74c229265647a2c240b74d4960f"
+      "bytes": 11627,
+      "sha256": "72ed92f3b41291d1d7bb3314786a1db063cb6f2465e349c0cc0ba384ab646e4b"
+    },
+    {
+      "path": "src/lia_lab/qwen35_auxiliary.py",
+      "bytes": 1969,
+      "sha256": "a14be595475e311ded276c5a3da4a05dcbcc83f76ac2f095580a87a330abb10b"
+    },
+    {
+      "path": "src/lia_lab/qwen35_contract.py",
+      "bytes": 4131,
+      "sha256": "72aa447a8f96fad3bcbe848ff6d4e33483c28ccc6db7d34bf17079490d61924f"
+    },
+    {
+      "path": "src/lia_lab/runtime_identity.py",
+      "bytes": 2736,
+      "sha256": "03b46d7d119dbb29118f033f20bc426f8b872ca3044f14789cb7a73408d29ee3"
     },
     {
       "path": "src/lia_lab/schemas/example.schema.json",
@@ -535,14 +580,19 @@
       "sha256": "59d37ab9a8c3a6e5585c6b11120c19c0634fb4925feb5054b94674d35190bff6"
     },
     {
+      "path": "tests/support_qwen35.py",
+      "bytes": 4316,
+      "sha256": "d3d0dc2839dc3ecaca2f4933096da1019ecf4984b78a9a4f916508cfb2373fbd"
+    },
+    {
       "path": "tests/test_authorization.py",
-      "bytes": 7204,
-      "sha256": "646023b868b35413b09f600917342c026a3e9d5d6eab92fd4f0c016e8d6c2553"
+      "bytes": 7247,
+      "sha256": "f2ef391225f3cdea3353a08afdf9667b0d9914903e4404903b99d50db9986d92"
     },
     {
       "path": "tests/test_backend_contracts.py",
-      "bytes": 6323,
-      "sha256": "2ee9f5e180fbb5839ba811e98dae2fe9490e220c0041febd9cfa9e55ed8b8532"
+      "bytes": 6514,
+      "sha256": "4984d7a7099055bc61a590a09349f4a0c4643479ab709fcbc2591dd529b8faaa"
     },
     {
       "path": "tests/test_containment.py",
@@ -563,6 +613,21 @@
       "path": "tests/test_inference.py",
       "bytes": 14390,
       "sha256": "03bbbc4c45bc5c9c62f413e892598d258dafd5843b6317c4d216f6c8c4503c69"
+    },
+    {
+      "path": "tests/test_qwen35_acquisition.py",
+      "bytes": 3172,
+      "sha256": "803c8bb34d56879c8fa247998a4f48710b6b4a31877484c7fcc2a67f2156c080"
+    },
+    {
+      "path": "tests/test_qwen35_contract.py",
+      "bytes": 5492,
+      "sha256": "fb34f0df3abc7c02685a66aae85ce4d494842d4a0e7b9ffa5b3a2d272fda021c"
+    },
+    {
+      "path": "tests/test_qwen35_ml_runtime.py",
+      "bytes": 4646,
+      "sha256": "6465ad6d6086b8040845f221b7bf10fe15d7db3e727282a5541dac970dfdcc30"
     },
     {
       "path": "tests/test_repository.py",
@@ -596,8 +661,8 @@
     },
     {
       "path": "tests/test_transformers_api.py",
-      "bytes": 5009,
-      "sha256": "71a5d552f7c2f92fc2e6edf6ba9741caf277cfd9d72bd23e261d38b8181f3a8c"
+      "bytes": 5193,
+      "sha256": "f048a8767d1736856119b7bfc74ddb0ee74096ea300537e76424c44de4acc9ad"
     },
     {
       "path": "tests/test_windows_launcher.py",
@@ -606,8 +671,8 @@
     },
     {
       "path": "tests/test_windows_launcher_native.py",
-      "bytes": 10026,
-      "sha256": "4511b65bd071a77ebe98497df5f55afca11c6a4e5af1243110bfb50552b6d029"
+      "bytes": 10636,
+      "sha256": "2f14b09dfbc73e663eb07e78a33dd856d8afcc44dcaeb397cea436efd7ca30ed"
     },
     {
       "path": "tests/test_windows_memory.py",

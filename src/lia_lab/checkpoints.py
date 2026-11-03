@@ -137,14 +137,43 @@ def tensor_shapes(directory):
 def checkpoint_capacity(directory):
     """Config-derived verified parameter count, or None: never trust file count alone.
 
-    Only the explicit dense Qwen3 contract is implemented. This is parameter/load
+    Explicit dense Qwen3 and fixed-revision Qwen3.5 contracts only. This is parameter/load
     sizing, not a universal KV-cache/activation bound or real-runtime validation.
     """
     from .model_backends import qwen3_shapes
+    from .qwen35_contract import shapes as qwen35_shapes, dtype_for
     import math
-    expected = qwen3_shapes(load(Path(directory) / 'config.json'))
+    config = load(Path(directory) / 'config.json')
+    multimodal = config.get('model_type') == 'qwen3_5' if isinstance(config,dict) else False
+    expected = qwen35_shapes(config) if multimodal else qwen3_shapes(config)
     if expected is None:
         return None
     if tensor_shapes(directory) != expected:
         raise LabError('checkpoint differs from explicit architecture parameter names/shapes')
+    if multimodal:
+        inventory = tensor_inventory(directory)
+        if any(item['dtype'] != dtype_for(name) for name,item in inventory.items()):
+            raise LabError('Qwen3.5 checkpoint dtype differs from explicit architecture contract')
+        index = load(Path(directory)/'model.safetensors.index.json')
+        if index.get('weight_map') != {k:v['shard'] for k,v in inventory.items()}:
+            raise LabError('Qwen3.5 shard index differs from tensor inventory')
+        expected_bytes = sum(math.prod(item['shape'])*(4 if item['dtype']=='F32' else 2) for item in inventory.values())
+        if index.get('metadata',{}).get('total_size') != expected_bytes:
+            raise LabError('Qwen3.5 shard index byte size mismatch')
     return sum(math.prod(shape) for shape in expected.values())
+
+
+def tensor_inventory(directory):
+    """Headers only: dtype, shape and shard; never materialize pretrained weights."""
+    root=Path(directory); result={}
+    try:
+        for path in sorted(root.rglob('*.safetensors')):
+            if path.is_symlink(): raise LabError('tensor shard symlink forbidden')
+            with safe_open(path,framework='numpy') as handle:
+                for name in handle.keys():
+                    if name in result: raise LabError('duplicate checkpoint parameter')
+                    tensor=handle.get_slice(name)
+                    result[name]=dict(shape=tuple(tensor.get_shape()),dtype=tensor.get_dtype(),shard=path.relative_to(root).as_posix())
+    except Exception as exc:
+        raise LabError('cannot establish checkpoint tensor inventory') from exc
+    return result

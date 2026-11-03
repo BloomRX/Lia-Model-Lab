@@ -8,6 +8,7 @@ transformers=pytest.importorskip('transformers',reason='lightweight HF API job u
 from tokenizers import Tokenizer,models,pre_tokenizers
 from transformers import PreTrainedTokenizerFast,AutoConfig
 from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES,MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES
+from transformers.models.auto.modeling_auto import MODEL_FOR_MULTIMODAL_LM_MAPPING_NAMES
 from transformers.models.auto.processing_auto import PROCESSOR_MAPPING_NAMES
 from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING_NAMES
 from lia_lab.training_prep import render_sft_example
@@ -31,6 +32,7 @@ def test_real_version_no_torch_and_auto_registries():
     assert AutoConfig.for_model('qwen3_5').text_config.model_type=='qwen3_5_text'
     assert AutoConfig.for_model('qwen3').model_type=='qwen3'
     assert MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES['qwen3_5']=='Qwen3_5ForConditionalGeneration'
+    assert MODEL_FOR_MULTIMODAL_LM_MAPPING_NAMES['qwen3_5']=='Qwen3_5ForConditionalGeneration'
     assert MODEL_FOR_CAUSAL_LM_MAPPING_NAMES['qwen3']=='Qwen3ForCausalLM'
     assert PROCESSOR_MAPPING_NAMES['qwen3_5']=='Qwen3VLProcessor'
     assert TOKENIZER_MAPPING_NAMES['qwen3']=='Qwen2Tokenizer'

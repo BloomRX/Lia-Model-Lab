@@ -14,7 +14,7 @@ class Backend:
 
 
 BACKENDS = {
-    'qwen3_5': Backend('qwen3_5', 'Qwen3_5ForConditionalGeneration', 'AutoModelForImageTextToText', 'AutoProcessor', 'Qwen3VLProcessor', True),
+    'qwen3_5': Backend('qwen3_5', 'Qwen3_5ForConditionalGeneration', 'AutoModelForMultimodalLM', 'AutoProcessor', 'Qwen3VLProcessor', True),
     'qwen3': Backend('qwen3', 'Qwen3ForCausalLM', 'AutoModelForCausalLM', 'AutoTokenizer', 'Qwen2Tokenizer', False),
 }
 
@@ -41,11 +41,35 @@ def load_frontend(transformers, snapshot, spec):
     return frontend
 
 
+def architecture_contract(config):
+    import hashlib
+    from .io import canonical
+    spec=select_backend(config)
+    return dict(model_type=spec.model_type,concrete_class=spec.architecture,model_auto=spec.model_auto,
+        frontend_auto=spec.frontend_auto,frontend_class=spec.frontend_class,
+        canonical_config_sha256=hashlib.sha256(canonical(config).encode()).hexdigest(),
+        tensor_contract='qwen35-fixed-0.8b-v1' if spec.multimodal else 'qwen3-dense-v1',
+        auxiliary_policy='verified-frozen-mtp-storage-no-mtp-generation-v1' if spec.multimodal else 'none')
+
+
+def native_chat_template(spec, frontend, tools=None):
+    if spec.multimodal:
+        # ProcessorMixin.apply_chat_template selects its own chat_template/default;
+        # it has no tokenizer-style get_chat_template in Transformers 5.22.1.
+        template=getattr(frontend,'chat_template',None)
+        if isinstance(template,dict):template=template.get('default')
+    else:
+        template=frontend.get_chat_template(tools=tools)
+    if not isinstance(template,str) or not template.strip():
+        raise LabError('native frontend chat template missing/ambiguous')
+    return template
+
+
 def qwen3_shapes(config):
     """Narrow explicit dense-Qwen3 layout; missing/other variants -> unknown.
 
     No default dimensions inferred from a library that might change. Qwen3.5
-    sizing is NOT implemented: its preflight must remain blocked, not file-sized.
+    uses its separate fixed-configuration contract, never file-sized fallback.
     """
     if not isinstance(config, dict) or config.get('model_type') != 'qwen3' or config.get('architectures') != ['Qwen3ForCausalLM']:
         return None
@@ -76,6 +100,10 @@ def qwen3_shapes(config):
 
 
 def load_model(transformers, snapshot, spec, dtype):
+    if spec.model_type == 'qwen3_5':
+        from .checkpoints import checkpoint_capacity
+        if checkpoint_capacity(snapshot) is None:
+            raise LabError('Qwen3.5 configuration is outside the implemented profile')
     loaded = getattr(transformers, spec.model_auto).from_pretrained(snapshot, dtype=dtype,
         local_files_only=True, trust_remote_code=False, use_safetensors=True,
         attn_implementation='eager', use_kernels=False, output_loading_info=True)
@@ -84,15 +112,15 @@ def load_model(transformers, snapshot, spec, dtype):
     model, report = loaded
     if type(model).__name__ != spec.architecture or not isinstance(report, dict):
         raise LabError('unexpected concrete architecture or missing loading report')
-    # No blanket ignored keys. Only a proven, canonical Qwen3 tied output alias
+    # No blanket ignored keys. Only the proven, canonical tied output alias
     # may be absent from serialization/report; no naming conversions are allowed.
     from .checkpoints import tensor_shapes
     shapes = tensor_shapes(snapshot)
     state = model.state_dict(keep_vars=True)
-    tied = (spec.model_type == 'qwen3' and getattr(model.config, 'tie_word_embeddings', False) is True and
-            'model.embed_tokens.weight' in shapes and 'lm_head.weight' not in shapes and
-            'model.embed_tokens.weight' in state and 'lm_head.weight' in state and
-            state['lm_head.weight'] is state['model.embed_tokens.weight'])
+    embedding = 'model.language_model.embed_tokens.weight' if spec.model_type == 'qwen3_5' else 'model.embed_tokens.weight'
+    tied = (spec.model_type in {'qwen3','qwen3_5'} and getattr(model.config, 'tie_word_embeddings', False) is True and
+            embedding in shapes and 'lm_head.weight' not in shapes and embedding in state and 'lm_head.weight' in state and
+            state['lm_head.weight'] is state[embedding])
     allowed = {'lm_head.weight'} if tied else set()
     for key in ('missing_keys', 'unexpected_keys', 'mismatched_keys', 'error_msgs'):
         types = (list, tuple) if key == 'error_msgs' else (list, tuple, set)
@@ -110,8 +138,19 @@ def load_model(transformers, snapshot, spec, dtype):
            {'missing_keys', 'unexpected_keys', 'mismatched_keys', 'error_msgs'}):
         raise LabError('unreviewed loading report diagnostics')
     actual = {name: tuple(tensor.shape) for name, tensor in state.items() if name not in allowed}
+    auxiliary_count = 0
+    if spec.model_type == 'qwen3_5':
+        core = {k:v for k,v in shapes.items() if not k.startswith('mtp.')}
+        if actual != core:
+            raise LabError('materialized Qwen3.5 core does not match checkpoint parameter names/shapes')
+        from .qwen35_auxiliary import restore
+        auxiliary_count = restore(model, snapshot, shapes, dtype)
+        actual = {name: tuple(tensor.shape) for name,tensor in model.state_dict(keep_vars=True).items() if name not in allowed}
     if actual != shapes:
         raise LabError('materialized architecture does not match checkpoint parameter names/shapes')
+    model._lia_loading_audit = dict(concrete_class=type(model).__name__, serialized_tensors=len(shapes),
+        tied_aliases=sorted(allowed), auxiliary_mtp_tensors_preserved=auxiliary_count, mtp_generation_enabled=False,
+        state_shapes_match=True, native_loading_report={k:list(v) for k,v in report.items()})
     return model
 
 
@@ -122,7 +161,7 @@ def prepare_inputs(spec, frontend, case):
     if spec.multimodal:
         for message in messages:
             message['content'] = [{'type': 'text', 'text': message['content']}]
-    template = frontend.get_chat_template(tools=case.get('tools'))
+    template = native_chat_template(spec,frontend,case.get('tools'))
     kwargs = dict(tools=case.get('tools'), chat_template=template, add_generation_prompt=True,
                   enable_thinking=False)
     if spec.multimodal:

@@ -8,7 +8,7 @@ Pesquisa e skills integradas em uma única documentação oficial; marca e gover
 
 **Hardening v0.4:** autorização operacional externa/temporária/uso único, classes Qwen explícitas, processor VLM, métricas v2 e máscaras validadas por turno. API real TF5.22.1 executada apenas com tokenizer original de teste e sem Torch. Perfis Linux de recursos/namespace não são sandbox completo. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 integrada em `25ab213` em 2026-11-02. Diagnóstico Windows por políticas implementado e testado sem pesos; [ADR-0004](docs/adr/0004-WINDOWS-MEMORY.md).
 
-**Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
+**Ainda não existe modelo adaptado Lia validado.** O checkpoint oficial Qwen3.5-0.8B foi adquirido e verificado fora do Git; stack CPU separada, frontend original, configuração meta e loader com pesos sintéticos foram validados. O piloto real permanece bloqueado por recursos e gates humanos; [relatório e comandos](docs/19-QWEN35-FIRST-PILOT.md), [ADR-0006](docs/adr/0006-QWEN35-PINNED-CPU-PILOT.md). Não houve treino, inferência com pesos originais, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
 **Launcher Windows, etapa 2:** criação suspensa, associação a Job próprio antes da retomada e supervisão de toda a árvore implementadas e exercitadas em Windows x64/Python 3.11. Limites e recibos vinculados ao plano; [ADR-0005](docs/adr/0005-WINDOWS-CONTROLLED-LAUNCHER.md) e [validação](docs/VALIDATION.md). Job Objects não isolam arquivos/rede/identidade e não substituem grant humano.
 
@@ -26,7 +26,7 @@ python -m venv .venv
 .venv/bin/lia-lab doctor
 ```
 
-Windows: usar executáveis em `.venv\Scripts\`; diagnóstico e testes offline executados em Windows x64/Python 3.11, com limites em [VALIDATION](docs/VALIDATION.md). [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Dependências pequenas de ferramentas foram instaladas para validar software; não uma stack de ML com modelos.
+Windows: usar executáveis em `.venv\Scripts\`; diagnóstico e testes offline executados em Windows x64/Python 3.11, com limites em [VALIDATION](docs/VALIDATION.md). [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Stack ML CPU opcional e externa usa lock próprio; não integra a instalação leve acima.
 
 ## Documentação oficial
 
