@@ -51,7 +51,7 @@ def test_absent_invalid_and_forged_string(operation,tmp_path):
     with pytest.raises(LabError,match='missing'):consume_grant(store,'arbitrary-reference',operation)
 
 
-def test_store_outside_artifacts_and_permissions(operation,tmp_path):
+def test_store_outside_artifacts_and_permissions(operation,tmp_path, require_symlink):
     for base in [operation['snapshot'],operation['research_root'],operation['approved_root'],Path.cwd()]:
         with pytest.raises(LabError,match='outside'):check_store(Path(base)/'grants.db',operation,False)
     store,grant=fixture_grant(tmp_path/'operator/grants.db',operation)

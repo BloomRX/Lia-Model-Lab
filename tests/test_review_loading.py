@@ -1,4 +1,5 @@
 """R2 doubles only: no Torch and no proof of real checkpoint compatibility."""
+from support_environment import synthetic_ram
 from copy import deepcopy
 from types import SimpleNamespace
 import math
@@ -109,7 +110,7 @@ def test_r2_unknown_capacity_blocks_preflight(snapshot,tmp_path,monkeypatch):
     seal_snapshot(*snapshot,'fictional/fixture','a'*40,'Apache-2.0','LICENSE','FIXTURE-ONLY')
     env=inference.doctor();env['ram']['available_bytes']=10**12
     env['dependencies'].update(torch='stub-only',transformers='stub-only')
-    monkeypatch.setattr(inference,'doctor',lambda _:env)
+    monkeypatch.setattr(inference,'doctor',lambda _:synthetic_ram(env))
     monkeypatch.setattr(inference,'supervise',lambda *a:pytest.fail('unknown sizing launched worker'))
     result=run_fixture(snapshot,tmp_path)
     assert result['status']=='blocked' and result['estimated_host_ram_bytes'] is None

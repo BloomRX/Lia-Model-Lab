@@ -7,6 +7,7 @@ import threading
 import time
 from .checkpoints import verify_snapshot, checkpoint_capacity
 from .environment import dependencies, rss
+from .memory_resources import observe, assess
 from .containment import apply_limits
 from .authorization import claim_worker
 from .io import source_snapshot_hash
@@ -66,9 +67,28 @@ def validate_worker_grant(request):
         request['snapshot_manifest_sha256'] != operation['snapshot_manifest_sha256'] or
         hashlib.sha256(canonical(request['suite']).encode()).hexdigest() != operation['suite_content_sha256'] or
         request['containment'] != operation['containment'] or
+        request.get('memory_policy') != operation.get('memory_policy') or
+        request.get('memory_policy') != {'policy': args['memory_policy'],
+            'margin_percent': args['memory_margin_percent'],
+            'uncertainty_margin_percent': args['memory_uncertainty_margin_percent']} or
         source_snapshot_hash() != operation['source_snapshot_sha256']):
         raise LabError('worker binding mismatch')
     claim_worker(auth['store'], auth['id'], operation)
+
+
+def memory_preflight(request, output, manifest):
+    elements = checkpoint_capacity(request['snapshot'])
+    resident = None if elements is None else elements * (4 if request['dtype'] == 'float32' else 2)
+    required = None if resident is None else int(resident * 1.5) + manifest['total_bytes'] + 1024**3
+    observation = observe()
+    assessment = assess(observation, request['memory_policy'], required)
+    atomic_json(Path(output).parent / 'memory-worker.json', {
+        'request_sha256': request.get('_request_sha256'), 'observation': observation, 'assessment': assessment})
+    if elements is None:
+        raise LabError('architecture parameter capacity unknown')
+    if not assessment['allowed']:
+        raise LabError('worker memory preflight blocked: ' + '; '.join(assessment['blockers']))
+    return elements
 
 
 def execute(request, output):
@@ -80,15 +100,13 @@ def execute(request, output):
     if digest(request['snapshot_manifest']) != request['snapshot_manifest_sha256']:
         raise LabError('authorized manifest changed')
     manifest = verify_snapshot(request['snapshot'], request['snapshot_manifest'])
+    elements = memory_preflight(request, output, manifest)
     import_started = time.perf_counter()
     import torch
     import transformers
     if transformers.__version__ != '5.22.1':
         raise LabError('reference API requires Transformers 5.22.1')
     runtime_import_seconds = time.perf_counter() - import_started
-    elements = checkpoint_capacity(request['snapshot'])
-    if elements is None:
-        raise LabError('architecture parameter capacity unknown')
     device, hardware = torch_device(torch, request['device'], elements * (4 if request['dtype'] == 'float32' else 2))
     dtype = select_dtype(torch, device, request['dtype'])
     torch.manual_seed(request['seed'])
@@ -110,6 +128,8 @@ def execute(request, output):
         frontend_load_seconds = time.perf_counter() - frontend_started
         tokenizer = frontend.tokenizer if spec.multimodal else frontend
         frontend.get_chat_template()  # fail safely if missing/ambiguous
+        # Imports/frontend can change headroom: refresh immediately before weights too.
+        memory_preflight(request, output, manifest)
         weights_started = time.perf_counter()
         model = load_model(transformers, snapshot, spec, dtype)
         model.to(device).eval()

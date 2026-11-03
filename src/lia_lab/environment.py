@@ -99,6 +99,9 @@ def memory(proc_root='/proc'):
 
 
 def rss():
+    if platform.system() == 'Windows':
+        from .windows_memory import collect
+        return collect()['process_working_set_bytes']
     try:
         return next(int(line.split()[1]) * 1024 for line in
                     Path('/proc/self/status').read_text().splitlines() if line.startswith('VmRSS:'))
@@ -107,11 +110,18 @@ def rss():
 
 
 def doctor(storage='.'):
+    from .memory_resources import observe, assess
+    ram = memory() if platform.system() != 'Windows' else None
+    observation = observe(ram)
+    observation['assessment'] = assess(observation)
+    if ram is None:
+        ram = {'total_bytes': observation['physical_total_bytes'],
+               'available_bytes': observation['assessment']['estimated_available_bytes']}
     disk = shutil.disk_usage(storage)
     return {'schema_version': 1, 'evidence': 'observed-environment-not-inference',
             'python': platform.python_version(), 'os': platform.system(), 'machine': platform.machine(),
-            'cpu_count': os.cpu_count(), 'ram': memory(),
-            'ram_contract': 'Linux cgroup-v2 full visible hierarchy snapshot; other/no/hidden layouts unknown, not host fallback', 'disk_free_bytes': disk.free,
+            'cpu_count': os.cpu_count(), 'ram': ram, 'memory': observation,
+            'ram_contract': 'Windows multidimensional estimate; Linux full visible cgroup-v2 hierarchy; snapshot, not reservation', 'disk_free_bytes': disk.free,
             'device_nodes': {p: Path(p).exists() for p in ('/dev/nvidia0', '/dev/kfd', '/dev/dri')},
             'dependencies': dependencies(), 'gpu_runtime_verified': False,
             'recommendations': ['No automatic CUDA selection: choose cpu/cuda/rocm/mps explicitly.',

@@ -1,4 +1,5 @@
 """Operator-confirmed, single-use local grants. NOT identity authentication or a sandbox."""
+from contextlib import closing
 import os
 from pathlib import Path
 import secrets
@@ -57,7 +58,7 @@ def confirm_plan(plan_path, store, ttl=900):
     grant_id = secrets.token_hex(16)
     now = time.time()
     try:
-        with sqlite3.connect(store) as db:
+        with closing(sqlite3.connect(store)) as db, db:
             db.execute(SCHEMA)
             db.execute('INSERT INTO grants VALUES (?, ?, ?, ?, NULL, NULL, NULL)', (grant_id, canonical(operation), now, now + ttl))
     except sqlite3.Error as exc:
@@ -70,7 +71,7 @@ def consume_grant(store, grant_id, operation):
     """Atomic claim before model execution. Failure/crash burns grant; never refunds it."""
     path = check_store(store, operation)
     try:
-        with sqlite3.connect(path.as_uri() + '?mode=rw', uri=True, timeout=5) as db:
+        with closing(sqlite3.connect(path.as_uri() + '?mode=rw', uri=True, timeout=5)) as db, db:
             db.execute('BEGIN IMMEDIATE')
             row = db.execute('SELECT operation, not_before, expires, consumed FROM grants WHERE id=?', (grant_id,)).fetchone()
             now = time.time()
@@ -93,7 +94,7 @@ def claim_worker(store, grant_id, operation):
     """Private worker still checks the external grant; env flags are NEVER authorization."""
     path = check_store(store, operation)
     try:
-        with sqlite3.connect(path.as_uri() + '?mode=rw', uri=True, timeout=5) as db:
+        with closing(sqlite3.connect(path.as_uri() + '?mode=rw', uri=True, timeout=5)) as db, db:
             db.execute('BEGIN IMMEDIATE')
             row = db.execute('SELECT operation, not_before, expires, consumed, worker_started, finished FROM grants WHERE id=?', (grant_id,)).fetchone()
             now = time.time()
@@ -110,7 +111,7 @@ def claim_worker(store, grant_id, operation):
 def finalize_grant(store, grant_id, operation):
     path = check_store(store, operation)
     try:
-        with sqlite3.connect(path.as_uri() + '?mode=rw', uri=True) as db:
+        with closing(sqlite3.connect(path.as_uri() + '?mode=rw', uri=True)) as db, db:
             db.execute('BEGIN IMMEDIATE')
             row = db.execute('SELECT operation, consumed, finished FROM grants WHERE id=?', (grant_id,)).fetchone()
             if row is None or row[1] is None or canonical(json_loads(row[0])) != canonical(operation):

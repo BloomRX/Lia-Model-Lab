@@ -10,6 +10,7 @@ from .authorization import consume_grant, finalize_grant
 from .checkpoints import verify_snapshot, checkpoint_capacity
 from .containment import policy, supervise, launch_command
 from .environment import doctor
+from .memory_resources import settings as memory_settings, assess, compare
 from .experiments import ID
 from .inference_protocol import validate_suite, validate_worker_results
 from .io import LabError, atomic_json, digest, load, owned, roots, source_snapshot_hash, canonical, json_loads
@@ -29,8 +30,10 @@ def validate_options(device, dtype, repeats, max_tokens, context, timeout):
 
 def make_operation(snapshot, snapshot_manifest, suite_path, research_root, approved_root, run_id,
                    device='cpu', dtype='float32', repeats=2, max_tokens=128, context=2048,
-                   timeout=600, containment='portable-process'):
+                   timeout=600, containment='portable-process', memory_policy='best-effort',
+                   memory_margin_percent=None, memory_uncertainty_margin_percent=10):
     validate_options(device, dtype, repeats, max_tokens, context, timeout)
+    memory_config = memory_settings(memory_policy, memory_margin_percent, memory_uncertainty_margin_percent)
     if not ID.fullmatch(run_id):
         raise LabError('invalid run ID')
     root, approved = roots(research_root, approved_root)
@@ -49,7 +52,9 @@ def make_operation(snapshot, snapshot_manifest, suite_path, research_root, appro
     settings = dict(snapshot=str(snapshot.resolve()), snapshot_manifest=str(Path(snapshot_manifest).resolve()),
         suite_path=str(Path(suite_path).resolve()), research_root=str(root), approved_root=str(approved),
         run_id=run_id, device=device, dtype=dtype, repeats=repeats, max_tokens=max_tokens,
-        context=context, timeout=timeout, containment=containment)
+        context=context, timeout=timeout, containment=containment, memory_policy=memory_policy,
+        memory_margin_percent=memory_config['margin_percent'],
+        memory_uncertainty_margin_percent=memory_config['uncertainty_margin_percent'])
     return {'schema_version': 1, 'action': 'local-inference', 'arguments': settings,
         'repository_root': subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(),
         'snapshot': settings['snapshot'], 'research_root': str(root), 'approved_root': str(approved),
@@ -63,6 +68,7 @@ def make_operation(snapshot, snapshot_manifest, suite_path, research_root, appro
                    'max_context_tokens': context, 'max_duration_seconds': timeout,
                    'max_external_cost': 0, 'cost_currency': 'USD', 'cost_scope': 'no-paid-services-not-an-energy-meter'},
         'containment': policy(containment, timeout, device),
+        'memory_policy': memory_config,
         'disallowed_actions': ['download', 'training', 'publication', 'release']}
 
 
@@ -77,9 +83,11 @@ def operation_from_plan(plan):
 
 def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approved_root, run_id,
                   approval_store, approval_id, device='cpu', dtype='float32', repeats=2, max_tokens=128,
-                  context=2048, timeout=600, containment='portable-process'):
+                  context=2048, timeout=600, containment='portable-process', memory_policy='best-effort',
+                  memory_margin_percent=None, memory_uncertainty_margin_percent=10):
     operation = make_operation(snapshot, snapshot_manifest, suite_path, research_root, approved_root,
-        run_id, device, dtype, repeats, max_tokens, context, timeout, containment)
+        run_id, device, dtype, repeats, max_tokens, context, timeout, containment,
+        memory_policy, memory_margin_percent, memory_uncertainty_margin_percent)
     root, _ = roots(research_root, approved_root)
     run = owned(root, 'experiments/' + run_id)
     if run.exists():
@@ -122,12 +130,14 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
         resident = None if elements is None else elements * (4 if dtype == 'float32' else 2)
         required = None if resident is None else int(resident * 1.5) + manifest['total_bytes'] + 1024**3
         record['estimated_host_ram_bytes'] = required
-        available = environment['ram']['available_bytes']
+        observation = {k: v for k, v in environment['memory'].items() if k != 'assessment'}
+        assessment = assess(observation, operation['memory_policy'], required)
+        environment['memory']['assessment'] = assessment
+        record['memory_supervisor'] = {'observation': observation, 'assessment': assessment}
         blockers = []
         if required is None:
             blockers.append('architecture parameter capacity unknown; no stored-elements fallback')
-        if available is None or required is None or available < required:
-            blockers.append('host RAM unknown or below conservative loading envelope')
+        blockers.extend(assessment['blockers'])
         if any(environment['dependencies'][n] is None for n in ('torch', 'transformers')):
             blockers.append('optional torch/transformers runtime is not installed')
         if blockers:
@@ -137,6 +147,7 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
                    'snapshot_manifest_sha256': operation['snapshot_manifest_sha256'], 'suite': suite,
                    'device': device, 'dtype': dtype, 'repeats': repeats, 'max_tokens': max_tokens,
                    'context': context, 'seed': 42, 'containment': operation['containment'],
+                   'memory_policy': operation['memory_policy'], 'memory_supervisor': observation,
                    'authorization': {'store': str(Path(approval_store).resolve()), 'id':approval_id, 'operation':operation}}
         atomic_json(run / 'request.json', request)
         record['request_sha256'] = digest(run / 'request.json')
@@ -171,6 +182,28 @@ def run_inference(snapshot, snapshot_manifest, suite_path, research_root, approv
     except Exception as exc:
         record.update(status='failed', failure=f'{type(exc).__name__}: {exc}')
     finally:
+        memory_file = run / 'memory-worker.json'
+        if memory_file.is_file():
+            try:
+                data = load(memory_file)
+                if (data['request_sha256'] != record.get('request_sha256') or
+                    data['assessment'] != assess(data['observation'], operation['memory_policy'],
+                        record['estimated_host_ram_bytes'])):
+                    raise LabError('worker memory report binding mismatch')
+                record['memory_worker'] = data
+                record['memory_differences'] = compare(record['memory_supervisor']['observation'], data['observation'])
+                if not data['assessment']['allowed'] and record['status'] == 'completed-not-quality-approved':
+                    raise LabError('successful worker returned blocked memory assessment')
+                if not data['assessment']['allowed'] and record['status'] == 'failed':
+                    record.update(status='blocked', blockers=data['assessment']['blockers'])
+            except (ValueError, OSError, TypeError, KeyError):
+                record['memory_report_invalid'] = True
+                if record['status'] == 'completed-not-quality-approved':
+                    record.update(status='failed', failure='worker memory report invalid')
+        else:
+            record['memory_worker_not_observed_reason'] = 'worker not launched or exited before memory observation'
+            if record['status'] == 'completed-not-quality-approved':
+                record.update(status='failed', failure='worker memory report missing')
         partial = run / 'results.json'
         if record['status'] != 'completed-not-quality-approved' and partial.is_file():
             try:

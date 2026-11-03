@@ -37,7 +37,7 @@ def plan():
 
 
 def write_rows(path, rows):
-    path.write_text("".join(canonical(r)+"\n" for r in rows))
+    path.write_text("".join(canonical(r)+"\n" for r in rows), encoding='utf-8')
 
 
 @pytest.mark.parametrize("value", ['{"a":1,"a":2}', '{"x":NaN}'])
@@ -208,7 +208,7 @@ def test_cards_are_unapproved_and_no_overwrite(tmp_path):
     assert 'NOT RUNTIME VALIDATED' in (tmp_path/'model-card.md').read_text()
 
 
-def test_symlink_escape_adapter(tmp_path):
+def test_symlink_escape_adapter(tmp_path, require_symlink):
     source=tmp_path/'source';adapter_fixture(source)
     outside=tmp_path/'outside.json';outside.write_text('{}')
     (source/'provenance.json').unlink();(source/'provenance.json').symlink_to(outside)

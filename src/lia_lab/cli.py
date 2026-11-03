@@ -23,6 +23,9 @@ def main(argv=None):
     p = commands.add_parser("export-adapter"); p.add_argument("source"); p.add_argument("destination")
     p = commands.add_parser("write-card"); p.add_argument("kind", choices=["dataset", "model"]); p.add_argument("source"); p.add_argument("output")
     p = commands.add_parser("doctor"); p.add_argument("--storage", default=".")
+    p.add_argument("--memory-policy", choices=["best-effort", "balanced", "strict"], default="best-effort")
+    p.add_argument("--memory-margin-percent", type=int)
+    p.add_argument("--memory-uncertainty-margin-percent", type=int, default=10)
     p = commands.add_parser("seal-model")
     p.add_argument("directory"); p.add_argument("output")
     for name in ("model-id", "revision", "license-id", "license-file", "license-review-ref"):
@@ -38,6 +41,9 @@ def main(argv=None):
         p.add_argument("--device", choices=["cpu", "cuda", "rocm", "mps"], default="cpu")
         p.add_argument("--dtype", choices=["float32", "float16", "bfloat16"], default="float32")
         p.add_argument("--containment", choices=["portable-process", "linux-rlimit", "linux-netns-rlimit"], required=True)
+        p.add_argument("--memory-policy", choices=["best-effort", "balanced", "strict"], default="best-effort")
+        p.add_argument("--memory-margin-percent", type=int)
+        p.add_argument("--memory-uncertainty-margin-percent", type=int, default=10)
         for name, default in (("repeats",2),("max-tokens",128),("context",2048),("timeout",600)):
             p.add_argument("--" + name, type=int, default=default)
     p = commands.add_parser("approve-inference")
@@ -47,6 +53,9 @@ def main(argv=None):
         if args.command == "doctor":
             from .environment import doctor
             result = doctor(args.storage)
+            from .memory_resources import settings, assess
+            result['memory']['assessment'] = assess(result['memory'], settings(args.memory_policy,
+                args.memory_margin_percent, args.memory_uncertainty_margin_percent))
         elif args.command == "seal-model":
             from .checkpoints import seal_snapshot
             result = seal_snapshot(args.directory, args.output, args.model_id, args.revision,
@@ -59,7 +68,9 @@ def main(argv=None):
             options = dict(snapshot=args.snapshot, snapshot_manifest=args.snapshot_manifest, suite_path=args.suite,
                 research_root=args.research_root, approved_root=args.approved_root, run_id=args.run_id,
                 device=args.device, dtype=args.dtype, repeats=args.repeats, max_tokens=args.max_tokens,
-                context=args.context, timeout=args.timeout, containment=args.containment)
+                context=args.context, timeout=args.timeout, containment=args.containment,
+                memory_policy=args.memory_policy, memory_margin_percent=args.memory_margin_percent,
+                memory_uncertainty_margin_percent=args.memory_uncertainty_margin_percent)
             if args.command == "plan-inference":
                 if Path(args.output).exists():
                     raise LabError("plan output already exists")

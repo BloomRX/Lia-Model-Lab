@@ -1,4 +1,5 @@
 """Offline contracts only: tiny zero tensors are NOT a language model checkpoint."""
+from support_environment import synthetic_ram
 import copy
 import json
 import subprocess
@@ -53,14 +54,14 @@ def test_snapshot_tamper(snapshot, change):
         verify_snapshot(directory, manifest)
 
 
-def test_symlink_rejected(snapshot, tmp_path):
+def test_symlink_rejected(snapshot, tmp_path, require_symlink):
     directory, manifest = snapshot
     (directory / 'external.txt').symlink_to(manifest)
     with pytest.raises(LabError, match='symlink'):
         verify_snapshot(directory, manifest)
 
 
-def test_root_symlink_rejected(snapshot, tmp_path):
+def test_root_symlink_rejected(snapshot, tmp_path, require_symlink):
     directory, manifest = snapshot
     link = tmp_path / 'linked'; link.symlink_to(directory, target_is_directory=True)
     with pytest.raises(LabError, match='symlink'):
@@ -131,7 +132,7 @@ def test_uninstalled_runtime_blocks_and_records(snapshot, tmp_path, monkeypatch)
     from lia_lab import inference
     real = doctor()
     real['dependencies']['torch'] = None
-    monkeypatch.setattr(inference, 'doctor', lambda _: real)
+    monkeypatch.setattr(inference, 'doctor', lambda _: synthetic_ram(real))
     result = run_fixture(snapshot, tmp_path)
     assert result['status'] == 'blocked' and result['inference_executed'] is False
     assert result['model_metrics'] is None
@@ -150,7 +151,7 @@ def test_snapshot_failure_is_recorded(snapshot, tmp_path):
 def test_memory_block(snapshot, tmp_path, monkeypatch):
     from lia_lab import inference
     real = doctor(); real['ram']['available_bytes'] = 1
-    monkeypatch.setattr(inference, 'doctor', lambda _: real)
+    monkeypatch.setattr(inference, 'doctor', lambda _: synthetic_ram(real))
     result = run_fixture(snapshot, tmp_path)
     assert any('RAM' in b for b in result['blockers'])
 
@@ -159,7 +160,7 @@ def test_timeout_never_promotes(snapshot, tmp_path, monkeypatch):
     from lia_lab import inference
     real = doctor(); real['ram']['available_bytes'] = 10**12
     real['dependencies'].update(torch='synthetic-version', transformers='synthetic-version')
-    monkeypatch.setattr(inference, 'doctor', lambda _: real)
+    monkeypatch.setattr(inference, 'doctor', lambda _: synthetic_ram(real))
     def timeout(command, env, log, duration):
         assert env['HF_HUB_OFFLINE'] == '1'
         assert 0 < duration <= 1
@@ -270,8 +271,14 @@ def test_actual_worker_missing_torch_with_fixture_grant(snapshot,tmp_path,monkey
         pytest.skip('negative test requires actually missing Torch')
     report=doctor();report['dependencies'].update(torch='synthetic-preflight-only',transformers='synthetic-preflight-only')
     report['ram']['available_bytes']=10**12
-    monkeypatch.setattr(inference,'doctor',lambda _:report)
+    monkeypatch.setattr(inference,'doctor',lambda _:synthetic_ram(report))
     result=run_fixture(snapshot,tmp_path)
+    if result['status'] == 'blocked':
+        # Worker now checks its actual OS envelope before importing ML. Linux
+        # runners with hidden cgroup ancestors cannot reach the missing-Torch probe.
+        assert result['memory_worker']['assessment']['allowed'] is False
+        assert result['inference_executed'] is False
+        return
     assert result['status']=='failed' and result['inference_executed'] is False
     log=(tmp_path/'research/experiments/unit-fixture/worker.log').read_text()
     assert "No module named 'torch'" in log

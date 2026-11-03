@@ -6,7 +6,7 @@ Laboratório independente para construir e avaliar os primeiros pesos/adapters *
 
 Pesquisa e skills integradas em uma única documentação oficial; marca e governança preservadas. Já há **código offline funcional e testes** para Dataset Factory texto/tools, splits/dedup, integridade, planos reproduzíveis, avaliação de predições e exportação estrutural local de adapters.
 
-**Hardening v0.4:** autorização operacional externa/temporária/uso único, classes Qwen explícitas, processor VLM, métricas v2 e máscaras validadas por turno. API real TF5.22.1 executada apenas com tokenizer original de teste e sem Torch. Perfis Linux de recursos/namespace não são sandbox completo. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 continua aberta; este trabalho não está presumido integrado à main.
+**Hardening v0.4:** autorização operacional externa/temporária/uso único, classes Qwen explícitas, processor VLM, métricas v2 e máscaras validadas por turno. API real TF5.22.1 executada apenas com tokenizer original de teste e sem Torch. Perfis Linux de recursos/namespace não são sandbox completo. [Piloto, comandos e gates](docs/16-REAL-INFERENCE-PILOT.md). PR #1 integrada em `25ab213` em 2026-11-02. Diagnóstico Windows por políticas implementado e testado sem pesos; [ADR-0004](docs/adr/0004-WINDOWS-MEMORY.md).
 
 **Ainda não existe modelo adaptado Lia validado.** Não houve download de checkpoints/datasets grandes, treino, inferência real, GPU/API paga, uso de dados pessoais ou publicação de pesos.
 
@@ -24,7 +24,7 @@ python -m venv .venv
 .venv/bin/lia-lab doctor
 ```
 
-Windows: usar executáveis em `.venv\Scripts\`; essa plataforma ainda não foi testada. [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Dependências pequenas de ferramentas foram instaladas para validar software; não uma stack de ML com modelos.
+Windows: usar executáveis em `.venv\Scripts\`; diagnóstico e testes offline executados em Windows x64/Python 3.11, com limites em [VALIDATION](docs/VALIDATION.md). [Guia técnico e comandos](docs/15-IMPLEMENTATION-FOUNDATION.md) explica outputs, limites e gates. Dependências pequenas de ferramentas foram instaladas para validar software; não uma stack de ML com modelos.
 
 ## Documentação oficial
 

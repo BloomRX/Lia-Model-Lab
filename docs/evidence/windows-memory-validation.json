@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-02",
+  "evidence": "native-memory-observation-not-model-inference",
+  "os": "Windows",
+  "os_release": "10",
+  "os_version": "10.0.26200",
+  "python": "3.11.0",
+  "pointer_bits": 64,
+  "observation": {
+    "platform": "windows",
+    "observed_at_unix": 1793594808.3390021,
+    "physical_total_bytes": 17063882752,
+    "physical_available_bytes": 8003571712,
+    "system_commit_limit_bytes": 34243751936,
+    "system_commit_used_bytes": 20641095680,
+    "caller_commit_available_bytes": 13602656256,
+    "process_private_commit_bytes": 13299712,
+    "process_working_set_bytes": 21798912,
+    "sources": {
+      "physical_total_bytes": "GlobalMemoryStatusEx",
+      "physical_available_bytes": "GlobalMemoryStatusEx",
+      "caller_commit_available_bytes": "GlobalMemoryStatusEx",
+      "system_commit_limit_bytes": "GetPerformanceInfo.CommitLimit * PageSize",
+      "system_commit_used_bytes": "GetPerformanceInfo.CommitTotal * PageSize",
+      "process_private_commit_bytes": "GetProcessMemoryInfo.PrivateUsage",
+      "process_working_set_bytes": "GetProcessMemoryInfo.WorkingSetSize"
+    },
+    "errors": [],
+    "job": {
+      "in_any_job": true,
+      "job_chain_coverage": "immediate-only-chain-not-enumerated",
+      "query_mode": "implicit-null",
+      "limits_observed": true,
+      "process_memory_limit_bytes": null,
+      "job_memory_limit_bytes": null,
+      "current_usage_bytes": null,
+      "current_usage_source": null,
+      "limit_flags": 12288
+    }
+  },
+  "policy_assessments": {
+    "best-effort": {
+      "policy": "best-effort",
+      "margin_percent": 10,
+      "uncertainty_margin_percent": 10,
+      "state": "estimated-partial",
+      "allowed": true,
+      "required_bytes": null,
+      "estimated_available_bytes": 8003571712,
+      "usable_after_margin_bytes": 6402857369,
+      "effective_margin_percent": 20,
+      "dimensions": {
+        "physical_available_bytes": 8003571712,
+        "caller_commit_available_bytes": 13602656256,
+        "system_commit_headroom_bytes": 13602656256
+      },
+      "known_limit_upper_bounds": {},
+      "warnings": [
+        "job chain not enumerated; other applicable jobs may be hidden"
+      ],
+      "blockers": [],
+      "reservation": false
+    },
+    "balanced": {
+      "policy": "balanced",
+      "margin_percent": 20,
+      "uncertainty_margin_percent": 10,
+      "state": "estimated-partial",
+      "allowed": true,
+      "required_bytes": null,
+      "estimated_available_bytes": 8003571712,
+      "usable_after_margin_bytes": 5602500198,
+      "effective_margin_percent": 30,
+      "dimensions": {
+        "physical_available_bytes": 8003571712,
+        "caller_commit_available_bytes": 13602656256,
+        "system_commit_headroom_bytes": 13602656256
+      },
+      "known_limit_upper_bounds": {},
+      "warnings": [
+        "job chain not enumerated; other applicable jobs may be hidden"
+      ],
+      "blockers": [],
+      "reservation": false
+    },
+    "strict": {
+      "policy": "strict",
+      "margin_percent": 30,
+      "uncertainty_margin_percent": 10,
+      "state": "blocked",
+      "allowed": false,
+      "required_bytes": null,
+      "estimated_available_bytes": 8003571712,
+      "usable_after_margin_bytes": 4802143027,
+      "effective_margin_percent": 40,
+      "dimensions": {
+        "physical_available_bytes": 8003571712,
+        "caller_commit_available_bytes": 13602656256,
+        "system_commit_headroom_bytes": 13602656256
+      },
+      "known_limit_upper_bounds": {},
+      "warnings": [
+        "job chain not enumerated; other applicable jobs may be hidden"
+      ],
+      "blockers": [
+        "job chain not enumerated; other applicable jobs may be hidden"
+      ],
+      "reservation": false
+    }
+  },
+  "required_model_bytes": null,
+  "inference_executed": false,
+  "training_executed": false,
+  "test_commands": [
+    ".venv/Scripts/python -m pytest tests/test_windows_memory.py -q",
+    ".venv/Scripts/python -m pytest tests/test_windows_memory_native.py -q"
+  ],
+  "limitations": [
+    "Snapshot only; no reservation or allocation guarantee",
+    "Native x64 only; job chain not enumerated; current aggregate usage unknown",
+    "No weights, Torch, GPU or inference; no production controlled launcher"
+  ]
+}

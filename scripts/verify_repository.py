@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from lia_lab.io import LabError, load, json_loads, atomic_json
 from jsonschema import Draft202012Validator
 
-ROOT_FILES = {".gitignore", "README.md", "AGENTS.md", "pyproject.toml", "requirements.lock", "requirements-api.lock"}
+ROOT_FILES = {".gitattributes", ".gitignore", "README.md", "AGENTS.md", "pyproject.toml", "requirements.lock", "requirements-api.lock"}
 TREES = ("docs", "configs", "templates", "src", "tests", "scripts", ".agents", ".codex", ".github")
 EXTENSIONS = {".md", ".json", ".jsonl", ".yaml", ".yml", ".toml", ".py", ".txt"}
 
@@ -51,7 +51,9 @@ def package_paths(root=ROOT):
     for p in paths:
         if p.is_symlink() or not p.resolve().is_relative_to(root.resolve()):
             raise LabError(f"package symlink: {p}")
-    return sorted(set(paths))
+    # WindowsPath sorts case-insensitively, unlike PosixPath. Manifest order
+    # must be identical across checkouts, as well as file bytes/hashes.
+    return sorted(set(paths), key=lambda p: p.relative_to(root).as_posix())
 
 
 def manifest(root=ROOT):

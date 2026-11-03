@@ -100,9 +100,14 @@
       "sha256": "68a80881e111eb70f91b9927d2e41a81e7ed6abc7756860feea89f3e12f72e57"
     },
     {
+      "path": ".gitattributes",
+      "bytes": 19,
+      "sha256": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c"
+    },
+    {
       "path": ".github/workflows/verify.yml",
-      "bytes": 1208,
-      "sha256": "c88b98a2a8641788262817456747bdeedf6adef4c6c0481941c24542fa7e584f"
+      "bytes": 1627,
+      "sha256": "4769f2408d5f5bedd2f46cf13d008812031105e4003b4862f39a7259b0e81b7c"
     },
     {
       "path": ".gitignore",
@@ -116,8 +121,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 4946,
-      "sha256": "1d9831709a55e467c0cf43ea717886f2280029a71b8b2f62a9f6452c29a0c535"
+      "bytes": 5106,
+      "sha256": "48aca2edf49ea89b37a2fb4c6839b25f36528e38c625f3c5edc944608271a40c"
     },
     {
       "path": "configs/capability-requirements.yaml",
@@ -191,8 +196,8 @@
     },
     {
       "path": "docs/08-HARDWARE-INFRASTRUCTURE.md",
-      "bytes": 5960,
-      "sha256": "a33d9381c0ffbebcc20c90fd55ad59142c42e3841c7b7a721a84ecfb467b3a1f"
+      "bytes": 7861,
+      "sha256": "da9260a05258f6f9a23827baa6cfe635881d11c8bfd7c256b6a0f5d41d76f666"
     },
     {
       "path": "docs/09-BENCHMARK-STRATEGY.md",
@@ -226,13 +231,13 @@
     },
     {
       "path": "docs/15-IMPLEMENTATION-FOUNDATION.md",
-      "bytes": 8677,
-      "sha256": "9130b86095ffbe3d0b6df2046b4c39845681eba9fba55049c7314da9f3a48cb5"
+      "bytes": 8816,
+      "sha256": "51917aa6a901ce81e54f98d4e0bc6c9eeca2962b2df8c407ab0351608c697e85"
     },
     {
       "path": "docs/16-REAL-INFERENCE-PILOT.md",
-      "bytes": 16654,
-      "sha256": "31588451150bddb8e74ad8a421d1680ae147eac46b0cdad6fc02bb13b5f1ccd3"
+      "bytes": 19888,
+      "sha256": "4ad576d1ebc417a3dd4b57e082bbeb681d9840236b1956106d16893e4fbd3327"
     },
     {
       "path": "docs/17-LFM3-RESEARCH.md",
@@ -251,18 +256,18 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 1948,
-      "sha256": "7cce10f83c0d27821d615c2d64042bf4438757dcf2d677d45471d5dce0b9fabc"
+      "bytes": 2026,
+      "sha256": "788b32bb89a3a6f8b7ae51e618d3184b5842b8a213a95c61b41fa8ce012a1631"
     },
     {
       "path": "docs/SOURCES.md",
-      "bytes": 21244,
-      "sha256": "7d1669c0d059fa8f7260d7b546a8e3db6b48b4d5b931a36a979e9b28dc6a3da4"
+      "bytes": 23909,
+      "sha256": "e02bd20dcdcc0cc9a9ff171d7671aee6beb51984243e17a8362ec07a9c108413"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 11996,
-      "sha256": "d719b11ab1170e9ef1e178d25ab7f785d5a4efe649131a1afe1344d41e9905ca"
+      "bytes": 17526,
+      "sha256": "2266c3bc502f6160f2e75c48f046464d5dc924dd1b373c91731ca390f0ddb396"
     },
     {
       "path": "docs/adr/0001-CONSOLIDATION.md",
@@ -278,6 +283,11 @@
       "path": "docs/adr/0003-INFERENCE-HARDENING.md",
       "bytes": 5435,
       "sha256": "44911ba904b34c33fa43b00e1e21ff6d22cbad98efdb54c100bbf242e8ec3a7f"
+    },
+    {
+      "path": "docs/adr/0004-WINDOWS-MEMORY.md",
+      "bytes": 5270,
+      "sha256": "4d71b1a7e7f725944da592b5d6efa9597e699fa6a85af47da09a0779ba43c260"
     },
     {
       "path": "docs/evidence/airi-evidence.json",
@@ -305,19 +315,24 @@
       "sha256": "ae5331da2193572fa01ec979e488cd2918d2506e2781e7f2b7abe1b3d537b80b"
     },
     {
+      "path": "docs/evidence/windows-memory-validation.json",
+      "bytes": 4276,
+      "sha256": "305958bbf8557eaf261bc7349b45abb2ba1cd78bc00624b982d6b20df4c78f39"
+    },
+    {
       "path": "pyproject.toml",
       "bytes": 812,
       "sha256": "d6da3eff1a0d4c3c83a94902d4df591480c9c170db2ac0f6e104a3ddb60c6553"
     },
     {
       "path": "requirements-api.lock",
-      "bytes": 766,
-      "sha256": "9bc60b04cb5df33db3ee0f1bbe2d5c01422ad06bc4e5d41a38a8c13cc2e858a6"
+      "bytes": 807,
+      "sha256": "3e44ec76fed545cc77ce2588dbf7d2be1859ea7d61bb55409801f88932b0ad2d"
     },
     {
       "path": "requirements.lock",
-      "bytes": 290,
-      "sha256": "e8a9efa626d4b1a7e57b0caaa94abf6480c941d3bdb5bd494f2a157788067594"
+      "bytes": 331,
+      "sha256": "1e1493bf563d8a81aecbc9d59e4429112cc6f0c3294f1d23fd5e661a341cae78"
     },
     {
       "path": "scripts/check_whitespace.py",
@@ -326,8 +341,8 @@
     },
     {
       "path": "scripts/verify_repository.py",
-      "bytes": 7196,
-      "sha256": "c98bf8783c867c3057a4774ead9f1e7f17c1a7e6d94a0ca1b05a608ddef05732"
+      "bytes": 7409,
+      "sha256": "36a6f67b7f3300331fd263637ee2e2b0ffb44fdf7aadfb4920e1019a81a7053c"
     },
     {
       "path": "src/lia_lab/__init__.py",
@@ -336,8 +351,8 @@
     },
     {
       "path": "src/lia_lab/authorization.py",
-      "bytes": 7072,
-      "sha256": "488d6cfcb9f4068d129bb49ca0ee341a4dd1ffc2b6e0ac9dc446483229389174"
+      "bytes": 7155,
+      "sha256": "3a0c148888da14934b87eac89bb02d1a381a9e7df1527e41e41aa801cbdc2794"
     },
     {
       "path": "src/lia_lab/cards.py",
@@ -351,8 +366,8 @@
     },
     {
       "path": "src/lia_lab/cli.py",
-      "bytes": 6156,
-      "sha256": "e34f0afa947bd9dd2d6e70e570f6f9e5ac776e5fd63cba15fbea46128b70ece4"
+      "bytes": 7089,
+      "sha256": "de33e43326b6059a73703d311df6401b44a60d348e4ada3072b87098dc640d61"
     },
     {
       "path": "src/lia_lab/containment.py",
@@ -366,8 +381,8 @@
     },
     {
       "path": "src/lia_lab/environment.py",
-      "bytes": 5857,
-      "sha256": "3ba9b4b7daca650f6bfea198770ed6890120be43a2e8d7583e5d2ade18bc37b2"
+      "bytes": 6386,
+      "sha256": "049c52aa656fff90df87e1abb6832471d7dd78943cbb42c67d82391af113b403"
     },
     {
       "path": "src/lia_lab/evaluation.py",
@@ -381,8 +396,8 @@
     },
     {
       "path": "src/lia_lab/inference.py",
-      "bytes": 12845,
-      "sha256": "0bb5d6e3034f6ae9ebb2e23bf35ead5eb1a136ddba0a696a67feb374a5c2000d"
+      "bytes": 15376,
+      "sha256": "5f6fde8687d31a55d170cddd348ce96ecc2f84180c8af76825a830c0a985c7db"
     },
     {
       "path": "src/lia_lab/inference_protocol.py",
@@ -391,13 +406,18 @@
     },
     {
       "path": "src/lia_lab/inference_worker.py",
-      "bytes": 10698,
-      "sha256": "7f89aece1fe4d47fb40a5a04b6f148a0221597104c6ff497b8d4fa0249ff9570"
+      "bytes": 11918,
+      "sha256": "32adacb345868bf1c7a884e51769539f1c69989ff8e456250a4c185418a9f1d1"
     },
     {
       "path": "src/lia_lab/io.py",
       "bytes": 3661,
       "sha256": "e698e1424b0fae951bb332b52ebf56718faf4b7f836923aee4fa570417e6eb23"
+    },
+    {
+      "path": "src/lia_lab/memory_resources.py",
+      "bytes": 6808,
+      "sha256": "ecc25609ee9ecc646607bd0fc78cefd2d58f4904754a9ad81803a9dbb20306aa"
     },
     {
       "path": "src/lia_lab/model_backends.py",
@@ -423,6 +443,11 @@
       "path": "src/lia_lab/training_prep.py",
       "bytes": 9959,
       "sha256": "29911aa6d3d57cee754a6b85c20062c0c17b088dce888f2504f43f9569e85c61"
+    },
+    {
+      "path": "src/lia_lab/windows_memory.py",
+      "bytes": 7966,
+      "sha256": "47bcd9f3ea2a345b3cefe25e0f09efe201acd3a5c60ac7441e2dadf5e816a802"
     },
     {
       "path": "templates/ADR.md",
@@ -451,8 +476,8 @@
     },
     {
       "path": "tests/conftest.py",
-      "bytes": 978,
-      "sha256": "a16eb0e117fd735f08f41895719743b0dfb2ebe1bbf62ca4919e6eb5fa7e54fc"
+      "bytes": 1341,
+      "sha256": "4feb784ba61c0648a8a9e2cd92adb5a3dd5940ab54ce06fb4a20c918bde70963"
     },
     {
       "path": "tests/fixtures/README.md",
@@ -481,8 +506,8 @@
     },
     {
       "path": "tests/support_authorization.py",
-      "bytes": 802,
-      "sha256": "18817d103fd8c3527d2c8a1099950e305715ab44c195b909e6aec4fa9cefcf23"
+      "bytes": 846,
+      "sha256": "707763e35dea10f4f8818c40961f19aaf422c8eb03086bf8afedb92ade90efaf"
     },
     {
       "path": "tests/support_checkpoint.py",
@@ -490,9 +515,14 @@
       "sha256": "1f75fd82a86a45b0bc49e357e12a84a88dce43ac43ae8107e8779709adc8888c"
     },
     {
+      "path": "tests/support_environment.py",
+      "bytes": 297,
+      "sha256": "8ad175a00d7cb25695934775ed8951333a70fa84381fc58e12902f7eedd7653f"
+    },
+    {
       "path": "tests/test_authorization.py",
-      "bytes": 7173,
-      "sha256": "9b9227ec3d6c3f038e2995ca8bb51b9f7a9346ff85ef22d65d103fac00871d23"
+      "bytes": 7190,
+      "sha256": "35664e5eda6f44df3ba791d2411b8b4084d7f15e8c8841fb299fd60dfeaa5862"
     },
     {
       "path": "tests/test_backend_contracts.py",
@@ -506,23 +536,23 @@
     },
     {
       "path": "tests/test_final_audit.py",
-      "bytes": 7839,
-      "sha256": "dd8bd17951d7327071418667063f81162a1266f22f2ac7c66e580bf47686706a"
+      "bytes": 7856,
+      "sha256": "03313f753c99e473b046648a7722d11490e4f35e115c8b97550a9a2a6767030f"
     },
     {
       "path": "tests/test_foundation.py",
-      "bytes": 11902,
-      "sha256": "7ed52b26890d74aca0bdd9b67265075f2981fa46c584839110f9b4f9f3943468"
+      "bytes": 11937,
+      "sha256": "f5990c79d73596604f0c492b6fb11682b58dfb0786ff4f67bb9cec48840cee26"
     },
     {
       "path": "tests/test_inference.py",
-      "bytes": 13898,
-      "sha256": "f4e8a42c4ecb235a8c59db758f6e07dc55a9a9d445c7137ef61690b40d4d633b"
+      "bytes": 14380,
+      "sha256": "7e9ce774b7930432e8fd41f7572bc7df23808587b8241c93d58413326c125a90"
     },
     {
       "path": "tests/test_repository.py",
-      "bytes": 1688,
-      "sha256": "a303e2c4641a70762a09260555fb857c6245c7ec40b7ee1ac629001ab88b7ea0"
+      "bytes": 2035,
+      "sha256": "a38b49b6f96df10293bdde9ce30121b9109c76ae5c3fe572afe7ba88ff248738"
     },
     {
       "path": "tests/test_research_catalog.py",
@@ -531,13 +561,13 @@
     },
     {
       "path": "tests/test_review_loading.py",
-      "bytes": 6433,
-      "sha256": "bcfeaa7fd11a023bba795e0c18b29db357040ac5619e9c7898c457fe04b4c30b"
+      "bytes": 6494,
+      "sha256": "73b9f5c111f615a7dd648f9cf35987ad8b3d5c1ced2309746342ad863274848e"
     },
     {
       "path": "tests/test_review_resources.py",
-      "bytes": 10623,
-      "sha256": "2a9af8164a4c3db44c6aa0a949d6e6b4a26370eec17d5910cd34c485dc28612f"
+      "bytes": 10831,
+      "sha256": "a24c5290d3f837edc958580af9ca91edca41534b040ce923bbb75ecc6df4f27c"
     },
     {
       "path": "tests/test_review_whitespace.py",
@@ -546,13 +576,23 @@
     },
     {
       "path": "tests/test_supervisor_results.py",
-      "bytes": 4146,
-      "sha256": "f3b5433af24ae0dac18c01d785d31fbe7d9fcafb5da00076ea248773e9eacac5"
+      "bytes": 4510,
+      "sha256": "96b1738b990efbb05e03b0536d6ff3b5ed510b5e2ecf898c08a0d0ca2170cd58"
     },
     {
       "path": "tests/test_transformers_api.py",
       "bytes": 5009,
       "sha256": "71a5d552f7c2f92fc2e6edf6ba9741caf277cfd9d72bd23e261d38b8181f3a8c"
+    },
+    {
+      "path": "tests/test_windows_memory.py",
+      "bytes": 11493,
+      "sha256": "1f420488724eb273b1a3baf9c644d7b0f05060797d31b05ed65f7798fdacd70f"
+    },
+    {
+      "path": "tests/test_windows_memory_native.py",
+      "bytes": 8412,
+      "sha256": "8f3c4866a5713b46b0dd2c549c49562fca31633e0ca84a39d11fb00b28c64546"
     }
   ]
 }

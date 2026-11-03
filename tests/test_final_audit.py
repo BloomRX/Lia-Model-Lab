@@ -53,7 +53,7 @@ def test_exclusive_atomic_publication(tmp_path):
     assert len(list(tmp_path.iterdir()))==1
 
 
-def test_exclusive_publication_does_not_follow_dangling_symlink(tmp_path):
+def test_exclusive_publication_does_not_follow_dangling_symlink(tmp_path, require_symlink):
     target=tmp_path/'target.json';link=tmp_path/'link.json';link.symlink_to(target)
     with pytest.raises(FileExistsError):atomic_json(link,{},overwrite=False)
     assert link.is_symlink() and not target.exists()

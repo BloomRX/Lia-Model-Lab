@@ -1,4 +1,5 @@
 """R1/R3/R4/R5 synthetic regressions; no runtime/model/license approval."""
+from support_environment import synthetic_ram
 import importlib.util
 import os
 import socket
@@ -20,6 +21,8 @@ def module(name):
 
 
 def cgroup(tmp_path, member='/child', mount_root='/', limits=None):
+    if os.name != 'posix':
+        pytest.skip('Linux mountinfo fixtures require POSIX absolute path semantics')
     proc, mount = tmp_path / 'proc', tmp_path / 'mount'
     (proc / 'self').mkdir(parents=True)
     mount.mkdir()
@@ -163,13 +166,13 @@ def test_r4_complexity_depth_and_suite(tmp_path, capsys, snapshot):
 
 
 @pytest.mark.parametrize('tree',['docs','src'])
-def test_r5_symlink_tree_roots(tmp_path,tree):
+def test_r5_symlink_tree_roots(tmp_path,tree, require_symlink):
     actual=tmp_path/'actual';actual.mkdir();(actual/'a.md').write_text('fixture')
     (tmp_path/tree).symlink_to(actual,target_is_directory=True)
     with pytest.raises(LabError,match='symlink'):module('verify_repository').package_paths(tmp_path)
 
 
-def test_r5_intermediate_and_descendant(tmp_path,monkeypatch):
+def test_r5_intermediate_and_descendant(tmp_path,monkeypatch, require_symlink):
     v=module('verify_repository');actual=tmp_path/'actual';(actual/'docs').mkdir(parents=True)
     (tmp_path/'nested').symlink_to(actual,target_is_directory=True)
     monkeypatch.setattr(v,'TREES',('nested/docs',))
@@ -208,7 +211,7 @@ def test_r1_unknown_envelope_blocks_preflight(snapshot,tmp_path,monkeypatch):
     from test_inference import run_fixture
     report=inference.doctor();report['ram']=memory(tmp_path/'absent-proc')
     report['dependencies'].update(torch='stub',transformers='stub')
-    monkeypatch.setattr(inference,'doctor',lambda _:report)
+    monkeypatch.setattr(inference,'doctor',lambda _:synthetic_ram(report))
     monkeypatch.setattr(inference,'supervise',lambda *a:pytest.fail('unknown RAM launched worker'))
     result=run_fixture(snapshot,tmp_path)
     assert result['status']=='blocked' and any('RAM unknown' in b for b in result['blockers'])
